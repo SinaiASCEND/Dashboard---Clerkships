@@ -369,6 +369,13 @@ export default function App() {
           .px { padding-left:14px; padding-right:14px; }
           .h-title { font-size:20px; }
           .banner-name { font-size:21px; }
+          .stick, .stickh {
+            width:118px; min-width:118px; max-width:118px;
+            white-space:normal; overflow-wrap:anywhere; word-break:break-word;
+            font-size:11px !important; line-height:1.2;
+            padding-left:9px !important; padding-right:8px !important;
+          }
+          .stick *, .stickh * { font-size:11px !important; line-height:1.2; }
         }
       `}</style>
 
@@ -981,7 +988,7 @@ function Comparability({ bench }) {
           <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 720 }}>
             <thead>
               <tr style={{ background: "#F7F9FD" }}>
-                <th style={{ ...thL, position: "sticky", left: 0, background: "#F7F9FD" }}>Site ╲ Clerkship</th>
+                <th className="stickh" style={{ ...thL, position: "sticky", left: 0, background: "#F7F9FD" }}>Site ╲ Clerkship</th>
                 {cols.map((c) => <th key={c.name} style={{ ...thC, minWidth: 58 }} title={c.name}>{c.short}</th>)}
                 <th style={{ ...thC, background: "#EEF2F8" }}>Site range</th>
               </tr>
@@ -989,7 +996,7 @@ function Comparability({ bench }) {
             <tbody>
               {siteNames.map((sn, i) => (
                 <tr key={sn} style={{ borderTop: `1px solid ${LINE}` }}>
-                  <td style={{ padding: "8px 14px", fontWeight: 600, fontSize: 12.5, position: "sticky", left: 0, background: CARD }}>
+                  <td className="stick" style={{ padding: "8px 14px", fontWeight: 600, fontSize: 12.5, position: "sticky", left: 0, background: CARD }}>
                     {sn}{COMBINED_SITES.has(sn) && <sup title="Combined-site data — reported merged in the source, not separable" style={{ color: MAGENTA, fontWeight: 700 }}> ‡</sup>}
                   </td>
                   {cols.map((c) => {
@@ -1008,7 +1015,7 @@ function Comparability({ bench }) {
               ))}
               {/* within-clerkship range row */}
               <tr style={{ borderTop: `2px solid ${LINE}`, background: "#F7F9FD" }}>
-                <td style={{ padding: "8px 14px", fontWeight: 700, fontSize: 12, position: "sticky", left: 0, background: "#F7F9FD" }}>Within-clerkship range</td>
+                <td className="stickh" style={{ padding: "8px 14px", fontWeight: 700, fontSize: 12, position: "sticky", left: 0, background: "#F7F9FD" }}>Within-clerkship range</td>
                 {cols.map((c, j) => (
                   <td key={c.name} style={{ textAlign: "center", padding: "6px 5px" }}><SpreadChip s={colSpread[j]} /></td>
                 ))}
