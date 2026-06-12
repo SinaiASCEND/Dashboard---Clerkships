@@ -344,6 +344,9 @@ export default function App() {
         * { box-sizing: border-box; }
         html, body { margin: 0; max-width: 100%; overflow-x: hidden; }
         .scrollx { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
+        .stick { position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 ${LINE}; }
+        .stickh { position: sticky; left: 0; z-index: 2; background: #F7F9FD; box-shadow: 1px 0 0 ${LINE}; }
+        .row-click:hover .stick { background: #F0F4FB; }
         .tab { cursor:pointer; padding:8px 14px; border-radius:999px; font-size:13px; font-weight:600;
                letter-spacing:.02em; border:1px solid transparent; transition:all .15s; white-space:nowrap;}
         .tab:hover { background:#EDF1F8; }
@@ -532,7 +535,7 @@ function Matrix({ bench, onPick }) {
         <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 720 }}>
           <thead>
             <tr style={{ background: "#F7F9FD" }}>
-              <th style={thL}>Clerkship</th>
+              <th className="stickh" style={thL}>Clerkship</th>
               {ELEMENTS.map((el) => (
                 <th key={el.id} style={thC}>
                   <div style={{ fontWeight: 700, color: INK }}>{el.code}</div>
@@ -544,7 +547,7 @@ function Matrix({ bench, onPick }) {
           <tbody>
             {DATA.map((c) => (
               <tr key={c.name} className="row-click" onClick={() => onPick(c.name)} style={{ borderTop: `1px solid ${LINE}` }}>
-                <td style={{ padding: "10px 16px", verticalAlign: "middle" }}>
+                <td className="stick" style={{ padding: "10px 16px", verticalAlign: "middle" }}>
                   <div style={{ fontWeight: 700, fontSize: 13.5 }}>{c.name}</div>
                   <div style={{ fontSize: 11, color: INK_SOFT }}>{c.year} · {c.periods}</div>
                 </td>
@@ -704,7 +707,7 @@ function Sites({ sel, bench, onPick }) {
           <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 640 }}>
             <thead>
               <tr style={{ background: "#F7F9FD" }}>
-                <th style={thL}>Site</th>
+                <th className="stickh" style={thL}>Site</th>
                 <th style={{ ...thC, textAlign: "right", paddingRight: 14 }}>n</th>
                 {metricMeta.map((m) => <th key={m.key} style={thC}>{m.label}</th>)}
               </tr>
@@ -712,7 +715,7 @@ function Sites({ sel, bench, onPick }) {
             <tbody>
               {sel.sites.map((s) => (
                 <tr key={s.name} style={{ borderTop: `1px solid ${LINE}` }}>
-                  <td style={{ padding: "9px 16px", fontWeight: 600, fontSize: 13 }}>{s.name}</td>
+                  <td className="stick" style={{ padding: "9px 16px", fontWeight: 600, fontSize: 13 }}>{s.name}</td>
                   <td style={{ padding: "9px 14px", textAlign: "right", color: INK_SOFT, fontVariantNumeric: "tabular-nums" }}>{s.n}</td>
                   {SITE_KEYS.map((k) => {
                     const v = s[k]?.[0]; const rag = ragOf(v, bench);
@@ -881,7 +884,7 @@ function Benchmark({ bench }) {
           <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 640 }}>
             <thead>
               <tr style={{ background: "#F7F9FD" }}>
-                <th style={thL}>Discipline</th>
+                <th className="stickh" style={thL}>Discipline</th>
                 {GQ_YEARS.map((y) => <th key={y} style={thC}>{y}</th>)}
                 <th style={thC}>Natl ’25</th>
                 <th style={thC}>vs Natl</th>
@@ -893,7 +896,7 @@ function Benchmark({ bench }) {
                 const diff = latest - g.natl;
                 return (
                   <tr key={g.disc} style={{ borderTop: `1px solid ${LINE}` }}>
-                    <td style={{ padding: "9px 16px", fontWeight: 600, fontSize: 13 }}>{g.disc}</td>
+                    <td className="stick" style={{ padding: "9px 16px", fontWeight: 600, fontSize: 13 }}>{g.disc}</td>
                     {g.vals.map((v, i) => (
                       <td key={i} style={{ ...tdNum, color: i === g.vals.length - 1 ? INK : INK_SOFT, fontWeight: i === g.vals.length - 1 ? 700 : 400 }}>
                         {v}
@@ -1104,7 +1107,7 @@ function Rotation({ sel, bench, onPick }) {
     const yrag = ragOf(ytd, bench);
     return (
       <tr style={{ borderTop: `1px solid ${LINE}` }}>
-        <td style={{ padding: "8px 14px", fontSize: 12.5 }}>{row.label}<ElTag code={row.el} /></td>
+        <td className="stick" style={{ padding: "8px 14px", fontSize: 12.5 }}>{row.label}<ElTag code={row.el} /></td>
         {labels.map((_, i) => {
           const num = r.program[row.key][i];
           const den = row.den === "n" ? r.n[i] : r.program.fbReceived[i];
@@ -1125,7 +1128,7 @@ function Rotation({ sel, bench, onPick }) {
           <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 460 }}>
             <thead>
               <tr style={{ background: "#F7F9FD" }}>
-                <th style={thL}>Site survey item</th>
+                <th className="stickh" style={thL}>Site survey item</th>
                 {labels.map((l, i) => <th key={i} style={thC}>Rotation {i + 1}<div style={{ fontWeight: 400, color: INK_SOFT, fontSize: 10 }}>{/^MOD/i.test(l) ? "" : l + " · "}n={sr.n[i] == null ? "—" : sr.n[i]}</div></th>)}
                 <th style={thC}>YTD</th>
               </tr>
@@ -1136,7 +1139,7 @@ function Rotation({ sel, bench, onPick }) {
                 const yrag = ragOf(ytd, bench);
                 return (
                   <tr key={row.key} style={{ borderTop: `1px solid ${LINE}` }}>
-                    <td style={{ padding: "8px 14px", fontSize: 12.5 }}>{row.label}<ElTag code={row.el} /></td>
+                    <td className="stick" style={{ padding: "8px 14px", fontSize: 12.5 }}>{row.label}<ElTag code={row.el} /></td>
                     {labels.map((_, i) => <RotCell key={i} num={sr[row.key][i]} den={sr.n[i]} bench={bench} />)}
                     <td style={{ ...tdNum, fontWeight: 700, color: RAG_FG[yrag], background: "#F7F9FD" }}>{ytd == null ? "—" : ytd + "%"}</td>
                   </tr>
@@ -1162,7 +1165,7 @@ function Rotation({ sel, bench, onPick }) {
           <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 520 }}>
             <thead>
               <tr style={{ background: "#F7F9FD" }}>
-                <th style={thL}>Program survey item</th>
+                <th className="stickh" style={thL}>Program survey item</th>
                 {labels.map((l, i) => <th key={i} style={thC}>Rotation {i + 1}<div style={{ fontWeight: 400, color: INK_SOFT, fontSize: 10 }}>{/^MOD/i.test(l) ? "" : l + " · "}n={r.n[i]}</div></th>)}
                 <th style={thC}>YTD</th>
               </tr>
