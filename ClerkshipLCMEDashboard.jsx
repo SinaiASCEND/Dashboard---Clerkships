@@ -80,7 +80,7 @@ const DATA = [
     sites: [
       { name:"Elmhurst", n:29, supervision:[100,93], availability:[100,91], listened:[93,90], respect:[89,88], explain:[89,84] },
       { name:"Mount Sinai", n:73, supervision:[99,100], availability:[99,100], listened:[100,93], respect:[100,95], explain:[100,89] },
-      { name:"Morningside", n:26, supervision:[100,95], availability:[100,95], listened:[100,73], respect:[100,77], explain:[100,73] },
+      { name:"MS Morningside", n:26, supervision:[100,95], availability:[100,95], listened:[100,73], respect:[100,77], explain:[100,73] },
       { name:"MS West", n:17, supervision:[100,100], availability:[100,100], listened:[100,88], respect:[100,94], explain:[100,88] },
     ],
   },
@@ -118,7 +118,7 @@ const DATA = [
       { name:"Mount Sinai", n:18, supervision:[94,100], availability:[94,100], listened:[100,92], respect:[100,88], explain:[100,88] },
       { name:"MS West", n:15, supervision:[100,100], availability:[100,100], listened:[100,100], respect:[100,96], explain:[93,92] },
       { name:"Bronx VA", n:7, supervision:[100,100], availability:[100,100], listened:[71,90], respect:[86,100], explain:[86,90] },
-      { name:"Morningside", n:16, supervision:[100,81], availability:[100,81], listened:[100,88], respect:[100,94], explain:[100,94] },
+      { name:"MS Morningside", n:16, supervision:[100,81], availability:[100,81], listened:[100,88], respect:[100,94], explain:[100,94] },
       { name:"MSQ/MSH", n:8, supervision:[88,100], availability:[88,100], listened:[88,89], respect:[88,89], explain:[88,89] },
     ],
   },
@@ -128,7 +128,7 @@ const DATA = [
     sites: [
       { name:"Mount Sinai", n:28, supervision:[100,97], availability:[100,97], listened:[89,89], respect:[93,89], explain:[82,89] },
       { name:"MS West", n:3, supervision:[100,100], availability:[100,100], listened:[100,100], respect:[100,100], explain:[100,92] },
-      { name:"Morningside", n:18, supervision:[100,93], availability:[100,100], listened:[83,93], respect:[83,93], explain:[89,93] },
+      { name:"MS Morningside", n:18, supervision:[100,93], availability:[100,100], listened:[83,93], respect:[83,93], explain:[89,93] },
       { name:"Behavioral Health Ctr", n:18, supervision:[89,100], availability:[89,100], listened:[94,100], respect:[89,100], explain:[94,100] },
     ],
   },
@@ -139,7 +139,7 @@ const DATA = [
       { name:"Elmhurst", n:5, supervision:[100,94], availability:[100,94], listened:[80,78], respect:[80,78], explain:[80,83] },
       { name:"Mount Sinai", n:8, supervision:[75,94], availability:[100,97], listened:[63,79], respect:[63,88], explain:[25,58] },
       { name:"MS Queens", n:7, supervision:[100,100], availability:[100,100], listened:[100,100], respect:[100,100], explain:[100,100] },
-      { name:"Morningside/West", n:28, supervision:[71,93], availability:[86,93], listened:[86,50], respect:[86,71], explain:[71,71] },
+      { name:"MSM/MSW", n:28, supervision:[71,93], availability:[86,93], listened:[86,50], respect:[86,71], explain:[71,71] },
     ],
   },
   {
@@ -229,7 +229,7 @@ const GQ = [
 /* ---- per-rotation NUMERATOR counts + rotation n (from source dashboards) ----
    Program rates: fbReceived/obsHx/obsExam over n; fbHelpful/fbCPE over fbReceived.
    Site rates: over the site's rotation n. null = rotation not reported. */
-const ROT = {"Inpatient Medicine": {"labels": ["MOD 1", "MOD 2"], "n": [41, 36], "program": {"fbReceived": [39, 35], "fbHelpful": [38, 35], "fbCPE": [32, 29], "obsHx": [41, 36], "obsExam": [41, 36]}, "sites": {"Elmhurst": {"n": [18, 10], "supervision": [18, 10], "availability": [18, 10], "listened": [16, 10], "respect": [16, 9], "explain": [15, 10]}, "Mount Sinai": {"n": [45, 28], "supervision": [44, 28], "availability": [44, 28], "listened": [42, 25], "respect": [43, 26], "explain": [42, 24]}, "Morningside": {"n": [15, 12], "supervision": [14, 11], "availability": [14, 11], "listened": [12, 8], "respect": [11, 8], "explain": [10, 8]}, "MS West": {"n": [12, 7], "supervision": [12, 7], "availability": [12, 7], "listened": [12, 7], "respect": [12, 7], "explain": [12, 7]}}}, "Surgery-Anesthesiology": {"labels": ["MOD 1", "MOD 2"], "n": [39, 24], "program": {"fbReceived": [31, 21], "fbHelpful": [30, 17], "fbCPE": [20, 13], "obsHx": [37, 23], "obsExam": [37, 24]}, "sites": {"Elmhurst": {"n": [10, 4], "supervision": [9, 4], "availability": [8, 3], "listened": [7, 3], "respect": [7, 3], "explain": [5, 3]}, "Mount Sinai": {"n": [33, 9], "supervision": [32, 9], "availability": [32, 9], "listened": [30, 9], "respect": [30, 9], "explain": [30, 9]}, "MS West": {"n": [1, 7], "supervision": [1, 6], "availability": [1, 6], "listened": [1, 6], "respect": [1, 6], "explain": [1, 6]}}}, "Pediatrics": {"labels": ["MOD 1", "MOD 2"], "n": [38, 33], "program": {"fbReceived": [38, 33], "fbHelpful": [35, 30], "fbCPE": [25, 23], "obsHx": [38, 32], "obsExam": [37, 32]}, "sites": {"Elmhurst": {"n": [3, 2], "supervision": [3, 2], "availability": [3, 2], "listened": [3, 2], "respect": [3, 2], "explain": [3, 2]}, "Mount Sinai": {"n": [25, 25], "supervision": [23, 23], "availability": [23, 23], "listened": [23, 23], "respect": [22, 22], "explain": [22, 22]}}}, "OB/GYN": {"labels": ["MOD 1", "MOD 2"], "n": [48, 29], "program": {"fbReceived": [48, 29], "fbHelpful": [45, 26], "fbCPE": [39, 22], "obsHx": [47, 29], "obsExam": [47, 29]}, "sites": {"Elmhurst": {"n": [8, 3], "supervision": [7, 3], "availability": [7, 3], "listened": [7, 2], "respect": [8, 3], "explain": [8, 3]}, "Mount Sinai": {"n": [24, 15], "supervision": [20, 15], "availability": [20, 15], "listened": [21, 15], "respect": [21, 15], "explain": [17, 15]}, "MS West": {"n": [15, 11], "supervision": [15, 11], "availability": [13, 10], "listened": [11, 11], "respect": [11, 9], "explain": [12, 9]}}}, "Neurology": {"labels": ["MOD 1", "MOD 2"], "n": [42, 27], "program": {"fbReceived": [41, 27], "fbHelpful": [39, 27], "fbCPE": [29, 21], "obsHx": [42, 27], "obsExam": [42, 27]}, "sites": {"Elmhurst": {"n": [6, 3], "supervision": [5, 3], "availability": [5, 3], "listened": [3, 3], "respect": [3, 3], "explain": [2, 2]}, "Mount Sinai": {"n": [11, 7], "supervision": [11, 6], "availability": [11, 6], "listened": [11, 7], "respect": [11, 7], "explain": [11, 7]}, "MS West": {"n": [9, 7], "supervision": [9, 7], "availability": [9, 7], "listened": [9, 7], "respect": [9, 7], "explain": [8, 7]}, "Bronx VA": {"n": [4, 3], "supervision": [4, 3], "availability": [4, 3], "listened": [2, 3], "respect": [3, 3], "explain": [3, 3]}, "Morningside": {"n": [8, 6], "supervision": [8, 6], "availability": [8, 6], "listened": [8, 6], "respect": [8, 6], "explain": [8, 6]}, "MSQ/MSH": {"n": [5, 3], "supervision": [5, 3], "availability": [5, 3], "listened": [5, 3], "respect": [5, 3], "explain": [5, 3]}}}, "Psychiatry": {"labels": ["MOD 1", "MOD 2"], "n": [44, 31], "program": {"fbReceived": [43, 30], "fbHelpful": [31, 31], "fbCPE": [31, 18], "obsHx": [43, 31], "obsExam": [44, 31]}, "sites": {"Mount Sinai": {"n": [17, 11], "supervision": [17, 11], "availability": [17, 11], "listened": [16, 9], "respect": [17, 10], "explain": [15, 8]}, "MS West": {"n": [2, null], "supervision": [2, null], "availability": [2, null], "listened": [2, null], "respect": [2, null], "explain": [2, null]}, "Morningside": {"n": [11, 7], "supervision": [11, 7], "availability": [11, 7], "listened": [9, 6], "respect": [9, 6], "explain": [10, 6]}, "Behavioral Health Ctr": {"n": [10, 9], "supervision": [10, 7], "availability": [10, 7], "listened": [10, 8], "respect": [10, 7], "explain": [10, 8]}}}, "Emergency Medicine": {"labels": ["Jul\u2013Sep", "Oct\u2013Dec"], "n": [13, 20], "program": {"fbReceived": [13, 20], "fbHelpful": [13, 20], "fbCPE": [12, 18], "obsHx": [11, 19], "obsExam": [11, 19]}, "sites": {"Elmhurst": {"n": [1, 4], "supervision": [1, 4], "availability": [1, 4], "listened": [1, 3], "respect": [1, 3], "explain": [1, 3]}, "Mount Sinai": {"n": [4, 4], "supervision": [3, 3], "availability": [4, 4], "listened": [2, 3], "respect": [2, 3], "explain": [1, 1]}, "MS Queens": {"n": [4, 4], "supervision": [4, 4], "availability": [4, 4], "listened": [4, 4], "respect": [4, 4], "explain": [4, 4]}, "Morningside/West": {"n": [5, 9], "supervision": [3, 7], "availability": [4, 8], "listened": [4, 8], "respect": [4, 8], "explain": [3, 7]}}}, "ACC\u2013Geriatrics": {"labels": ["MOD 1", "MOD 2", "MOD 3", "MOD 4"], "n": [31, 17, 22, 16], "program": {"fbReceived": [30, 16, 21, 15], "fbHelpful": [28, 15, 22, 15], "fbCPE": [26, 11, 18, 11], "obsHx": [31, 17, 22, 16], "obsExam": [31, 17, 22, 16]}, "sites": {"All Sites Combined": {"n": [51, 35, 46, 36], "supervision": [49, 32, 46, 36], "availability": [49, 29, 45, 36], "listened": [51, 35, 45, 34], "respect": [50, 35, 45, 34], "explain": [51, 33, 44, 34]}}}};
+const ROT = {"Inpatient Medicine": {"labels": ["MOD 1", "MOD 2"], "n": [41, 36], "program": {"fbReceived": [39, 35], "fbHelpful": [38, 35], "fbCPE": [32, 29], "obsHx": [41, 36], "obsExam": [41, 36]}, "sites": {"Elmhurst": {"n": [18, 10], "supervision": [18, 10], "availability": [18, 10], "listened": [16, 10], "respect": [16, 9], "explain": [15, 10]}, "Mount Sinai": {"n": [45, 28], "supervision": [44, 28], "availability": [44, 28], "listened": [42, 25], "respect": [43, 26], "explain": [42, 24]}, "MS Morningside": {"n": [15, 12], "supervision": [14, 11], "availability": [14, 11], "listened": [12, 8], "respect": [11, 8], "explain": [10, 8]}, "MS West": {"n": [12, 7], "supervision": [12, 7], "availability": [12, 7], "listened": [12, 7], "respect": [12, 7], "explain": [12, 7]}}}, "Surgery-Anesthesiology": {"labels": ["MOD 1", "MOD 2"], "n": [39, 24], "program": {"fbReceived": [31, 21], "fbHelpful": [30, 17], "fbCPE": [20, 13], "obsHx": [37, 23], "obsExam": [37, 24]}, "sites": {"Elmhurst": {"n": [10, 4], "supervision": [9, 4], "availability": [8, 3], "listened": [7, 3], "respect": [7, 3], "explain": [5, 3]}, "Mount Sinai": {"n": [33, 9], "supervision": [32, 9], "availability": [32, 9], "listened": [30, 9], "respect": [30, 9], "explain": [30, 9]}, "MS West": {"n": [1, 7], "supervision": [1, 6], "availability": [1, 6], "listened": [1, 6], "respect": [1, 6], "explain": [1, 6]}}}, "Pediatrics": {"labels": ["MOD 1", "MOD 2"], "n": [38, 33], "program": {"fbReceived": [38, 33], "fbHelpful": [35, 30], "fbCPE": [25, 23], "obsHx": [38, 32], "obsExam": [37, 32]}, "sites": {"Elmhurst": {"n": [3, 2], "supervision": [3, 2], "availability": [3, 2], "listened": [3, 2], "respect": [3, 2], "explain": [3, 2]}, "Mount Sinai": {"n": [25, 25], "supervision": [23, 23], "availability": [23, 23], "listened": [23, 23], "respect": [22, 22], "explain": [22, 22]}}}, "OB/GYN": {"labels": ["MOD 1", "MOD 2"], "n": [48, 29], "program": {"fbReceived": [48, 29], "fbHelpful": [45, 26], "fbCPE": [39, 22], "obsHx": [47, 29], "obsExam": [47, 29]}, "sites": {"Elmhurst": {"n": [8, 3], "supervision": [7, 3], "availability": [7, 3], "listened": [7, 2], "respect": [8, 3], "explain": [8, 3]}, "Mount Sinai": {"n": [24, 15], "supervision": [20, 15], "availability": [20, 15], "listened": [21, 15], "respect": [21, 15], "explain": [17, 15]}, "MS West": {"n": [15, 11], "supervision": [15, 11], "availability": [13, 10], "listened": [11, 11], "respect": [11, 9], "explain": [12, 9]}}}, "Neurology": {"labels": ["MOD 1", "MOD 2"], "n": [42, 27], "program": {"fbReceived": [41, 27], "fbHelpful": [39, 27], "fbCPE": [29, 21], "obsHx": [42, 27], "obsExam": [42, 27]}, "sites": {"Elmhurst": {"n": [6, 3], "supervision": [5, 3], "availability": [5, 3], "listened": [3, 3], "respect": [3, 3], "explain": [2, 2]}, "Mount Sinai": {"n": [11, 7], "supervision": [11, 6], "availability": [11, 6], "listened": [11, 7], "respect": [11, 7], "explain": [11, 7]}, "MS West": {"n": [9, 7], "supervision": [9, 7], "availability": [9, 7], "listened": [9, 7], "respect": [9, 7], "explain": [8, 7]}, "Bronx VA": {"n": [4, 3], "supervision": [4, 3], "availability": [4, 3], "listened": [2, 3], "respect": [3, 3], "explain": [3, 3]}, "MS Morningside": {"n": [8, 6], "supervision": [8, 6], "availability": [8, 6], "listened": [8, 6], "respect": [8, 6], "explain": [8, 6]}, "MSQ/MSH": {"n": [5, 3], "supervision": [5, 3], "availability": [5, 3], "listened": [5, 3], "respect": [5, 3], "explain": [5, 3]}}}, "Psychiatry": {"labels": ["MOD 1", "MOD 2"], "n": [44, 31], "program": {"fbReceived": [43, 30], "fbHelpful": [31, 31], "fbCPE": [31, 18], "obsHx": [43, 31], "obsExam": [44, 31]}, "sites": {"Mount Sinai": {"n": [17, 11], "supervision": [17, 11], "availability": [17, 11], "listened": [16, 9], "respect": [17, 10], "explain": [15, 8]}, "MS West": {"n": [2, null], "supervision": [2, null], "availability": [2, null], "listened": [2, null], "respect": [2, null], "explain": [2, null]}, "MS Morningside": {"n": [11, 7], "supervision": [11, 7], "availability": [11, 7], "listened": [9, 6], "respect": [9, 6], "explain": [10, 6]}, "Behavioral Health Ctr": {"n": [10, 9], "supervision": [10, 7], "availability": [10, 7], "listened": [10, 8], "respect": [10, 7], "explain": [10, 8]}}}, "Emergency Medicine": {"labels": ["Jul\u2013Sep", "Oct\u2013Dec"], "n": [13, 20], "program": {"fbReceived": [13, 20], "fbHelpful": [13, 20], "fbCPE": [12, 18], "obsHx": [11, 19], "obsExam": [11, 19]}, "sites": {"Elmhurst": {"n": [1, 4], "supervision": [1, 4], "availability": [1, 4], "listened": [1, 3], "respect": [1, 3], "explain": [1, 3]}, "Mount Sinai": {"n": [4, 4], "supervision": [3, 3], "availability": [4, 4], "listened": [2, 3], "respect": [2, 3], "explain": [1, 1]}, "MS Queens": {"n": [4, 4], "supervision": [4, 4], "availability": [4, 4], "listened": [4, 4], "respect": [4, 4], "explain": [4, 4]}, "MSM/MSW": {"n": [5, 9], "supervision": [3, 7], "availability": [4, 8], "listened": [4, 8], "respect": [4, 8], "explain": [3, 7]}}}, "ACC\u2013Geriatrics": {"labels": ["MOD 1", "MOD 2", "MOD 3", "MOD 4"], "n": [31, 17, 22, 16], "program": {"fbReceived": [30, 16, 21, 15], "fbHelpful": [28, 15, 22, 15], "fbCPE": [26, 11, 18, 11], "obsHx": [31, 17, 22, 16], "obsExam": [31, 17, 22, 16]}, "sites": {"All Sites Combined": {"n": [51, 35, 46, 36], "supervision": [49, 32, 46, 36], "availability": [49, 29, 45, 36], "listened": [51, 35, 45, 34], "respect": [50, 35, 45, 34], "explain": [51, 33, 44, 34]}}}};
 
 /* ---- scoring helpers ----------------------------------------------------- */
 // n-weighted mean of a site metric across a clerkship's sites, for year idx (0 cur / 1 prior)
@@ -424,6 +424,7 @@ export default function App() {
           ["elements", "LCME Elements"],
           ["sites", "Site Detail"],
           ["rotation", "By Rotation"],
+          ["comparability", "Site Comparability"],
           ["trends", "Multi-Year Trends"],
           ["benchmark", "National Benchmark"],
         ].map(([id, lbl]) => (
@@ -476,6 +477,7 @@ export default function App() {
         {view === "elements" && <Elements sel={sel} bench={bench} onPick={(n) => go("elements", n)} />}
         {view === "sites" && <Sites sel={sel} bench={bench} onPick={(n) => go("sites", n)} />}
         {view === "rotation" && <Rotation sel={sel} bench={bench} onPick={(n) => go("rotation", n)} />}
+        {view === "comparability" && <Comparability bench={bench} />}
         {view === "trends" && <Trends trendKey={trendKey} setTrendKey={setTrendKey} bench={bench} />}
         {view === "benchmark" && <Benchmark bench={bench} />}
       </div>
@@ -913,6 +915,143 @@ function Benchmark({ bench }) {
     </div>
   );
 }
+/* ---- View 7: Site Comparability (LCME 8.7) ------------------------------- */
+const COMBINED_SITES = new Set(["MSQ/MSH", "MSM/MSW"]);
+function spreadBand(s) { return s == null ? "na" : s >= 20 ? "red" : s >= 10 ? "amber" : "green"; }
+function Comparability({ bench }) {
+  const [itemKey, setItemKey] = useState("supervision");
+  const item = SITE_ROWS.find((r) => r.key === itemKey);
+  // clerkships with discrete sites (exclude ACC, which reports a single combined row)
+  const cols = DATA.filter((c) => !(c.sites.length === 1 && c.sites[0].name === "All Sites Combined"));
+  const siteNames = [];
+  cols.forEach((c) => c.sites.forEach((s) => {
+    if (s.name !== "All Sites Combined" && !siteNames.includes(s.name)) siteNames.push(s.name);
+  }));
+  siteNames.sort();
+  const val = (c, sn) => { const s = c.sites.find((x) => x.name === sn); return s ? (s[itemKey]?.[0] ?? null) : null; };
+  const spreadOf = (arr) => { const v = arr.filter((x) => x != null); return v.length > 1 ? Math.max(...v) - Math.min(...v) : null; };
+
+  const rowSpread = siteNames.map((sn) => spreadOf(cols.map((c) => val(c, sn))));
+  const colSpread = cols.map((c) => spreadOf(siteNames.map((sn) => val(c, sn))));
+
+  // callouts
+  let worstSite = { sp: -1 }, worstClerk = { sp: -1 };
+  siteNames.forEach((sn, i) => { if ((rowSpread[i] ?? -1) > worstSite.sp) worstSite = { sp: rowSpread[i], name: sn }; });
+  cols.forEach((c, j) => { if ((colSpread[j] ?? -1) > worstClerk.sp) worstClerk = { sp: colSpread[j], name: c.name }; });
+
+  const SpreadChip = ({ s }) => {
+    const b = spreadBand(s);
+    return (
+      <span style={{ background: RAG_BG[b], color: RAG_FG[b], fontWeight: 700, fontSize: 11.5,
+        padding: "3px 8px", borderRadius: 6, fontVariantNumeric: "tabular-nums" }}>
+        {s == null ? "—" : s + " pt"}
+      </span>
+    );
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <Card style={{ padding: 0, overflow: "hidden" }}>
+        <div style={{ padding: "16px 18px 8px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, alignItems: "flex-start" }}>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700 }}>Site comparability · Element 8.7</div>
+              <div style={{ fontSize: 12.5, color: INK_SOFT, marginTop: 2, maxWidth: 560 }}>
+                Read <strong>down a column</strong> to compare sites within a clerkship; read <strong>across a row</strong> to compare one
+                site across clerkships. Wide ranges flag where the experience may not be comparable.
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {SITE_ROWS.map((r) => (
+                <div key={r.key} className="tab" onClick={() => setItemKey(r.key)}
+                  style={itemKey === r.key ? { background: INK, color: "#fff" } : { background: "#F0F4FB", color: INK_SOFT }}>
+                  <span style={{ opacity: 0.7, marginRight: 4 }}>{r.el}</span>{r.label.split(" ").slice(0, 2).join(" ")}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ fontSize: 12, color: INK, marginTop: 10, fontStyle: "italic" }}>
+            Showing: "{item.label}" (Element {item.el})
+          </div>
+        </div>
+        <div className="scrollx">
+          <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 720 }}>
+            <thead>
+              <tr style={{ background: "#F7F9FD" }}>
+                <th style={{ ...thL, position: "sticky", left: 0, background: "#F7F9FD" }}>Site ╲ Clerkship</th>
+                {cols.map((c) => <th key={c.name} style={{ ...thC, minWidth: 58 }} title={c.name}>{c.short}</th>)}
+                <th style={{ ...thC, background: "#EEF2F8" }}>Site range</th>
+              </tr>
+            </thead>
+            <tbody>
+              {siteNames.map((sn, i) => (
+                <tr key={sn} style={{ borderTop: `1px solid ${LINE}` }}>
+                  <td style={{ padding: "8px 14px", fontWeight: 600, fontSize: 12.5, position: "sticky", left: 0, background: CARD }}>
+                    {sn}{COMBINED_SITES.has(sn) && <sup title="Combined-site data — reported merged in the source, not separable" style={{ color: MAGENTA, fontWeight: 700 }}> ‡</sup>}
+                  </td>
+                  {cols.map((c) => {
+                    const v = val(c, sn); const rag = ragOf(v, bench);
+                    return (
+                      <td key={c.name} style={{ padding: "6px 5px", textAlign: "center" }}>
+                        {v == null
+                          ? <span style={{ color: "#C7CFDB" }}>·</span>
+                          : <span style={{ background: RAG_BG[rag], color: RAG_FG[rag], fontWeight: 700, fontSize: 12,
+                              padding: "3px 6px", borderRadius: 5, fontVariantNumeric: "tabular-nums", display: "inline-block", minWidth: 38 }}>{v}%</span>}
+                      </td>
+                    );
+                  })}
+                  <td style={{ textAlign: "center", padding: "6px 8px", background: "#F7F9FD" }}><SpreadChip s={rowSpread[i]} /></td>
+                </tr>
+              ))}
+              {/* within-clerkship range row */}
+              <tr style={{ borderTop: `2px solid ${LINE}`, background: "#F7F9FD" }}>
+                <td style={{ padding: "8px 14px", fontWeight: 700, fontSize: 12, position: "sticky", left: 0, background: "#F7F9FD" }}>Within-clerkship range</td>
+                {cols.map((c, j) => (
+                  <td key={c.name} style={{ textAlign: "center", padding: "6px 5px" }}><SpreadChip s={colSpread[j]} /></td>
+                ))}
+                <td style={{ background: "#EEF2F8" }} />
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style={{ display: "flex", gap: 18, flexWrap: "wrap", padding: "10px 18px 16px", fontSize: 11.5, color: INK_SOFT }}>
+          <span>Range bands:&nbsp;</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><span style={{ width: 10, height: 10, borderRadius: 2, background: GREEN }} />&lt;10 pts comparable</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><span style={{ width: 10, height: 10, borderRadius: 2, background: AMBER }} />10–19 pts watch</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><span style={{ width: 10, height: 10, borderRadius: 2, background: RED }} />≥20 pts review</span>
+        </div>
+      </Card>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%, 260px),1fr))", gap: 16 }}>
+        <Card>
+          <div className="pill" style={{ color: INK_SOFT }}>Widest spread across clerkships</div>
+          <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4 }}>{worstSite.name || "—"}</div>
+          <div style={{ fontSize: 12.5, color: INK_SOFT, marginTop: 2 }}>
+            varies <strong style={{ color: RAG_FG[spreadBand(worstSite.sp)] }}>{worstSite.sp < 0 ? "—" : worstSite.sp + " points"}</strong> on
+            "{item.label}" depending on which clerkship the student rotates through.
+          </div>
+        </Card>
+        <Card>
+          <div className="pill" style={{ color: INK_SOFT }}>Widest spread within a clerkship</div>
+          <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4 }}>{worstClerk.name || "—"}</div>
+          <div style={{ fontSize: 12.5, color: INK_SOFT, marginTop: 2 }}>
+            shows a <strong style={{ color: RAG_FG[spreadBand(worstClerk.sp)] }}>{worstClerk.sp < 0 ? "—" : worstClerk.sp + " point"}</strong> gap
+            between its best and weakest site on this item.
+          </div>
+        </Card>
+      </div>
+
+      <div style={{ fontSize: 11, color: INK_SOFT, lineHeight: 1.6 }}>
+        Cells are current-year YTD, colored against the {bench}% benchmark. Range = highest minus lowest site value (for sites/clerkships with
+        ≥2 reporting sites). ACC–Geriatrics is omitted here because it reports a single all-sites-combined figure rather than discrete sites.
+        Site labels are shown as each clerkship records them. <strong style={{ color: MAGENTA }}>‡</strong> marks combined-site rows
+        (MSQ/MSH = Mount Sinai Queens + Mount Sinai Hospital; MSM/MSW = Mount Sinai Morningside + Mount Sinai West) that the
+        source reports merged and cannot be split without the underlying per-hospital data.
+      </div>
+    </div>
+  );
+}
+
 const tdNum = { padding: "9px 6px", textAlign: "center", fontVariantNumeric: "tabular-nums", fontSize: 13 };
 
 
@@ -987,7 +1126,7 @@ function Rotation({ sel, bench, onPick }) {
             <thead>
               <tr style={{ background: "#F7F9FD" }}>
                 <th style={thL}>Site survey item</th>
-                {labels.map((l, i) => <th key={i} style={thC}>{l}<div style={{ fontWeight: 400, color: INK_SOFT, fontSize: 10 }}>n={sr.n[i] == null ? "—" : sr.n[i]}</div></th>)}
+                {labels.map((l, i) => <th key={i} style={thC}>Rotation {i + 1}<div style={{ fontWeight: 400, color: INK_SOFT, fontSize: 10 }}>{/^MOD/i.test(l) ? "" : l + " · "}n={sr.n[i] == null ? "—" : sr.n[i]}</div></th>)}
                 <th style={thC}>YTD</th>
               </tr>
             </thead>
@@ -1024,7 +1163,7 @@ function Rotation({ sel, bench, onPick }) {
             <thead>
               <tr style={{ background: "#F7F9FD" }}>
                 <th style={thL}>Program survey item</th>
-                {labels.map((l, i) => <th key={i} style={thC}>{l}<div style={{ fontWeight: 400, color: INK_SOFT, fontSize: 10 }}>n={r.n[i]}</div></th>)}
+                {labels.map((l, i) => <th key={i} style={thC}>Rotation {i + 1}<div style={{ fontWeight: 400, color: INK_SOFT, fontSize: 10 }}>{/^MOD/i.test(l) ? "" : l + " · "}n={r.n[i]}</div></th>)}
                 <th style={thC}>YTD</th>
               </tr>
             </thead>
