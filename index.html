@@ -1,1053 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USMLE/NBME Content-Area Dashboard — OCA</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clerkship LCME Monitoring Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#0d2a5c;--navy-soft:#1c3f94;--orange:#e8531a;--orange-soft:#f3a07c;
-    --same:#e9eff7;--ink:#16243b;--muted:#5a6b85;--line:#dde4ee;--bg:#f5f7fb;--card:#ffffff;
-    --good:#1c6b3f;--good-bg:#e3f2e8;--warn-bg:#fdeee6;--amber-bg:#fff6e8;--amber:#9a6a12;
-    --radius:10px;--shadow:0 1px 2px rgba(13,42,92,.06),0 6px 18px rgba(13,42,92,.06);
+    --navy:#0B2A4A;
+    --navy-deep:#081d34;
+    --ink:#13202f;
+    --slate:#51606f;
+    --line:#e3e8ee;
+    --line-soft:#eef1f5;
+    --paper:#f6f8fb;
+    --white:#ffffff;
+    --magenta:#c4117a;     /* ASCEND accent — used once */
+    --cyan:#0c93a3;
+    --ok:#1b7f4b;
+    --warn:#b07a06;
+    --low:#b42318;
+    --shadow:0 1px 2px rgba(11,42,74,.05), 0 8px 24px rgba(11,42,74,.06);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;line-height:1.45;}
-  header.topbar{background:linear-gradient(180deg,#0d2a5c 0%,#102f63 100%);color:#fff;padding:18px 22px;}
-  .topbar .row{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .brand{min-width:0;flex:1 1 360px}
-  .brand h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.2px}
-  .brand p{margin:3px 0 0;font-size:12.5px;color:#bcccea}
-  .school{font-size:12.5px;color:#cdd9f0;text-align:right;line-height:1.4;white-space:nowrap;flex:none}
-  .school b{color:#fff;font-weight:700}
-  .rightgroup{display:flex;align-items:center;gap:18px;margin-left:auto;flex:none}
-  .logochip{display:flex;align-items:center;flex:none}
-  .logochip img{height:56px;display:block}
-  @media (max-width:600px){ .logochip img{height:44px} .rightgroup{gap:10px} }
-  .examtoggle{display:inline-flex;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px;margin-top:10px}
-  .examtoggle button{border:0;background:transparent;color:#cdd9f0;font:600 13px/1 inherit;padding:8px 16px;border-radius:999px;cursor:pointer;transition:.15s;}
-  .examtoggle button[aria-pressed="true"]{background:#fff;color:var(--navy)}
-  main{max-width:1180px;margin:0 auto;padding:20px 22px 60px}
-  .section-label{font-size:11.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin:26px 0 10px}
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
-  .kpi .lab{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-  .kpi .val{font-size:26px;font-weight:700;margin-top:4px;color:var(--navy)}
-  .kpi .sub{font-size:12px;color:var(--muted);margin-top:2px}
-  .kpi .sub.up{color:var(--good)}
-  .kpi .val.v-good{color:var(--good)} .kpi .val.v-warn{color:var(--orange)}
-  .topbar2{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 16px;margin-bottom:4px}
-  .outhint{font-size:12px;color:var(--muted);margin:8px 2px 0;max-width:760px}
-  .hist{margin-top:6px}
-  .histbars{position:relative;display:flex;align-items:flex-end;gap:5px;height:120px;border-bottom:1px solid var(--line);margin:20px 2px 24px}
-  .hbar{position:relative;flex:1;height:100%;display:flex;align-items:flex-end;justify-content:center}
-  .hfill{width:72%;background:var(--navy-soft);border-radius:3px 3px 0 0;min-height:2px}
-  .hlab{position:absolute;bottom:-16px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted)}
-  .hmark{position:absolute;top:0;bottom:0;border-left:2px solid var(--navy);z-index:2}
-  .hmark.nat{border-left:2px dashed var(--muted)}
-  .hmark span{position:absolute;top:-3px;left:4px;font-size:10px;font-weight:700;color:var(--navy);white-space:nowrap;background:rgba(255,255,255,.75);padding:0 2px;border-radius:3px}
-  .hmark.nat span{color:var(--muted);top:13px}
-  .tablelegend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;color:var(--muted);margin:8px 2px 0;padding:8px 12px;background:var(--card);border:1px solid var(--line);border-radius:8px}
-  .tablelegend .lgi{display:inline-flex;align-items:center;gap:6px}
-  .tablelegend b{color:#1f2d3d}
-  .tablelegend .lgsep{width:1px;height:14px;background:var(--line);display:inline-block}
-  .spark{vertical-align:middle}
-  .scatters{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:6px}
-  .scard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-  .sctitle{font-size:12.5px;font-weight:700;color:#1f2d3d;display:flex;justify-content:space-between;align-items:center;gap:6px}
-  .scsub{font-size:10.5px;color:var(--muted);margin:2px 0 4px}
-  .scsvg{width:100%;height:auto;display:block}
-  .sctick{font-size:8px;fill:var(--muted)}
-  .rbars{display:flex;flex-direction:column;gap:6px;margin:8px 0 6px;max-width:560px}
-  .rbar{display:flex;align-items:center;gap:9px;font-size:12px}
-  .rbl{flex:0 0 138px;text-align:right;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .rtrack{flex:1;height:12px;background:var(--same);border-radius:6px;overflow:hidden}
-  .rtrack i{display:block;height:100%;border-radius:6px}
-  .rbv{flex:0 0 28px;font-variant-numeric:tabular-nums;color:var(--muted)}
-  .hwrap{max-width:1180px;margin:0 auto}
-  .masthead{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .mh-left b{font-size:14.5px;font-weight:700;color:#eaf1ff;letter-spacing:.01em}
-  .logochip img{height:54px;width:auto;display:block}
-  .brand{margin-top:12px}
-  .navwrap{display:flex;align-items:stretch;gap:12px;margin-top:14px;flex-wrap:wrap}
-  .examtoggle{margin-top:0;flex-wrap:wrap}
-  .correltile{display:flex}
-  .correltile button{display:flex;flex-direction:column;justify-content:center;gap:1px;text-align:left;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.06);color:#eaf1ff;border-radius:12px;padding:6px 16px;cursor:pointer;transition:.15s;font:inherit}
-  .correltile button:hover{background:rgba(255,255,255,.14)}
-  .correltile button[aria-pressed="true"]{background:#fff;color:var(--navy);border-color:#fff}
-  .correltile .ct-k{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.82}
-  .correltile .ct-t{font-size:13.5px;font-weight:700}
-  .correltile .ct-s{font-size:10.5px;opacity:.85}
-  .cohortbanner{display:flex;align-items:center;gap:10px;margin-top:14px;padding:9px 14px;border-radius:10px;font-size:13px;flex-wrap:wrap}
-  .cohortbanner .cb-dot{width:9px;height:9px;border-radius:50%;flex:none}
-  .cohortbanner .cb-cls{font-weight:800}
-  .cohortbanner .cb-sub{opacity:.92;font-size:12px}
-  .cb-2028{background:rgba(232,83,26,.18);border:1px solid rgba(232,83,26,.55)}
-  .cb-2028 .cb-dot{background:var(--orange)}
-  .cb-2028 .cb-cls{color:#fff}.cb-2028 .cb-sub{color:#ffe2d4}
-  .cb-other{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.24)}
-  .cb-other .cb-dot{background:#9fb3d9}
-  .cb-other .cb-cls{color:#eaf1ff}.cb-other .cb-sub{color:#c4d2ec}
-  .sortnote{background:#eef3fb;border:1px solid #d6e0f2;border-left:4px solid var(--navy-soft);border-radius:8px;padding:9px 13px;margin:2px 0 12px;font-size:12.5px;color:var(--ink);line-height:1.5}
-  .sortnote .k{font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.08em;font-size:10px;display:block;margin-bottom:2px}
-  body{transition:background-color .35s ease}
-  .watch{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
-  .watch h2{margin:0 0 4px;font-size:15px;color:var(--navy)}
-  .watch .hint{font-size:12px;color:var(--muted);margin:0 0 12px}
-  .watch ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-  .watch li{display:flex;align-items:center;gap:12px;padding:9px 12px;background:#fafbfe;border:1px solid var(--line);border-radius:8px;flex-wrap:wrap}
-  .watch li .nm{font-weight:600;font-size:13.5px;flex:1}
-  .watch li .grp{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;background:#eef2f8;padding:2px 7px;border-radius:5px}
-  .watch li .reason{font-size:12px;color:var(--muted);flex-basis:100%}
-  .pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
-  .pill.l{background:var(--warn-bg);color:var(--orange)}
-  .pill.net{background:#eef2f8;color:var(--navy)}
-  .controls{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end;margin:6px 0 4px}
-  .ctrl label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:5px}
-  .seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .seg button{border:0;background:#fff;color:var(--muted);font:600 12.5px/1 inherit;padding:8px 13px;cursor:pointer;border-right:1px solid var(--line)}
-  .seg button:last-child{border-right:0}
-  .seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
-  select{font:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
-  .linkbtn{border:0;background:transparent;color:var(--navy-soft);font:600 12px/1 inherit;cursor:pointer;text-decoration:underline;padding:8px 0}
-  .legend{display:flex;gap:16px;align-items:center;font-size:12px;color:var(--muted);margin-left:auto;flex-wrap:wrap}
-  .legend span{display:inline-flex;align-items:center;gap:6px}
-  .sw{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.08)}
-  .sw.l{background:var(--orange)} .sw.s{background:var(--same)} .sw.h{background:var(--navy-soft)}
-  .mapbanner{display:none;background:var(--amber-bg);border:1px solid #f0d9ac;color:var(--amber);border-radius:8px;padding:9px 13px;font-size:12px;margin:10px 0}
-  .mapbanner b{color:#7a5410}
-  .mapper{display:none;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 18px;margin:10px 0}
-  .mapper h4{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-  .mapper p{margin:0 0 12px;font-size:12px;color:var(--muted)}
-  .mapper .mrow{display:flex;gap:12px;flex-wrap:wrap}
-  .mapper .mcell{display:flex;flex-direction:column;gap:4px}
-  .mapper .mcell span{font-size:11.5px;color:var(--muted);font-weight:600}
-  .mapper .mcell .pre{display:flex;align-items:center;gap:6px;font-size:13px}
-  .mapper input{width:84px;font:inherit;font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:7px}
-  .tablewrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-top:12px}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  thead th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);background:#fbfcfe;font-weight:700;white-space:nowrap}
-  thead th.num{text-align:center}
-  tbody tr{border-bottom:1px solid #eef2f8;cursor:pointer}
-  tbody tr:hover{background:#fafbfe}
-  tbody tr:last-child{border-bottom:0}
-  td{padding:11px 12px;vertical-align:middle}
-  .catname{font-weight:600;color:var(--ink)}
-  .catname .range{font-size:11px;color:var(--muted);font-weight:400;margin-left:6px}
-  .grptag{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-  .bar{display:flex;height:22px;border-radius:5px;overflow:hidden;min-width:160px;border:1px solid rgba(13,42,92,.08)}
-  .bar .seg-l{background:var(--orange)} .bar .seg-s{background:var(--same)} .bar .seg-h{background:var(--navy-soft)}
-  .bar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:10.5px;font-weight:700;color:#fff;overflow:hidden}
-  .bar .seg-s i{color:var(--navy)}
-  .num{text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
-  .net{text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
-  .netcell{display:inline-block;min-width:46px;padding:4px 8px;border-radius:6px}
-  .net-soft{background:var(--warn-bg);color:var(--orange)}
-  .net-mild{background:var(--amber-bg);color:var(--amber)}
-  .net-ok{background:var(--good-bg);color:var(--good)}
-  .net-strong{background:#d7e8fb;color:var(--navy)}
-  .trend{text-align:center;font-weight:700}
-  .trend .t-up{color:var(--good)} .trend .t-dn{color:var(--orange)} .trend .t-fl{color:var(--muted)}
-  .trend small{display:block;font-weight:500;font-size:10px;color:var(--muted)}
-  .detail td{background:#fafbfe;padding:0}
-  .detail .inner{padding:16px 18px;display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
-  .detail h4{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-  .yrrow{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;margin-bottom:7px}
-  .yrrow .yl{font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
-  .note{font-size:13px;color:var(--ink)}
-  .note .tag{font-weight:700}
-  .caveat{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);font-size:12.5px;color:var(--muted)}
-  .caveat h3{margin:0 0 8px;font-size:13px;color:var(--navy)}
-  .caveat ul{margin:0;padding-left:18px;display:grid;gap:6px}
-  .caveat b{color:var(--ink)}
-  .actions{display:flex;gap:10px;margin-top:14px}
-  .btn{font:600 12.5px/1 inherit;padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer}
-  .btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
-  @media (max-width:720px){
-    .detail .inner{grid-template-columns:1fr}
-    thead th.hide-sm,td.hide-sm{display:none}
-    .legend{margin-left:0;width:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
   }
-  @media print{
-    body{background:#fff}
-    .controls,.actions,.examtoggle,.mapper{display:none}
-    .tablewrap,.kpi,.watch,.caveat{box-shadow:none}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+  a{color:inherit}
+
+  /* ---------- masthead ---------- */
+  .masthead{background:var(--navy);color:#eaf1f8;border-bottom:3px solid var(--magenta)}
+  .mast-top{display:flex;justify-content:space-between;align-items:center;
+    padding:14px 28px;max-width:1060px;margin:0 auto;font-size:12px;letter-spacing:.06em;
+    text-transform:uppercase;color:#9fb6cd}
+  .mast-top .conf{font-family:"IBM Plex Mono",monospace;font-weight:600}
+  .mast-body{max-width:1060px;margin:0 auto;padding:30px 28px 40px}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--cyan);margin:0 0 14px}
+  h1{font-family:"Archivo",sans-serif;font-weight:800;font-size:clamp(30px,5vw,46px);
+    line-height:1.04;letter-spacing:-.02em;margin:0 0 16px;color:#fff}
+  .lede{font-size:17px;max-width:62ch;color:#cdddec;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:24px;font-size:13.5px;color:#9fb6cd}
+  .meta b{color:#dceaf6;font-weight:600}
+  .cohort{display:inline-flex;align-items:center;gap:8px}
+  .cohort .dot{width:7px;height:7px;border-radius:50%;background:var(--magenta)}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0}
+  .sec-label{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--slate);margin:0 0 8px}
+  h2{font-family:"Archivo",sans-serif;font-weight:700;font-size:24px;letter-spacing:-.01em;
+    margin:0 0 6px;color:var(--ink)}
+  .sec-intro{color:var(--slate);max-width:64ch;margin:0 0 30px;font-size:15.5px}
+
+  /* ---------- view cards ---------- */
+  .views{display:grid;gap:18px}
+  .view{background:var(--white);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:26px 26px 24px;display:grid;
+    grid-template-columns:160px 1fr;gap:28px}
+  .view .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--cyan)}
+  .view h3{font-family:"Archivo",sans-serif;font-weight:700;font-size:20px;
+    margin:6px 0 0;color:var(--navy);letter-spacing:-.01em}
+  .view .side{border-right:1px solid var(--line-soft);padding-right:24px}
+  @media(max-width:680px){
+    .view{grid-template-columns:1fr;gap:14px}
+    .view .side{border-right:0;border-bottom:1px solid var(--line-soft);padding:0 0 14px}
   }
-  /* ---- Overview / landing ---- */
-  .hero{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin:4px 0 8px}
-  .hero h2{margin:0 0 6px;font-size:19px;color:var(--navy);letter-spacing:-.01em}
-  .hero p{margin:0;font-size:13.5px;color:var(--ink);max-width:880px;line-height:1.55}
-  .hero p+p{margin-top:8px;color:var(--muted)}
-  .vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:6px}
-  @media(max-width:720px){.vgrid{grid-template-columns:1fr}}
-  .vcard{position:relative;text-align:left;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px 15px;cursor:pointer;transition:.15s;border-top:3px solid var(--accent,var(--navy));font:inherit;color:inherit}
-  .vcard:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(13,42,92,.12);border-color:var(--accent,var(--navy-soft))}
-  .vcard .vc-tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent,var(--navy-soft));margin-bottom:3px}
-  .vcard .vc-title{font-size:16px;font-weight:700;color:var(--navy);margin:0 0 8px}
-  .vcard .vc-row{font-size:12.5px;color:var(--ink);margin:0 0 6px;line-height:1.5}
-  .vcard .vc-row b{color:var(--navy);font-weight:700}
-  .vcard .vc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:11px;border-top:1px solid var(--line)}
-  .vcard .vc-cohort{font-size:11px;color:var(--muted);font-weight:600}
-  .vcard .vc-go{font-size:12px;font-weight:700;color:var(--accent,var(--navy-soft));white-space:nowrap}
-  .homefoot{font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-top:16px;line-height:1.55;max-width:none}
-  .homefoot b{color:var(--navy)}
+  .view p{margin:0 0 12px;font-size:15px;color:var(--ink)}
+  .view .q{margin:0;font-size:14px;color:var(--slate)}
+  .view .q b{color:var(--navy);font-weight:600;font-style:normal}
+  .pills{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;padding:0;list-style:none}
+  .pill{font-size:12px;color:var(--slate);border:1px solid var(--line);
+    border-radius:999px;padding:3px 10px;background:#fbfcfe}
+
+  /* ---------- data structure ---------- */
+  .struct{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:48px}
+  @media(max-width:780px){.grid2{grid-template-columns:1fr;gap:34px}}
+  .elem{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
+  .elem:last-child{border-bottom:0}
+  .code{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;color:var(--white);
+    background:var(--navy);border-radius:6px;padding:3px 9px;min-width:42px;text-align:center}
+  .elem .name{font-weight:600;font-size:15px;color:var(--ink);display:block;margin-bottom:2px}
+  .elem .items{font-size:13.5px;color:var(--slate)}
+  .clerk-list{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin:0;padding:0;list-style:none}
+  .clerk-list li{font-size:14px;color:var(--ink);padding:7px 0;border-bottom:1px solid var(--line-soft);
+    display:flex;align-items:center;gap:9px}
+  .clerk-list li::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--cyan);flex:none}
+
+  /* ---------- legend / notes ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin:22px 0 0}
+  .legend .item{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--slate)}
+  .swatch{width:13px;height:13px;border-radius:4px;flex:none}
+  .notes{margin:26px 0 0;padding:18px 20px;background:var(--paper);border:1px solid var(--line);
+    border-radius:12px;font-size:13.5px;color:var(--slate)}
+  .notes p{margin:0 0 9px}.notes p:last-child{margin:0}
+  .notes b{color:var(--navy);font-weight:600}
+
+  footer{padding:30px 0 60px;font-size:12.5px;color:#8593a2}
+  footer .rule{height:1px;background:var(--line);margin-bottom:22px}
+
+  /* enter */
+  @media(prefers-reduced-motion:no-preference){
+    .view,.elem,.clerk-list li{animation:rise .5s both}
+    .view:nth-child(2){animation-delay:.05s}
+    .view:nth-child(3){animation-delay:.1s}
+    @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  }
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="hwrap">
-    <div class="masthead">
-      <div class="mh-left"><b>Icahn School of Medicine at Mount Sinai</b></div>
-      <div class="logochip"><img alt="ASCEND Curriculum — Icahn School of Medicine at Mount Sinai" src="data:image/png;base64,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"></div>
+
+<header class="masthead">
+  <div class="mast-top">
+    <span>Office of Curricular Affairs · ASCEND</span>
+    <span class="conf">Confidential — Accreditation Use</span>
+  </div>
+  <div class="mast-body">
+    <p class="eyebrow">Icahn School of Medicine at Mount Sinai</p>
+    <h1>Clerkship LCME Monitoring Dashboard</h1>
+    <p class="lede">A single place to track clinical clerkship quality against the LCME standards
+      it serves — read the cohort at a glance, examine any clerkship in depth, and see how our
+      students compare nationally.</p>
+    <div class="meta">
+      <span class="cohort"><span class="dot"></span><b>Legacy Class of 2027</b></span>
+      <span>AY 2025–26 · year-to-date</span>
+      <span>8 clerkships</span>
+      <span>4 LCME elements</span>
     </div>
-    <div class="brand">
-      <h1>USMLE/NBME Content-Area Performance Dashboard</h1>
-      <p>Office of Curricular Affairs</p>
-    </div>
-    <div class="navwrap">
-      <div class="examtoggle" role="group" aria-label="Select assessment">
-        <button id="btn-home" aria-pressed="true" onclick="setExam('home')">Overview</button>
-        <button id="btn-modules" aria-pressed="false" onclick="setExam('modules')">Module CAS Exams</button>
-        <button id="btn-cbse" aria-pressed="false" onclick="setExam('cbse')">CBSE</button>
-        <button id="btn-step1" aria-pressed="false" onclick="setExam('step1')">Step 1</button>
-        <button id="btn-shelf" aria-pressed="false" onclick="setExam('shelf')">Clerkship Shelf Exams</button>
-        <button id="btn-step2" aria-pressed="false" onclick="setExam('step2')">Step 2</button>
-      </div>
-      <div class="correltile">
-        <button id="btn-bridge" aria-pressed="false" onclick="setExam('bridge')"><span class="ct-k">Cross-assessment link</span><span class="ct-t">CAS → CBSE Correlation</span><span class="ct-s">ASCEND Class of 2028</span></button>
-      </div>
-    </div>
-    <div id="cohortbanner" class="cohortbanner"></div>
   </div>
 </header>
 
-<main>
-  <div id="homeview" style="display:none"></div>
-  <div id="dataview">
-  <div class="topbar2">
-    <div class="ctrl">
-      <label>Label periods by</label>
-      <div class="seg" id="labelseg" role="group">
-        <button data-m="exam" aria-pressed="false">Exam year</button>
-        <button data-m="class" aria-pressed="true">Class</button>
+<section>
+  <div class="wrap">
+    <p class="sec-label">The Views</p>
+    <h2>Three ways into the same data</h2>
+    <p class="sec-intro">Each view answers a different question. Start wide with the cohort,
+      narrow to a single clerkship, or step outside to the national picture — the survey items
+      and benchmark coding stay consistent across all three.</p>
+
+    <div class="views">
+
+      <article class="view">
+        <div class="side">
+          <span class="tag">Cohort overview</span>
+          <h3>All Clerkships</h3>
+        </div>
+        <div>
+          <p>Every clerkship on one screen: the eight clerkships as rows, all ten survey items as
+            columns, grouped under their four LCME elements. Each cell shows the year-to-date rate
+            and its change from last year, color-coded against the benchmark.</p>
+          <p class="q"><b>Answers:</b> Across every clerkship, where are the strengths and the soft
+            spots right now? Any row opens that clerkship's module detail.</p>
+          <ul class="pills">
+            <li class="pill">8 clerkships × 10 items</li>
+            <li class="pill">YTD rate + year-over-year</li>
+            <li class="pill">Click a row to drill in</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="view">
+        <div class="side">
+          <span class="tag">Single clerkship</span>
+          <h3>Monitoring Matrix</h3>
+        </div>
+        <div>
+          <p>Pick one clerkship and examine it three ways — rolled up <b>by LCME element</b>,
+            broken out <b>by teaching site</b>, and tracked <b>by module</b> across the four modules
+            of the year. Every rate is color-coded against an adjustable benchmark you set.</p>
+          <p class="q"><b>Answers:</b> How is this clerkship performing, and where is the variation —
+            between sites, or across the year?</p>
+          <ul class="pills">
+            <li class="pill">By element</li>
+            <li class="pill">By site</li>
+            <li class="pill">By module (1–4)</li>
+            <li class="pill">Adjustable benchmark</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="view">
+        <div class="side">
+          <span class="tag">National comparison</span>
+          <h3>National Benchmark</h3>
+        </div>
+        <div>
+          <p>The cohort's AAMC Graduation Questionnaire results set beside national figures, across
+            four measures: overall quality of the educational experience, being observed taking a
+            history, being observed performing an exam, and mid-clerkship feedback. Each has a
+            year-filterable bar graph.</p>
+          <p class="q"><b>Answers:</b> How do our students' experiences compare with their peers
+            nationally, and how is that trending?</p>
+          <ul class="pills">
+            <li class="pill">AAMC GQ data</li>
+            <li class="pill">4 measures</li>
+            <li class="pill">Filter by year</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="struct">
+  <div class="wrap">
+    <p class="sec-label">How the data is organized</p>
+    <h2>Four elements, eight clerkships</h2>
+    <p class="sec-intro">Every survey item maps to one of four LCME elements. The same ten items
+      run through all of the views, so a number means the same thing wherever you see it.</p>
+
+    <div class="grid2">
+      <div>
+        <div class="elem">
+          <span class="code">9.7</span>
+          <span><span class="name">Formative Assessment &amp; Feedback</span>
+            <span class="items">Received feedback · Feedback helpful · CPE form completed</span></span>
+        </div>
+        <div class="elem">
+          <span class="code">9.4</span>
+          <span><span class="name">Direct Observation</span>
+            <span class="items">Observed taking a history · Observed performing an exam</span></span>
+        </div>
+        <div class="elem">
+          <span class="code">9.3</span>
+          <span><span class="name">Clinical Supervision</span>
+            <span class="items">Adequately supervised · Supervisor available</span></span>
+        </div>
+        <div class="elem">
+          <span class="code">3.5</span>
+          <span><span class="name">Learning Environment</span>
+            <span class="items">Felt listened to · Treated with respect · Expectations explained</span></span>
+        </div>
+      </div>
+
+      <div>
+        <ul class="clerk-list">
+          <li>Inpatient Medicine</li>
+          <li>Surgery–Anesthesiology</li>
+          <li>Pediatrics</li>
+          <li>OB/GYN</li>
+          <li>Neurology</li>
+          <li>Psychiatry</li>
+          <li>Emergency Medicine</li>
+          <li>ACC–Geriatrics</li>
+        </ul>
+        <div class="legend" aria-label="Benchmark color key">
+          <span class="item"><span class="swatch" style="background:var(--ok)"></span>Meets or exceeds benchmark</span>
+          <span class="item"><span class="swatch" style="background:var(--warn)"></span>Approaching benchmark</span>
+          <span class="item"><span class="swatch" style="background:var(--low)"></span>Below benchmark</span>
+        </div>
       </div>
     </div>
-    <div class="ctrl" id="clerkctrl" style="display:none">
-      <label for="clerksel">Clerkship</label>
-      <select id="clerksel" onchange="onClerkChange()"></select>
-    </div>
-    <div class="ctrl" id="modulectrl" style="display:none">
-      <label for="modulesel">Module</label>
-      <select id="modulesel" onchange="onModuleChange()"></select>
-    </div>
-    <div class="ctrl">
-      <label for="yearsel">Period</label>
-      <select id="yearsel" onchange="render()"></select>
-    </div>
-    <button class="linkbtn" id="mapbtn" onclick="toggleMapper()">Edit Legacy Class mapping</button>
-  </div>
-  <div class="mapbanner" id="mapbanner"></div>
-  <div class="mapper" id="mapper">
-    <h4>Legacy Class mapping (period → graduating class)</h4>
-    <p>OCA-confirmed: exam year + 2 (Step&nbsp;1 uses a calendar year, Step&nbsp;2 an academic year, so the Legacy Class label is what lines the two up — and later joins your CAS, shelf, and CBSE data to the same cohort). Adjust below for FlexMed or off-cycle students if needed.</p>
-    <div class="mrow" id="maprows"></div>
-  </div>
 
-  <div class="section-label"><span id="cap-title">Content-area picture</span> · <span id="cap-year"></span></div>
-  <div class="kpis" id="cap-kpis"></div>
-
-  <div class="section-label"><span id="out-title">Licensing outcome</span> · <span id="out-year"></span></div>
-  <div class="kpis" id="out-kpis"></div>
-  <p class="outhint" id="outhint">Pass rates — and Step&nbsp;2 mean scores — sit near the national ceiling and look uniformly strong, so on their own they don't show where students are relatively weak. The content-area picture above, and the areas to watch below, are where the actionable signal is.</p>
-  <div id="shelfdist"></div>
-
-  <div class="section-label">Areas to watch</div>
-  <div class="watch">
-    <h2 id="watch-title"></h2>
-    <p class="hint" id="watch-hint">Auto-flagged where a relatively large share of the cohort scored below the national group, or where that share grew over the period. Ranked by net performance (Higher % − Lower %). These are <b>relative</b> signals for curricular review, not pass/fail concerns — read with the cautions at the bottom.</p>
-    <ul id="watch-list"></ul>
-  </div>
-
-  <div class="section-label">All content areas</div>
-  <div class="controls">
-    <div class="ctrl" id="grpctrl">
-      <label>Category type</label>
-      <div class="seg" id="grpseg" role="group">
-        <button data-g="all" aria-pressed="true">All</button>
-        <button data-g="system" aria-pressed="false">Systems</button>
-        <button data-g="discipline" aria-pressed="false">Disciplines</button>
-        <button data-g="task" aria-pressed="false">Physician tasks</button>
-      </div>
-    </div>
-    <div class="ctrl">
-      <label for="sortsel">Sort by</label>
-      <select id="sortsel" onchange="render()">
-        <option value="net">Most concerning (net ↑)</option>
-        <option value="lower">Highest % below national</option>
-        <option value="higher">Highest % above national</option>
-        <option value="trend">Most worsened over time</option>
-        <option value="name">Name (A–Z)</option>
-      </select>
+    <div class="notes">
+      <p><b>About the data.</b> The 2025–26 year-to-date figure is the full-year average across all
+        four modules; 2024–25 is the referent for year-over-year comparison.</p>
+      <p>The two site-monitored elements (9.3 and 3.5) are pooled across teaching sites weighted by
+        respondent count, using the same function the rest of the dashboard uses — nothing is
+        invented at the clerkship level.</p>
     </div>
   </div>
+</section>
 
-
-  <div id="sortnote" class="sortnote" style="display:none"></div>
-  <div id="tablelegend" class="tablelegend"></div>
-  <div class="tablewrap">
-    <table>
-      <thead>
-        <tr id="thead-row">
-          <th>Content area</th>
-          <th class="hide-sm">Type</th>
-          <th>Distribution (selected period)</th>
-          <th class="num">Lower</th>
-          <th class="num">Higher</th>
-          <th class="num">Net</th>
-          <th class="num">3-period trend</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    Clerkship LCME Monitoring Dashboard · Office of Curricular Affairs, ASCEND ·
+    Icahn School of Medicine at Mount Sinai. Prepared for accreditation monitoring.
+    The cohort label shown above is plain text and will update to ASCEND Class of 2028.
   </div>
+</footer>
 
-  <div class="caveat">
-    <h3>How to read this dashboard</h3>
-    <ul>
-      <li><b>Relative, not absolute.</b> Each figure is the percent of Sinai students who scored statistically <b>lower</b>, <b>about the same</b>, or <b>higher</b> than the national LCME group on that subscore. Sinai's overall means sit at or above national, so a high "Lower" share is a <b>relative soft spot worth a curricular look</b>, not a failing area.</li>
-      <li><b>Cohort level only.</b> These USMLE reports contain no individual-student data. The dashboard identifies group patterns; it cannot name which students are weak. (Your CAS, shelf, and CBSE files <i>can</i> add that layer — see notes.)</li>
-      <li><b>Small areas are noisy.</b> NBME cautions that small percentages and small year-to-year changes in small content areas can come from random cohort variation and should not be over-interpreted.</li>
-      <li><b>Items are integrative.</b> Most USMLE items feed more than one subscore, so a soft spot should not be attributed to a single course. (Course-built CAS exams are the exception — those <i>are</i> course-attributable.)</li>
-    </ul>
-    <div class="actions">
-      <button class="btn primary" onclick="window.print()">Print / save as PDF</button>
-    </div>
-  </div>
-  </div><!--/dataview-->
-</main>
-
-<script>
-const REPORTS = {
-  step1: {
-    label: "Step 1", yp:"CY", scored:false,
-    src: "Source: USMLE Step 1 Annual School Report (Calendar Year 2025)",
-    years: ["2023","2024","2025"], current: "2025",
-    summary: {"2025":{n:126,pass:98,natpass:93},"2024":{n:126,pass:98,natpass:91},"2023":{n:122,pass:98,natpass:92}},
-    cats: {
-      system: [
-        ["Behavioral Health & Nervous Systems/Special Senses","10–14%",[[21,64,15],[18,59,23],[18,65,17]]],
-        ["Blood & Lymphoreticular System","4–7%",[[15,74,11],[21,68,11],[10,80,10]]],
-        ["Cardiovascular System","7–11%",[[15,74,11],[16,62,22],[12,70,18]]],
-        ["Endocrine System","4–7%",[[18,73,9],[20,68,12],[9,71,20]]],
-        ["Gastrointestinal System","6–10%",[[7,74,19],[21,62,17],[14,65,21]]],
-        ["Immune System","2–5%",[[11,71,18],[14,80,6],[6,87,7]]],
-        ["Multisystem Processes & Disorders","8–12%",[[16,73,11],[14,65,21],[16,67,17]]],
-        ["Musculoskeletal, Skin, & Subcutaneous Tissue","8–12%",[[21,67,12],[24,65,11],[22,65,13]]],
-        ["Renal/Urinary System","4–7%",[[11,76,13],[16,73,11],[16,71,13]]],
-        ["Reproductive System","5–10%",[[25,68,7],[22,70,8],[18,70,12]]],
-        ["Respiratory System","5–8%",[[20,70,10],[19,68,13],[14,78,8]]]
-      ],
-      discipline: [
-        ["Behavioral Sciences","10–15%",[[26,63,11],[15,72,13],[16,70,14]]],
-        ["Biochemistry","9–14%",[[19,64,17],[19,64,17],[10,68,22]]],
-        ["Genetics","5–10%",[[16,71,13],[18,69,13],[16,68,16]]],
-        ["Gross Anatomy & Embryology","10–20%",[[30,55,15],[26,65,9],[18,63,19]]],
-        ["Histology & Cell Biology","5–15%",[[22,64,14],[13,73,14],[13,74,13]]],
-        ["Immunology","5–15%",[[16,59,25],[23,57,20],[12,71,17]]],
-        ["Microbiology","10–20%",[[15,55,30],[13,62,25],[13,63,24]]],
-        ["Nutrition","3–6%",[[13,81,6],[9,83,8],[6,88,6]]],
-        ["Pathology","45–55%",[[28,39,33],[29,38,33],[21,37,42]]],
-        ["Pharmacology","10–20%",[[18,57,25],[17,59,24],[15,60,25]]],
-        ["Physiology","30–40%",[[23,48,29],[28,44,28],[22,44,34]]]
-      ],
-      task: [
-        ["Communication & Interpersonal Skills","6–9%",[[27,70,3],[17,72,11],[14,78,8]]],
-        ["MK: Applying Foundational Science Concepts","60–70%",[[28,40,32],[30,34,36],[19,38,43]]],
-        ["PBLI: Evidence-Based Medicine","4–6%",[[11,76,13],[10,71,19],[13,69,18]]],
-        ["PC: Diagnosis","20–25%",[[23,52,25],[17,63,20],[24,55,21]]]
-      ]
-    }
-  },
-  step2: {
-    label: "Step 2", yp:"AY", scored:true,
-    src: "Source: USMLE Step 2 Annual School Report (AY 2024–2025)",
-    years: ["2022-23","2023-24","2024-25"], current: "2024-25",
-    summary: {
-      "2024-25":{n:130,pass:98,natpass:98,mean:251,sd:15,natmean:250,natsd:15},
-      "2023-24":{n:136,pass:99,natpass:98,mean:251,sd:13,natmean:249,natsd:15},
-      "2022-23":{n:142,pass:99,natpass:98,mean:251,sd:13,natmean:248,natsd:15}
-    },
-    cats: {
-      system: [
-        ["Behavioral Health","6–8%",[[15,76,9],[18,75,7],[15,76,9]]],
-        ["Blood & Lymphoreticular System","4–6%",[[20,73,7],[11,77,12],[21,67,12]]],
-        ["Cardiovascular System","8–10%",[[18,68,14],[14,77,9],[19,63,18]]],
-        ["Endocrine System","4–6%",[[19,70,11],[17,72,11],[17,72,11]]],
-        ["Female Reproductive & Breast","4–6%",[[22,70,8],[19,74,7],[18,74,8]]],
-        ["Gastrointestinal System","7–9%",[[17,70,13],[25,63,12],[22,68,10]]],
-        ["Immune System","3–5%",[[11,79,10],[12,82,6],[17,79,4]]],
-        ["Multisystem Processes & Disorders","4–6%",[[13,79,8],[11,80,9],[15,79,6]]],
-        ["Musculoskeletal Sys/Skin & Subcutaneous Tissue","6–10%",[[16,74,10],[20,66,14],[18,71,11]]],
-        ["Nervous System & Special Senses","6–8%",[[17,70,13],[19,70,11],[16,69,15]]],
-        ["Pregnancy, Childbirth & the Puerperium","4–6%",[[20,74,6],[23,70,7],[15,76,9]]],
-        ["Renal & Urinary System & Male Reproductive","4–6%",[[16,78,6],[13,81,6],[11,78,11]]],
-        ["Respiratory System","7–9%",[[18,74,8],[26,64,10],[18,68,14]]]
-      ],
-      discipline: [
-        ["Medicine","50–60%",[[23,42,35],[27,47,26],[27,38,35]]],
-        ["Obstetrics & Gynecology","10–20%",[[28,60,12],[18,70,12],[20,63,17]]],
-        ["Pediatrics","20–25%",[[21,62,17],[20,65,15],[24,56,20]]],
-        ["Psychiatry","10–15%",[[15,65,20],[14,74,12],[19,66,15]]],
-        ["Surgery","25–30%",[[27,49,24],[24,57,19],[22,57,21]]]
-      ],
-      task: [
-        ["Ethics/Professionalism","5–7%",[[13,82,5],[13,80,7],[12,76,12]]],
-        ["PC: Diagnosis","34–46%",[[26,46,28],[32,41,27],[31,45,24]]],
-        ["PC: Health Maint, Prevention & Surveillance","8–12%",[[22,69,9],[22,69,9],[21,65,14]]],
-        ["PC: Pharmacotherapy, Interventions & Management","26–38%",[[22,56,22],[29,50,21],[27,49,24]]],
-        ["Systems-Based Practice/Patient Safety","5–7%",[[13,79,8],[12,75,13],[10,82,8]]]
-      ]
-    }
-  }
-};
-const GRPLABEL = {system:"System", discipline:"Discipline", task:"Physician task"};
-const SHELF = {"Ambulatory Care":{"2022-23":{"areas":[{"section":"Organ System/Topic","area":"Female & Male Reproductive Systems, and Endocrine System","school":72,"ssd":13,"nat":72,"nsd":14,"diff":0,"sig":"","pct":"16–17%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":71,"ssd":15,"nat":75,"nsd":16,"diff":-4,"sig":"","pct":"7–9%"},{"section":"Physician Task","area":"Diagnosis","school":73,"ssd":8,"nat":73,"nsd":10,"diff":0,"sig":"","pct":"44–47%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":72,"ssd":9,"nat":74,"nsd":10,"diff":-2,"sig":"","pct":"38–39%"},{"section":"Patient Group","area":"Male","school":71,"ssd":8,"nat":73,"nsd":10,"diff":-2,"sig":"","pct":"43–49%"},{"section":"Patient Group","area":"Female","school":75,"ssd":8,"nat":75,"nsd":10,"diff":0,"sig":"","pct":"47–53%"},{"section":"Patient Group","area":"Adult (18 - 65)","school":73,"ssd":7,"nat":73,"nsd":9,"diff":0,"sig":"","pct":"61–67%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":75,"ssd":10,"nat":74,"nsd":11,"diff":1,"sig":"","pct":"28–33%"}],"total":{"n":134,"mean":73.6,"sd":6.6,"cmean":74.1,"csd":8.8}},"2023-24":{"areas":[{"section":"Organ System/Topic","area":"Cardiovascular and Respiratory Systems","school":67,"ssd":13,"nat":70,"nsd":13,"diff":-3,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Female & Male Reproductive Systems, and Endocrine System","school":70,"ssd":14,"nat":71,"nsd":14,"diff":-1,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Skin, Musculoskeletal, and Nervous Systems","school":76,"ssd":11,"nat":79,"nsd":12,"diff":-3,"sig":"","pct":"15–20%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":73,"ssd":17,"nat":74,"nsd":16,"diff":-1,"sig":"","pct":"5–10%"},{"section":"Physician Task","area":"Diagnosis","school":72,"ssd":9,"nat":73,"nsd":10,"diff":-1,"sig":"","pct":"45–50%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":72,"ssd":10,"nat":74,"nsd":10,"diff":-2,"sig":"","pct":"35–40%"},{"section":"Patient Group","area":"Adult (18 - 65)","school":72,"ssd":9,"nat":74,"nsd":10,"diff":-2,"sig":"","pct":"60–65%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":74,"ssd":9,"nat":74,"nsd":11,"diff":0,"sig":"","pct":"30–35%"}],"total":{"n":120,"mean":72.8,"sd":7.9,"cmean":74.2,"csd":8.9}},"2024-25":{"areas":[{"section":"Organ System/Topic","area":"Cardiovascular and Respiratory Systems","school":70,"ssd":12,"nat":71,"nsd":13,"diff":-1,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Female & Male Reproductive Systems, and Endocrine System","school":72,"ssd":13,"nat":72,"nsd":13,"diff":0,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Skin, Musculoskeletal, and Nervous Systems","school":76,"ssd":11,"nat":79,"nsd":11,"diff":-3,"sig":"","pct":"15–20%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":74,"ssd":16,"nat":74,"nsd":17,"diff":0,"sig":"","pct":"5–10%"},{"section":"Physician Task","area":"Diagnosis","school":73,"ssd":10,"nat":73,"nsd":10,"diff":0,"sig":"","pct":"45–50%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":74,"ssd":9,"nat":74,"nsd":10,"diff":0,"sig":"","pct":"35–40%"},{"section":"Patient Group","area":"Adult (18 - 65)","school":74,"ssd":9,"nat":74,"nsd":9,"diff":0,"sig":"","pct":"60–65%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":74,"ssd":10,"nat":75,"nsd":10,"diff":-1,"sig":"","pct":"30–35%"}],"total":{"n":128,"mean":74.4,"sd":7.8,"cmean":74.5,"csd":8.6}}},"Clinical Neurology":{"2022-23":{"areas":[{"section":"Organ System/Topic","area":"Infectious, Immunologic, and Inflammatory Disorders","school":78,"ssd":13,"nat":78,"nsd":13,"diff":0,"sig":"","pct":"13–15%"},{"section":"Organ System/Topic","area":"Cerebrovascular Disease","school":74,"ssd":14,"nat":76,"nsd":15,"diff":-2,"sig":"","pct":"9–10%"},{"section":"Organ System/Topic","area":"Traumatic, Mechanical, and Toxic Disorders","school":77,"ssd":13,"nat":78,"nsd":14,"diff":-1,"sig":"","pct":"10–11%"},{"section":"Organ System/Topic","area":"Diseases of the Musculoskeletal System","school":71,"ssd":14,"nat":74,"nsd":14,"diff":-3,"sig":"","pct":"11–12%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":74,"ssd":11,"nat":76,"nsd":13,"diff":-2,"sig":"","pct":"13–14%"},{"section":"Physician Task","area":"Diagnosis","school":77,"ssd":7,"nat":79,"nsd":9,"diff":-2,"sig":"","pct":"57–59%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":78,"ssd":9,"nat":78,"nsd":11,"diff":0,"sig":"","pct":"25–27%"},{"section":"Site of Care","area":"Ambulatory","school":78,"ssd":7,"nat":79,"nsd":8,"diff":-1,"sig":"","pct":"58–61%"},{"section":"Site of Care","area":"Emergency Department","school":74,"ssd":10,"nat":76,"nsd":11,"diff":-2,"sig":"","pct":"27–32%"},{"section":"Patient Group","area":"Male","school":77,"ssd":7,"nat":78,"nsd":9,"diff":-1,"sig":"","pct":"51–55%"},{"section":"Patient Group","area":"Female","school":78,"ssd":9,"nat":79,"nsd":9,"diff":-1,"sig":"","pct":"45–49%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":80,"ssd":10,"nat":79,"nsd":11,"diff":1,"sig":"","pct":"25–27%"}],"total":{"n":134,"mean":79.9,"sd":6.1,"cmean":81.0,"csd":7.3}},"2023-24":{"areas":[{"section":"Organ System/Topic","area":"Infectious, Immunologic, and Inflammatory Disorders","school":77,"ssd":12,"nat":78,"nsd":13,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Cerebrovascular Disease","school":78,"ssd":14,"nat":77,"nsd":14,"diff":1,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Traumatic, Mechanical, and Toxic Disorders","school":78,"ssd":12,"nat":77,"nsd":14,"diff":1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Diseases of the Musculoskeletal System","school":71,"ssd":15,"nat":75,"nsd":14,"diff":-4,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":74,"ssd":10,"nat":75,"nsd":13,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Diagnosis","school":79,"ssd":7,"nat":79,"nsd":9,"diff":0,"sig":"","pct":"55–60%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":76,"ssd":11,"nat":77,"nsd":11,"diff":-1,"sig":"","pct":"25–30%"},{"section":"Site of Care","area":"Ambulatory","school":79,"ssd":7,"nat":80,"nsd":9,"diff":-1,"sig":"","pct":"60–65%"},{"section":"Site of Care","area":"Emergency Department","school":75,"ssd":10,"nat":75,"nsd":11,"diff":0,"sig":"","pct":"25–30%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":79,"ssd":10,"nat":79,"nsd":10,"diff":0,"sig":"","pct":"20–25%"}],"total":{"n":120,"mean":80.1,"sd":6.4,"cmean":80.7,"csd":7.4}},"2024-25":{"areas":[{"section":"Organ System/Topic","area":"Infectious, Immunologic, and Inflammatory Disorders","school":79,"ssd":12,"nat":78,"nsd":13,"diff":1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Cerebrovascular Disease","school":76,"ssd":14,"nat":77,"nsd":14,"diff":-1,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Traumatic, Mechanical, and Toxic Disorders","school":76,"ssd":14,"nat":77,"nsd":14,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Diseases of the Musculoskeletal System","school":75,"ssd":14,"nat":76,"nsd":14,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":76,"ssd":13,"nat":76,"nsd":13,"diff":0,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Diagnosis","school":79,"ssd":7,"nat":79,"nsd":9,"diff":0,"sig":"","pct":"55–60%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":77,"ssd":11,"nat":77,"nsd":11,"diff":0,"sig":"","pct":"25–30%"},{"section":"Site of Care","area":"Ambulatory","school":79,"ssd":8,"nat":80,"nsd":9,"diff":-1,"sig":"","pct":"60–65%"},{"section":"Site of Care","area":"Emergency Department","school":77,"ssd":10,"nat":76,"nsd":11,"diff":1,"sig":"","pct":"25–30%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":78,"ssd":10,"nat":79,"nsd":11,"diff":-1,"sig":"","pct":"20–25%"}],"total":{"n":144,"mean":80.9,"sd":6.4,"cmean":81.1,"csd":7.5}}},"Medicine":{"2022-23":{"areas":[{"section":"Organ System/Topic","area":"Immune System and Blood and Lymphoreticular System","school":80,"ssd":14,"nat":76,"nsd":16,"diff":4,"sig":"*","pct":"8–9%"},{"section":"Organ System/Topic","area":"Respiratory System","school":73,"ssd":15,"nat":73,"nsd":15,"diff":0,"sig":"","pct":"10–11%"},{"section":"Organ System/Topic","area":"Gastrointestinal System","school":70,"ssd":16,"nat":72,"nsd":15,"diff":-2,"sig":"","pct":"10–11%"},{"section":"Organ System/Topic","area":"Female & Male Reproductive Systems, and Endocrine System","school":75,"ssd":15,"nat":75,"nsd":15,"diff":0,"sig":"","pct":"8–9%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":74,"ssd":13,"nat":74,"nsd":14,"diff":0,"sig":"","pct":"12–16%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":74,"ssd":14,"nat":74,"nsd":14,"diff":0,"sig":"","pct":"14–15%"},{"section":"Physician Task","area":"Diagnosis","school":74,"ssd":11,"nat":74,"nsd":10,"diff":0,"sig":"","pct":"44–49%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":74,"ssd":11,"nat":74,"nsd":11,"diff":0,"sig":"","pct":"29–33%"},{"section":"Site of Care","area":"Ambulatory","school":75,"ssd":10,"nat":75,"nsd":10,"diff":0,"sig":"","pct":"38–52%"},{"section":"Site of Care","area":"Emergency Department","school":72,"ssd":13,"nat":73,"nsd":13,"diff":-1,"sig":"","pct":"21–26%"},{"section":"Site of Care","area":"In-Patient","school":75,"ssd":10,"nat":74,"nsd":11,"diff":1,"sig":"","pct":"24–38%"},{"section":"Patient Group","area":"Male","school":77,"ssd":10,"nat":75,"nsd":10,"diff":2,"sig":"","pct":"47–51%"},{"section":"Patient Group","area":"Female","school":72,"ssd":10,"nat":73,"nsd":10,"diff":-1,"sig":"","pct":"47–50%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":74,"ssd":12,"nat":75,"nsd":11,"diff":-1,"sig":"","pct":"28–34%"}],"total":{"n":136,"mean":74.4,"sd":9.0,"cmean":74.0,"csd":8.9}},"2023-24":{"areas":[{"section":"Organ System/Topic","area":"Cardiovascular System","school":70,"ssd":15,"nat":72,"nsd":15,"diff":-2,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Respiratory System","school":68,"ssd":16,"nat":72,"nsd":15,"diff":-4,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Gastrointestinal System","school":73,"ssd":15,"nat":73,"nsd":15,"diff":0,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Female & Male Reproductive Systems, and Endocrine System","school":73,"ssd":15,"nat":73,"nsd":15,"diff":0,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":73,"ssd":14,"nat":74,"nsd":14,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":74,"ssd":13,"nat":74,"nsd":14,"diff":0,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Diagnosis","school":72,"ssd":12,"nat":73,"nsd":10,"diff":-1,"sig":"","pct":"45–50%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":73,"ssd":12,"nat":74,"nsd":11,"diff":-1,"sig":"","pct":"25–30%"},{"section":"Site of Care","area":"Ambulatory","school":73,"ssd":11,"nat":75,"nsd":10,"diff":-2,"sig":"","pct":"35–40%"},{"section":"Site of Care","area":"Emergency Department","school":72,"ssd":13,"nat":72,"nsd":13,"diff":0,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"In-Patient","school":74,"ssd":11,"nat":74,"nsd":10,"diff":0,"sig":"","pct":"40–45%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":73,"ssd":12,"nat":75,"nsd":11,"diff":-2,"sig":"","pct":"35–40%"}],"total":{"n":118,"mean":73.4,"sd":9.5,"cmean":74.0,"csd":8.7}},"2024-25":{"areas":[{"section":"Organ System/Topic","area":"Cardiovascular System","school":73,"ssd":15,"nat":72,"nsd":15,"diff":1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Respiratory System","school":72,"ssd":15,"nat":72,"nsd":15,"diff":0,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Gastrointestinal System","school":73,"ssd":15,"nat":73,"nsd":15,"diff":0,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Female & Male Reproductive Systems, and Endocrine System","school":71,"ssd":14,"nat":73,"nsd":15,"diff":-2,"sig":"","pct":"5–10%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":74,"ssd":15,"nat":74,"nsd":14,"diff":0,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":76,"ssd":13,"nat":74,"nsd":13,"diff":2,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Diagnosis","school":73,"ssd":10,"nat":73,"nsd":10,"diff":0,"sig":"","pct":"45–50%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":74,"ssd":11,"nat":74,"nsd":11,"diff":0,"sig":"","pct":"25–30%"},{"section":"Site of Care","area":"Ambulatory","school":75,"ssd":10,"nat":75,"nsd":10,"diff":0,"sig":"","pct":"35–40%"},{"section":"Site of Care","area":"Emergency Department","school":72,"ssd":13,"nat":72,"nsd":13,"diff":0,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"In-Patient","school":74,"ssd":11,"nat":74,"nsd":10,"diff":0,"sig":"","pct":"40–45%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":75,"ssd":11,"nat":75,"nsd":10,"diff":0,"sig":"","pct":"35–40%"}],"total":{"n":129,"mean":74.3,"sd":8.8,"cmean":74.2,"csd":8.7}}},"Obstetrics & Gynecology":{"2022-23":{"areas":[{"section":"Organ System/Topic","area":"Female Reproductive System & Breast","school":76,"ssd":8,"nat":78,"nsd":9,"diff":-2,"sig":"","pct":"43–44%"},{"section":"Physician Task","area":"Health Maintenance, Prevention & Surveillance","school":72,"ssd":15,"nat":73,"nsd":14,"diff":-1,"sig":"","pct":"11–13%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":79,"ssd":14,"nat":80,"nsd":13,"diff":-1,"sig":"","pct":"9–11%"},{"section":"Physician Task","area":"Diagnosis","school":75,"ssd":8,"nat":78,"nsd":9,"diff":-3,"sig":"","pct":"45–49%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":71,"ssd":10,"nat":74,"nsd":10,"diff":-3,"sig":"*","pct":"25–27%"},{"section":"Site of Care","area":"Ambulatory","school":75,"ssd":7,"nat":77,"nsd":8,"diff":-2,"sig":"","pct":"70–74%"},{"section":"Site of Care","area":"In-Patient","school":73,"ssd":12,"nat":77,"nsd":12,"diff":-4,"sig":"*","pct":"16–19%"}],"total":{"n":135,"mean":76.2,"sd":6.8,"cmean":78.4,"csd":7.8}},"2023-24":{"areas":[{"section":"Organ System/Topic","area":"Female Reproductive System & Breast","school":77,"ssd":9,"nat":79,"nsd":9,"diff":-2,"sig":"","pct":"40–45%"},{"section":"Organ System/Topic","area":"Obstetric Complications","school":70,"ssd":13,"nat":73,"nsd":14,"diff":-3,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Health Maintenance, Prevention & Surveillance","school":73,"ssd":12,"nat":74,"nsd":14,"diff":-1,"sig":"","pct":"13–17%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":78,"ssd":13,"nat":80,"nsd":13,"diff":-2,"sig":"","pct":"8–12%"},{"section":"Physician Task","area":"Diagnosis","school":76,"ssd":8,"nat":79,"nsd":9,"diff":-3,"sig":"","pct":"45–50%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":73,"ssd":10,"nat":75,"nsd":10,"diff":-2,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"Ambulatory","school":76,"ssd":7,"nat":77,"nsd":8,"diff":-1,"sig":"","pct":"70–75%"},{"section":"Site of Care","area":"In-Patient","school":76,"ssd":10,"nat":78,"nsd":11,"diff":-2,"sig":"","pct":"15–20%"}],"total":{"n":118,"mean":77.4,"sd":6.2,"cmean":79.2,"csd":7.5}},"2024-25":{"areas":[{"section":"Organ System/Topic","area":"Female Reproductive System & Breast","school":75,"ssd":8,"nat":79,"nsd":9,"diff":-4,"sig":"*","pct":"40–45%"},{"section":"Organ System/Topic","area":"Obstetric Complications","school":72,"ssd":15,"nat":74,"nsd":14,"diff":-2,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Health Maintenance, Prevention & Surveillance","school":73,"ssd":13,"nat":75,"nsd":14,"diff":-2,"sig":"","pct":"13–17%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":80,"ssd":12,"nat":80,"nsd":13,"diff":0,"sig":"","pct":"8–12%"},{"section":"Physician Task","area":"Diagnosis","school":75,"ssd":10,"nat":79,"nsd":9,"diff":-4,"sig":"*","pct":"45–50%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":73,"ssd":11,"nat":75,"nsd":10,"diff":-2,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"Ambulatory","school":75,"ssd":8,"nat":78,"nsd":8,"diff":-3,"sig":"*","pct":"70–75%"},{"section":"Site of Care","area":"In-Patient","school":78,"ssd":12,"nat":79,"nsd":11,"diff":-1,"sig":"","pct":"15–20%"}],"total":{"n":152,"mean":77.2,"sd":7.4,"cmean":79.6,"csd":7.4}}},"Pediatrics":{"2022-23":{"areas":[{"section":"Organ System/Topic","area":"Gastrointestinal System","school":76,"ssd":14,"nat":76,"nsd":15,"diff":0,"sig":"","pct":"9–10%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":74,"ssd":12,"nat":75,"nsd":12,"diff":-1,"sig":"","pct":"17–18%"},{"section":"Organ System/Topic","area":"Cardiovascular and Respiratory Systems","school":68,"ssd":13,"nat":70,"nsd":14,"diff":-2,"sig":"","pct":"15–16%"},{"section":"Organ System/Topic","area":"Female Reproductive, Obstetric, and Endocrine Systems","school":77,"ssd":10,"nat":78,"nsd":12,"diff":-1,"sig":"","pct":"18–19%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":74,"ssd":11,"nat":75,"nsd":13,"diff":-1,"sig":"","pct":"16–17%"},{"section":"Physician Task","area":"Diagnosis","school":75,"ssd":8,"nat":76,"nsd":9,"diff":-1,"sig":"","pct":"53–57%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":77,"ssd":9,"nat":77,"nsd":11,"diff":0,"sig":"","pct":"23–28%"},{"section":"Site of Care","area":"Ambulatory","school":75,"ssd":7,"nat":76,"nsd":9,"diff":-1,"sig":"","pct":"61–64%"},{"section":"Site of Care","area":"Emergency Department","school":75,"ssd":11,"nat":75,"nsd":12,"diff":0,"sig":"","pct":"20–24%"},{"section":"Site of Care","area":"In-Patient","school":76,"ssd":11,"nat":76,"nsd":13,"diff":0,"sig":"","pct":"13–17%"},{"section":"Patient Group","area":"Male","school":75,"ssd":7,"nat":76,"nsd":9,"diff":-1,"sig":"","pct":"47–54%"},{"section":"Patient Group","area":"Female","school":76,"ssd":8,"nat":77,"nsd":9,"diff":-1,"sig":"","pct":"46–53%"}],"total":{"n":132,"mean":77.0,"sd":6.2,"cmean":77.8,"csd":8.2}},"2023-24":{"areas":[{"section":"Organ System/Topic","area":"Gastrointestinal System","school":73,"ssd":13,"nat":76,"nsd":14,"diff":-3,"sig":"","pct":"8–12%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":74,"ssd":11,"nat":75,"nsd":12,"diff":-1,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Cardiovascular and Respiratory Systems","school":69,"ssd":13,"nat":70,"nsd":14,"diff":-1,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Female Reproductive, Obstetric, and Endocrine Systems","school":75,"ssd":12,"nat":78,"nsd":12,"diff":-3,"sig":"","pct":"15–20%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":73,"ssd":14,"nat":75,"nsd":14,"diff":-2,"sig":"","pct":"13–17%"},{"section":"Physician Task","area":"Diagnosis","school":73,"ssd":9,"nat":76,"nsd":9,"diff":-3,"sig":"","pct":"55–60%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":75,"ssd":9,"nat":76,"nsd":11,"diff":-1,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"Ambulatory","school":75,"ssd":8,"nat":76,"nsd":9,"diff":-1,"sig":"","pct":"65–70%"},{"section":"Site of Care","area":"Emergency Department","school":71,"ssd":12,"nat":75,"nsd":12,"diff":-4,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"In-Patient","school":74,"ssd":12,"nat":77,"nsd":13,"diff":-3,"sig":"","pct":"12–16%"}],"total":{"n":119,"mean":75.8,"sd":7.2,"cmean":77.7,"csd":8.1}},"2024-25":{"areas":[{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":72,"ssd":11,"nat":76,"nsd":12,"diff":-4,"sig":"*","pct":"15–20%"},{"section":"Organ System/Topic","area":"Cardiovascular and Respiratory Systems","school":69,"ssd":12,"nat":70,"nsd":14,"diff":-1,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Female Reproductive, Obstetric, and Endocrine Systems","school":75,"ssd":12,"nat":78,"nsd":11,"diff":-3,"sig":"","pct":"15–20%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":73,"ssd":13,"nat":75,"nsd":14,"diff":-2,"sig":"","pct":"13–17%"},{"section":"Physician Task","area":"Diagnosis","school":74,"ssd":8,"nat":76,"nsd":9,"diff":-2,"sig":"*","pct":"55–60%"},{"section":"Physician Task","area":"Health Maintenance, Pharmacotherapy, Intervention & Management","school":75,"ssd":11,"nat":77,"nsd":11,"diff":-2,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"Ambulatory","school":74,"ssd":9,"nat":77,"nsd":9,"diff":-3,"sig":"*","pct":"65–70%"},{"section":"Site of Care","area":"Emergency Department","school":73,"ssd":11,"nat":75,"nsd":11,"diff":-2,"sig":"","pct":"20–25%"},{"section":"Site of Care","area":"In-Patient","school":77,"ssd":12,"nat":77,"nsd":13,"diff":0,"sig":"","pct":"12–16%"}],"total":{"n":150,"mean":75.8,"sd":7.2,"cmean":78.1,"csd":7.9}}},"Psychiatry":{"2022-23":{"areas":[{"section":"Organ System/Topic","area":"Psychotic Disorders","school":83,"ssd":12,"nat":83,"nsd":11,"diff":0,"sig":"","pct":"10–11%"},{"section":"Organ System/Topic","area":"Mood Disorders","school":87,"ssd":9,"nat":85,"nsd":10,"diff":2,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Diseases of the Nervous System","school":74,"ssd":13,"nat":75,"nsd":13,"diff":-1,"sig":"","pct":"12–14%"},{"section":"Physician Task","area":"Diagnosis, including Foundational Science Concepts","school":82,"ssd":7,"nat":83,"nsd":7,"diff":-1,"sig":"","pct":"63–65%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":82,"ssd":9,"nat":82,"nsd":9,"diff":0,"sig":"","pct":"29–31%"},{"section":"Site of Care","area":"Ambulatory","school":82,"ssd":7,"nat":83,"nsd":7,"diff":-1,"sig":"","pct":"63–65%"},{"section":"Site of Care","area":"Emergency Department","school":81,"ssd":9,"nat":82,"nsd":9,"diff":-1,"sig":"","pct":"25–27%"},{"section":"Patient Group","area":"Male","school":81,"ssd":8,"nat":81,"nsd":8,"diff":0,"sig":"","pct":"50–54%"},{"section":"Patient Group","area":"Female","school":83,"ssd":7,"nat":84,"nsd":7,"diff":-1,"sig":"","pct":"46–50%"},{"section":"Patient Group","area":"Child (2-12)","school":78,"ssd":13,"nat":81,"nsd":13,"diff":-3,"sig":"","pct":"8–11%"}],"total":{"n":137,"mean":83.9,"sd":6.1,"cmean":84.4,"csd":6.1}},"2023-24":{"areas":[{"section":"Organ System/Topic","area":"Psychotic Disorders","school":84,"ssd":10,"nat":84,"nsd":11,"diff":0,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Anxiety Disorders","school":83,"ssd":9,"nat":86,"nsd":10,"diff":-3,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Mood Disorders","school":84,"ssd":11,"nat":85,"nsd":10,"diff":-1,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Substance Use Disorders","school":80,"ssd":12,"nat":83,"nsd":11,"diff":-3,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Diseases of the Nervous System","school":75,"ssd":13,"nat":77,"nsd":13,"diff":-2,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Diagnosis, including Foundational Science Concepts","school":83,"ssd":7,"nat":84,"nsd":7,"diff":-1,"sig":"","pct":"60–65%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":81,"ssd":8,"nat":82,"nsd":9,"diff":-1,"sig":"","pct":"25–30%"},{"section":"Site of Care","area":"Ambulatory","school":83,"ssd":6,"nat":84,"nsd":7,"diff":-1,"sig":"","pct":"60–65%"},{"section":"Site of Care","area":"Emergency Department","school":82,"ssd":9,"nat":83,"nsd":9,"diff":-1,"sig":"","pct":"25–30%"},{"section":"Patient Group","area":"Child (2-12)","school":80,"ssd":12,"nat":82,"nsd":12,"diff":-2,"sig":"","pct":"10–15%"}],"total":{"n":113,"mean":84.2,"sd":5.2,"cmean":85.1,"csd":6.0}},"2024-25":{"areas":[{"section":"Organ System/Topic","area":"Psychotic Disorders","school":84,"ssd":10,"nat":84,"nsd":11,"diff":0,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Anxiety Disorders","school":86,"ssd":10,"nat":86,"nsd":10,"diff":0,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Mood Disorders","school":82,"ssd":10,"nat":85,"nsd":10,"diff":-3,"sig":"","pct":"15–20%"},{"section":"Organ System/Topic","area":"Substance Use Disorders","school":80,"ssd":12,"nat":83,"nsd":11,"diff":-3,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Diseases of the Nervous System","school":74,"ssd":14,"nat":77,"nsd":13,"diff":-3,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Diagnosis, including Foundational Science Concepts","school":83,"ssd":7,"nat":85,"nsd":7,"diff":-2,"sig":"","pct":"60–65%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":80,"ssd":9,"nat":82,"nsd":9,"diff":-2,"sig":"","pct":"25–30%"},{"section":"Site of Care","area":"Ambulatory","school":82,"ssd":6,"nat":84,"nsd":7,"diff":-2,"sig":"","pct":"60–65%"},{"section":"Site of Care","area":"Emergency Department","school":83,"ssd":9,"nat":84,"nsd":9,"diff":-1,"sig":"","pct":"25–30%"},{"section":"Patient Group","area":"Child (2-12)","school":81,"ssd":13,"nat":82,"nsd":12,"diff":-1,"sig":"","pct":"10–15%"}],"total":{"n":143,"mean":84.1,"sd":5.3,"cmean":85.3,"csd":6.0}}},"Surgery":{"2022-23":{"areas":[{"section":"Organ System/Topic","area":"Respiratory System","school":72,"ssd":15,"nat":72,"nsd":15,"diff":0,"sig":"","pct":"10–11%"},{"section":"Organ System/Topic","area":"Gastrointestinal System","school":77,"ssd":8,"nat":77,"nsd":10,"diff":0,"sig":"","pct":"29–31%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":75,"ssd":13,"nat":76,"nsd":13,"diff":-1,"sig":"","pct":"12–16%"},{"section":"Organ System/Topic","area":"Female Reproductive, Breast, and Endocrine Systems","school":75,"ssd":12,"nat":75,"nsd":14,"diff":0,"sig":"","pct":"12–14%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":75,"ssd":14,"nat":73,"nsd":15,"diff":2,"sig":"","pct":"8–10%"},{"section":"Physician Task","area":"Diagnosis","school":76,"ssd":7,"nat":77,"nsd":9,"diff":-1,"sig":"","pct":"52–59%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":72,"ssd":9,"nat":73,"nsd":10,"diff":-1,"sig":"","pct":"29–35%"},{"section":"Site of Care","area":"Ambulatory","school":76,"ssd":8,"nat":76,"nsd":10,"diff":0,"sig":"","pct":"35–40%"},{"section":"Site of Care","area":"Emergency Department","school":75,"ssd":8,"nat":76,"nsd":10,"diff":-1,"sig":"","pct":"29–34%"},{"section":"Site of Care","area":"In-Patient","school":74,"ssd":9,"nat":73,"nsd":11,"diff":1,"sig":"","pct":"30–33%"},{"section":"Patient Group","area":"Male","school":75,"ssd":8,"nat":75,"nsd":9,"diff":0,"sig":"","pct":"51–54%"},{"section":"Patient Group","area":"Female","school":75,"ssd":8,"nat":75,"nsd":9,"diff":0,"sig":"","pct":"46–49%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":74,"ssd":9,"nat":75,"nsd":11,"diff":-1,"sig":"","pct":"20–25%"}],"total":{"n":134,"mean":73.6,"sd":6.7,"cmean":73.7,"csd":8.5}},"2023-24":{"areas":[{"section":"Organ System/Topic","area":"Cardiovascular System","school":73,"ssd":14,"nat":74,"nsd":14,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Respiratory System","school":70,"ssd":14,"nat":72,"nsd":15,"diff":-2,"sig":"","pct":"8–12%"},{"section":"Organ System/Topic","area":"Gastrointestinal System","school":76,"ssd":10,"nat":78,"nsd":10,"diff":-2,"sig":"","pct":"20–25%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":73,"ssd":12,"nat":76,"nsd":12,"diff":-3,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Female Reproductive, Breast, and Endocrine Systems","school":74,"ssd":14,"nat":75,"nsd":14,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":70,"ssd":15,"nat":73,"nsd":15,"diff":-3,"sig":"","pct":"8–12%"},{"section":"Physician Task","area":"Diagnosis","school":75,"ssd":9,"nat":77,"nsd":9,"diff":-2,"sig":"","pct":"50–60%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":71,"ssd":11,"nat":73,"nsd":10,"diff":-2,"sig":"","pct":"30–35%"},{"section":"Site of Care","area":"Ambulatory","school":74,"ssd":10,"nat":76,"nsd":9,"diff":-2,"sig":"","pct":"35–40%"},{"section":"Site of Care","area":"Emergency Department","school":75,"ssd":9,"nat":77,"nsd":10,"diff":-2,"sig":"","pct":"25–35%"},{"section":"Site of Care","area":"In-Patient","school":71,"ssd":10,"nat":73,"nsd":10,"diff":-2,"sig":"","pct":"30–35%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":74,"ssd":11,"nat":75,"nsd":11,"diff":-1,"sig":"","pct":"20–25%"}],"total":{"n":120,"mean":71.8,"sd":8.1,"cmean":73.6,"csd":8.3}},"2024-25":{"areas":[{"section":"Organ System/Topic","area":"Cardiovascular System","school":74,"ssd":14,"nat":75,"nsd":14,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Respiratory System","school":72,"ssd":14,"nat":73,"nsd":15,"diff":-1,"sig":"","pct":"8–12%"},{"section":"Organ System/Topic","area":"Gastrointestinal System","school":76,"ssd":9,"nat":78,"nsd":10,"diff":-2,"sig":"","pct":"20–25%"},{"section":"Organ System/Topic","area":"Diseases of Skin and the Nervous and Musculoskeletal Systems","school":74,"ssd":12,"nat":75,"nsd":12,"diff":-1,"sig":"","pct":"10–15%"},{"section":"Organ System/Topic","area":"Female Reproductive, Breast, and Endocrine Systems","school":74,"ssd":14,"nat":76,"nsd":14,"diff":-2,"sig":"","pct":"10–15%"},{"section":"Physician Task","area":"Applying Foundational Science Concepts","school":70,"ssd":14,"nat":73,"nsd":15,"diff":-3,"sig":"","pct":"8–12%"},{"section":"Physician Task","area":"Diagnosis","school":75,"ssd":9,"nat":77,"nsd":9,"diff":-2,"sig":"","pct":"50–60%"},{"section":"Physician Task","area":"Pharmacotherapy, Intervention & Management","school":71,"ssd":11,"nat":73,"nsd":10,"diff":-2,"sig":"","pct":"30–35%"},{"section":"Site of Care","area":"Ambulatory","school":74,"ssd":10,"nat":76,"nsd":9,"diff":-2,"sig":"","pct":"35–40%"},{"section":"Site of Care","area":"Emergency Department","school":74,"ssd":11,"nat":77,"nsd":10,"diff":-3,"sig":"","pct":"25–35%"},{"section":"Site of Care","area":"In-Patient","school":72,"ssd":10,"nat":73,"nsd":10,"diff":-1,"sig":"","pct":"30–35%"},{"section":"Patient Group","area":"Older Adult (66 and older)","school":75,"ssd":11,"nat":76,"nsd":11,"diff":-1,"sig":"","pct":"20–25%"}],"total":{"n":132,"mean":71.6,"sd":8.0,"cmean":73.8,"csd":8.2}}}};
-
-const SHELFDIST = {"Ambulatory Care":{"2022-23":{"n":136,"mean":73.4,"sd":6.6,"min":54,"max":91,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,1,3,7,22,40,39,17,6,1]},"2023-24":{"n":131,"mean":72.5,"sd":7.8,"min":47,"max":91,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[1,2,5,10,26,34,30,17,3,3]},"2024-25":{"n":133,"mean":74.1,"sd":7.9,"min":51,"max":92,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,3,2,5,27,31,34,19,9,3]}},"Clinical Neurology":{"2022-23":{"n":137,"mean":79.7,"sd":6.2,"min":62,"max":91,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,0,0,2,8,15,32,47,31,2]},"2023-24":{"n":125,"mean":80.0,"sd":6.3,"min":58,"max":96,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":1,"counts":[0,0,1,2,5,12,37,35,30,2]},"2024-25":{"n":147,"mean":80.8,"sd":6.4,"min":63,"max":98,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":2,"counts":[0,0,0,2,7,20,24,50,36,6]}},"Medicine":{"2022-23":{"n":142,"mean":74.1,"sd":9.1,"min":17,"max":91,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":1,"hi":0,"counts":[1,2,3,9,15,34,43,23,9,2]},"2023-24":{"n":124,"mean":73.2,"sd":9.4,"min":17,"max":97,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":1,"hi":1,"counts":[0,0,3,15,21,28,29,17,7,2]},"2024-25":{"n":134,"mean":74.1,"sd":8.8,"min":49,"max":93,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[1,1,9,10,14,31,28,27,9,4]}},"Obstetrics & Gynecology":{"2022-23":{"n":143,"mean":76.1,"sd":6.8,"min":57,"max":91,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,0,2,6,15,37,34,34,13,2]},"2023-24":{"n":120,"mean":77.4,"sd":6.1,"min":61,"max":94,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,0,0,3,7,29,33,37,9,2]},"2024-25":{"n":155,"mean":77.1,"sd":7.3,"min":47,"max":96,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":2,"counts":[1,1,1,4,12,31,48,38,12,5]}},"Pediatrics":{"2022-23":{"n":137,"mean":76.5,"sd":6.7,"min":50,"max":92,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,1,0,4,14,24,54,25,11,4]},"2023-24":{"n":123,"mean":75.7,"sd":7.1,"min":56,"max":93,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,0,1,8,16,25,33,24,14,2]},"2024-25":{"n":153,"mean":75.8,"sd":7.1,"min":56,"max":93,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[0,0,3,6,19,36,44,30,10,5]}},"Psychiatry":{"2022-23":{"n":143,"mean":83.6,"sd":6.3,"min":56,"max":97,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":4,"counts":[0,0,1,0,4,6,16,41,60,11]},"2023-24":{"n":116,"mean":84.1,"sd":5.2,"min":72,"max":95,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":1,"counts":[0,0,0,0,0,7,15,39,37,17]},"2024-25":{"n":145,"mean":84.0,"sd":5.3,"min":68,"max":99,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":3,"counts":[0,0,0,0,1,3,26,50,42,20]}},"Surgery":{"2022-23":{"n":140,"mean":72.9,"sd":7.3,"min":45,"max":90,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":0,"hi":0,"counts":[1,0,4,10,24,45,28,22,5,1]},"2023-24":{"n":128,"mean":71.7,"sd":7.9,"min":43,"max":90,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":1,"hi":0,"counts":[0,0,9,15,17,39,32,10,3,2]},"2024-25":{"n":140,"mean":71.3,"sd":8.1,"min":42,"max":90,"edges":[45,50,55,60,65,70,75,80,85,90],"lo":1,"hi":0,"counts":[0,4,3,14,34,37,26,14,5,2]}}};
-const MODULES = {"MCG":{"2024 End":{"label":"MCG End-Module Exam v1 2024","phase":"End","year":"2024","n":119,"mean":80.1,"sd":10.3,"min":40,"max":98,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,2,3,12,29,51,22],"cats":[{"name":"Biochemistry","mean":83.0,"sd":11.4},{"name":"General Principles","mean":79.1,"sd":10.2}]},"2025 Mid":{"label":"MCG Mid-Module Exam 2025","phase":"Mid","year":"2025","n":126,"mean":82.6,"sd":11.7,"min":23,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,1,1,0,2,10,23,57,32],"cats":[{"name":"Biochemistry","mean":83.0,"sd":11.8},{"name":"General Principles","mean":82.8,"sd":11.5}]},"2025 End":{"label":"MCG End-Module Exam 2025","phase":"End","year":"2025","n":128,"mean":81.6,"sd":9.5,"min":37,"max":98,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,1,0,3,10,22,69,23],"cats":[{"name":"Biochemistry","mean":84.2,"sd":10.9},{"name":"General Principles","mean":79.8,"sd":9.5}]}},"Anatomy":{"2024 End":{"label":"2024 Module End Anatomy CAS Exam","phase":"End","year":"2024","n":115,"mean":80.3,"sd":10.4,"min":41,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,1,4,15,32,39,24],"cats":[{"name":"Gross Anatomy/Embryology","mean":80.1,"sd":10.6}]},"2025 Mid":{"label":"ANATOMY MID-MODULE EXAM 2025","phase":"Mid","year":"2025","n":128,"mean":83.0,"sd":10.0,"min":46,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,1,3,10,27,47,40],"cats":[{"name":"Gross Anatomy/Embryology","mean":83.0,"sd":10.0},{"name":"Musculoskeletal system","mean":84.0,"sd":9.7}]},"2025 Final":{"label":"ANATOMY END-MODULE EXAM 2025 FINAL","phase":"Final","year":"2025","n":126,"mean":83.3,"sd":10.9,"min":21,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,1,0,1,4,3,28,53,36],"cats":[{"name":"Gross Anatomy/Embryology","mean":83.3,"sd":10.9}]}},"Micro-Immuno":{"2024 Final":{"label":"MICRO IMMUNO END-MODULE EXAM 2024 FINAL","phase":"Final","year":"2024","n":119,"mean":79.2,"sd":12.5,"min":29,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,1,0,4,4,12,33,42,23],"cats":[{"name":"Immune System","mean":75.9,"sd":14.9},{"name":"Microbiology","mean":79.6,"sd":12.8}]},"2025 End":{"label":"MICRO-IMMUNO END-MODULE EXAM 2025","phase":"End","year":"2025","n":128,"mean":86.5,"sd":7.9,"min":55,"max":98,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,1,4,20,58,45],"cats":[{"name":"Immune System","mean":84.6,"sd":8.8},{"name":"Microbiology","mean":86.7,"sd":7.8}]}},"Pathology":{"2024 Final":{"label":"Pathology End-Module Exam 2024 FINAL","phase":"Final","year":"2024","n":119,"mean":79.4,"sd":9.7,"min":42,"max":98,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,1,2,12,40,47,17],"cats":[{"name":"General Principles","mean":82.9,"sd":9.3},{"name":"Pathology","mean":79.4,"sd":9.7}]},"2025 Final":{"label":"PATHOLOGY END-MODULE EXAM 2025 FINAL","phase":"Final","year":"2025","n":128,"mean":81.2,"sd":9.8,"min":46,"max":98,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,1,2,10,30,60,25],"cats":[{"name":"General Principles","mean":83.1,"sd":9.0},{"name":"Pathology","mean":81.2,"sd":9.8}]}},"Neuroscience":{"2024 Final":{"label":"NEUROSCIENCE ENDMODULE EXAM 2024 FINAL","phase":"Final","year":"2024","n":118,"mean":81.0,"sd":9.9,"min":54,"max":97,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,4,15,23,48,28],"cats":[{"name":"Nervous system and special senses","mean":80.7,"sd":9.8},{"name":"Neuroscience","mean":79.4,"sd":10.6}]},"2026 Final":{"label":"FINAL NEURO END MODULE EXAM 2026","phase":"Final","year":"2026","n":125,"mean":81.5,"sd":9.4,"min":52,"max":97,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,5,12,25,56,27],"cats":[{"name":"Nervous system and special senses","mean":80.9,"sd":9.6},{"name":"Neuroscience","mean":79.6,"sd":10.3}]}},"Behavioral Science":{"2025 End":{"label":"BEHAVIORAL SCIENCE END-MODULE EXAM 2025","phase":"End","year":"2025","n":119,"mean":89.0,"sd":6.5,"min":66,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,0,1,8,41,69],"cats":[{"name":"Behavioral health","mean":90.9,"sd":6.3},{"name":"Behavioral Sciences","mean":89.1,"sd":6.5}]},"2026 End":{"label":"BEHAVIORAL SCIENCE end module 2026","phase":"End","year":"2026","n":128,"mean":88.6,"sd":6.5,"min":60,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,0,1,10,47,70],"cats":[{"name":"Behavioral health","mean":90.2,"sd":6.9},{"name":"Behavioral Sciences","mean":88.6,"sd":6.4}]}},"Hematology":{"2025 End":{"label":"HEMATOLOGY END-MODULE EXAM 2025","phase":"End","year":"2025","n":119,"mean":84.3,"sd":10.4,"min":44,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,1,2,10,15,45,46],"cats":[{"name":"Blood and lymphoreticular system","mean":84.4,"sd":10.5},{"name":"Pathology","mean":86.2,"sd":11.4}]},"2026 End":{"label":"Hematology End-module Exam 2026","phase":"End","year":"2026","n":127,"mean":83.5,"sd":10.4,"min":42,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,2,1,8,24,49,43],"cats":[{"name":"Blood and lymphoreticular system","mean":83.1,"sd":10.5},{"name":"Pathology","mean":83.2,"sd":11.9}]}},"Cardiology":{"2025 Final":{"label":"Cardio_FinalExam2025","phase":"Final","year":"2025","n":119,"mean":77.3,"sd":11.1,"min":35,"max":97,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,2,0,5,15,40,41,16],"cats":[{"name":"Cardiovascular system","mean":77.3,"sd":11.1},{"name":"Physiology","mean":77.2,"sd":13.7}]},"2026 Final":{"label":"Cardio Final Exam 2026","phase":"Final","year":"2026","n":123,"mean":78.4,"sd":9.8,"min":52,"max":97,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,4,21,39,39,20],"cats":[{"name":"Cardiovascular system","mean":78.4,"sd":9.8},{"name":"Physiology","mean":78.6,"sd":12.6}]}},"Pulmonary Medicine":{"2025 End":{"label":"Pulmonary End-Module Exam 2025","phase":"End","year":"2025","n":119,"mean":88.4,"sd":6.7,"min":67,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,0,2,11,41,65],"cats":[{"name":"Pathology","mean":87.1,"sd":10.9},{"name":"Respiratory system","mean":88.4,"sd":6.7}]}},"Endocrinology":{"2025 Final":{"label":"Endocrine Exam 2025- FINAL 08252025","phase":"Final","year":"2025","n":119,"mean":84.6,"sd":8.2,"min":58,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,1,4,25,53,36],"cats":[{"name":"Endocrine system","mean":84.9,"sd":8.6}]}},"Gastroenterology":{"2025 End":{"label":"Gastroenterology End-Module Exam 2025","phase":"End","year":"2025","n":117,"mean":84.3,"sd":8.4,"min":55,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,1,6,18,62,30],"cats":[{"name":"Gastrointestinal system","mean":83.9,"sd":8.6}]}},"GU-SRH":{"2025 End":{"label":"SRH 2025 - END MODULE EXAM","phase":"End","year":"2025","n":119,"mean":85.8,"sd":7.3,"min":67,"max":100,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,0,3,16,61,39],"cats":[{"name":"Female reproductive and breast","mean":84.6,"sd":8.2}]}},"Renal":{"2025 Final":{"label":"Renal End-Module Exam 2025- FINAL","phase":"Final","year":"2025","n":118,"mean":86.2,"sd":6.5,"min":67,"max":98,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,0,2,17,66,33],"cats":[{"name":"Physiology","mean":87.4,"sd":8.1},{"name":"Renal and urinary system","mean":86.2,"sd":6.5}]}},"MSK":{"2025 Final":{"label":"MSK END-MODULE EXAM 2025 FINAL","phase":"Final","year":"2025","n":119,"mean":84.6,"sd":7.1,"min":62,"max":98,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,0,0,0,0,0,2,28,60,29],"cats":[{"name":"Musculoskeletal system","mean":85.1,"sd":7.8}]}}};
-const CBSE = {
- "2025-EOY": { label:"End-Of-Year · Dec 2025", n:112, items:194, dist:{"n":112,"mean":64.2,"sd":14.0,"min":19,"max":90,"edges":[0,10,20,30,40,50,60,70,80,90],"hist":[0,1,0,7,8,21,31,28,15,1]}, areas:[
-   {section:"Physician Task", area:"Medical Knowledge: Applying Foundational Science Concepts", school:61, ssd:15, nat:72, nsd:9, diff:-11, pct:"60–70%"},
-   {section:"Physician Task", area:"Patient Care: Diagnosis", school:68, ssd:15, nat:78, nsd:9, diff:-10, pct:"20–25%"},
-   {section:"System", area:"Reproductive & Endocrine Systems", school:67, ssd:15, nat:75, nsd:10, diff:-8, pct:"12–16%"},
-   {section:"System", area:"Respiratory and Renal/Urinary Systems", school:63, ssd:17, nat:72, nsd:13, diff:-9, pct:"11–15%"},
-   {section:"System", area:"Behavioral Health and Nervous Systems/Special Senses", school:63, ssd:18, nat:74, nsd:12, diff:-11, pct:"10–14%"},
-   {section:"System", area:"Blood & Lymphoreticular and Immune Systems", school:61, ssd:20, nat:75, nsd:13, diff:-14, pct:"9–13%"},
-   {section:"System", area:"Multisystem Processes & Disorders", school:61, ssd:20, nat:75, nsd:12, diff:-14, pct:"8–12%"},
-   {section:"System", area:"Musculoskeletal, Skin, & Subcutaneous Tissue", school:68, ssd:14, nat:76, nsd:11, diff:-8, pct:"8–12%"},
-   {section:"System", area:"Cardiovascular System", school:63, ssd:18, nat:73, nsd:13, diff:-10, pct:"7–11%"},
-   {section:"System", area:"Gastrointestinal System", school:59, ssd:19, nat:74, nsd:13, diff:-15, pct:"6–10%"},
-   {section:"Discipline", area:"Pathology", school:63, ssd:15, nat:75, nsd:9, diff:-12, pct:"45–55%"},
-   {section:"Discipline", area:"Physiology", school:64, ssd:16, nat:75, nsd:9, diff:-11, pct:"30–40%"},
-   {section:"Discipline", area:"Microbiology & Immunology", school:60, ssd:19, nat:73, nsd:11, diff:-13, pct:"15–35%"},
-   {section:"Discipline", area:"Gross Anatomy & Embryology", school:59, ssd:14, nat:70, nsd:11, diff:-11, pct:"10–20%"},
-   {section:"Discipline", area:"Pharmacology", school:63, ssd:20, nat:76, nsd:11, diff:-13, pct:"10–20%"},
-   {section:"Discipline", area:"Behavioral Sciences", school:80, ssd:11, nat:83, nsd:8, diff:-3, pct:"10–15%"},
-   {section:"Discipline", area:"Biochemistry and Nutrition", school:63, ssd:18, nat:74, nsd:13, diff:-11, pct:"5–15%"},
-   {section:"Discipline", area:"Histology & Cell Biology", school:61, ssd:16, nat:71, nsd:14, diff:-10, pct:"5–15%"},
-   {section:"Discipline", area:"Genetics", school:59, ssd:21, nat:72, nsd:15, diff:-13, pct:"5–10%"}
- ]}
-};
-/* OCA-confirmed Legacy Class mapping (exam year + 2). Editable for FlexMed / off-cycle cohorts. */
-let classMap = {
-  step1: {"2023":2025,"2024":2026,"2025":2027},
-  step2: {"2022-23":2023,"2023-24":2024,"2024-25":2025},
-  shelf: {"2022-23":2024,"2023-24":2025,"2024-25":2026}
-};
-
-let state = {exam:"step1", group:"all", year:null, sort:"net", labelMode:"class", clerkship:"Medicine", module:"Anatomy"};
-
-function rep(){ return REPORTS[state.exam]; }
-function yearIndex(y){ return rep().years.indexOf(y); }
-function yp(exam){ return exam==="shelf" ? "AY" : REPORTS[exam].yp; }
-function labelFor(exam,y){ return state.labelMode==="class" ? ("Legacy Class of "+classMap[exam][y]) : (yp(exam)+" "+y); }
-function rowsFor(group){
-  const c=rep().cats, groups = group==="all"?["system","discipline","task"]:[group];
-  let out=[]; groups.forEach(g=>c[g].forEach(([name,range,series])=>out.push({name,range,group:g,series}))); return out;
-}
-function vals(r,y){ const [l,s,h]=r.series[yearIndex(y)]; return {l,s,h,net:h-l}; }
-function netClass(net){ if(net<=-10)return "net-soft"; if(net<0)return "net-mild"; if(net<10)return "net-ok"; return "net-strong"; }
-function trendFor(r){ const f=r.series[0],l=r.series[r.series.length-1]; return (l[2]-l[0])-(f[2]-f[0]); }
-
-function setExam(e){
-  state.exam=e;
-  document.getElementById("btn-home").setAttribute("aria-pressed", e==="home");
-  document.getElementById("btn-step1").setAttribute("aria-pressed", e==="step1");
-  document.getElementById("btn-step2").setAttribute("aria-pressed", e==="step2");
-  document.getElementById("btn-shelf").setAttribute("aria-pressed", e==="shelf");
-  document.getElementById("btn-modules").setAttribute("aria-pressed", e==="modules");
-  document.getElementById("btn-cbse").setAttribute("aria-pressed", e==="cbse");
-  document.getElementById("btn-bridge").setAttribute("aria-pressed", e==="bridge");
-  const isHome=e==="home";
-  document.getElementById("homeview").style.display = isHome?"":"none";
-  document.getElementById("dataview").style.display = isHome?"none":"";
-  document.getElementById("cohortbanner").style.display = isHome?"none":"";
-  if(isHome){ document.body.style.backgroundColor="#f5f7fb"; renderHome(); return; }
-  const isShelf=e==="shelf", isMod=e==="modules", isCBSE=e==="cbse", isBridge=e==="bridge";
-  document.getElementById("clerkctrl").style.display = isShelf?"":"none";
-  document.getElementById("modulectrl").style.display = isMod?"":"none";
-  document.getElementById("grpctrl").style.display = (isShelf||isMod||isCBSE||isBridge)?"none":"";
-  if(isShelf){
-    const cs=document.getElementById("clerksel");
-    cs.innerHTML=Object.keys(SHELF).sort().map(c=>`<option value="${c}">${c}</option>`).join("");
-    if(!SHELF[state.clerkship]) state.clerkship=Object.keys(SHELF).sort()[0];
-    cs.value=state.clerkship;
-    populateShelfYears();
-  } else if(isMod){
-    const ms=document.getElementById("modulesel");
-    const FOUND=["MCG","Anatomy","Micro-Immuno","Pathology"];
-    const mk=Object.keys(MODULES).sort();
-    ms.innerHTML=`<optgroup label="Foundations">`+mk.filter(c=>FOUND.includes(c)).map(c=>`<option value="${c}">${c}</option>`).join("")+`</optgroup><optgroup label="Organ Systems">`+mk.filter(c=>!FOUND.includes(c)).map(c=>`<option value="${c}">${c}</option>`).join("")+`</optgroup>`;
-    if(!MODULES[state.module]) state.module=Object.keys(MODULES).sort()[0];
-    ms.value=state.module;
-    populateModuleYears();
-  } else if(isCBSE){
-    populateCBSEYears();
-  } else if(isBridge){
-    populateBridgeYears();
-  } else {
-    refreshYearSelect();
-  }
-  renderMapper();
-  setSortOptions();
-  render();
-}
-function populateModuleYears(){
-  const ys=document.getElementById("yearsel"), cur=ys.value, pers=Object.keys(MODULES[state.module]).sort();
-  ys.innerHTML=pers.slice().reverse().map(p=>`<option value="${p}">${modulePeriodLabel(state.module,p)}</option>`).join("");
-  ys.value = pers.includes(cur)?cur:pers[pers.length-1];
-}
-function onModuleChange(){ state.module=document.getElementById("modulesel").value; populateModuleYears(); render(); }
-function refreshPeriodSelect(){ if(state.exam==="shelf") populateShelfYears(); else if(state.exam==="modules") populateModuleYears(); else if(state.exam==="cbse") populateCBSEYears(); else if(state.exam==="bridge") populateBridgeYears(); else refreshYearSelect(); }
-function populateShelfYears(){
-  const ys=document.getElementById("yearsel"), cur=ys.value, yrs=Object.keys(SHELF[state.clerkship]).sort();
-  ys.innerHTML=yrs.map(y=>`<option value="${y}">${labelFor("shelf",y)}</option>`).join("");
-  ys.value = yrs.includes(cur)?cur:yrs[yrs.length-1];
-}
-function onClerkChange(){ state.clerkship=document.getElementById("clerksel").value; populateShelfYears(); render(); }
-function refreshYearSelect(){
-  const ys=document.getElementById("yearsel"), cur = ys.value && rep().years.includes(ys.value) ? ys.value : rep().current;
-  ys.innerHTML = rep().years.slice().reverse().map(y=>`<option value="${y}">${labelFor(state.exam,y)}</option>`).join("");
-  ys.value = cur;
-}
-document.getElementById("grpseg").addEventListener("click",e=>{
-  const b=e.target.closest("button"); if(!b)return; state.group=b.dataset.g;
-  [...e.currentTarget.children].forEach(x=>x.setAttribute("aria-pressed", x===b)); render();
-});
-document.getElementById("labelseg").addEventListener("click",e=>{
-  const b=e.target.closest("button"); if(!b)return; state.labelMode=b.dataset.m;
-  [...e.currentTarget.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
-  document.getElementById("mapbanner").style.display = state.labelMode==="class" ? "block" : "none";
-  document.getElementById("mapbanner").innerHTML = "Periods shown by <b>Legacy Class</b> (OCA-confirmed mapping). Use “Edit Legacy Class mapping” to adjust for FlexMed or off-cycle cohorts.";
-  refreshPeriodSelect(); render();
-});
-function toggleMapper(){ const m=document.getElementById("mapper"); m.style.display = m.style.display==="block"?"none":"block"; }
-function renderMapper(){
-  const exam=state.exam;
-  if(exam==="modules"||exam==="cbse"||exam==="bridge"){
-    document.getElementById("maprows").innerHTML='<div style="font-size:12.5px;color:var(--muted)">Module exams are labeled by exam period. Mapping a preclerkship module to a graduating class needs the Candidate_ID → class crosswalk, so it is not set here yet.</div>';
-    return;
-  }
-  const years = exam==="shelf" ? Object.keys(SHELF[state.clerkship]) : rep().years;
-  const label = exam==="shelf" ? "Subject Exams" : rep().label;
-  document.getElementById("maprows").innerHTML = years.slice().reverse().map(y=>`
-    <div class="mcell">
-      <span>${label} · ${yp(exam)} ${y}</span>
-      <div class="pre">Legacy Class of
-        <input type="number" min="2018" max="2035" value="${classMap[exam][y]}"
-          oninput="classMap['${exam}']['${y}']=this.value; (state.exam==='shelf'?populateShelfYears:refreshYearSelect)(); render();">
-      </div>
-    </div>`).join("");
-}
-
-const SORT_DEFAULT='<option value="net">Most concerning (net ↑)</option><option value="lower">Highest % below national</option><option value="higher">Highest % above national</option><option value="trend">Most worsened over time</option><option value="name">Name (A–Z)</option>';
-function setSortOptions(){
-  const ss=document.getElementById("sortsel"); if(!ss) return;
-  if(state.exam==="bridge"){
-    ss.innerHTML='<option value="r">Predictive strength (r, high→low)</option><option value="cbsegap">CBSE gap vs national (worst first)</option><option value="casmean">Module average (low→high)</option><option value="name">Module name (A–Z)</option>';
-    ss.value="r";
-  } else { ss.innerHTML=SORT_DEFAULT; if(!["net","lower","higher","trend","name"].includes(ss.value)) ss.value="net"; }
-}
-function classLabel(y){ return (y>=2028?"ASCEND":"Legacy")+" Class of "+y; }
-function cohortInfo(){
-  const e=state.exam, p=(document.getElementById("yearsel")||{}).value;
-  if(e==="modules") return {cls:"ASCEND Class of 2028", sub:"Pre-clerkship course exams (CAS)", t:"2028", yr:2028};
-  if(e==="cbse")    return {cls:"ASCEND Class of 2028", sub:"End-of-pre-clerkship CBSE", t:"2028", yr:2028};
-  if(e==="bridge")  return {cls:"ASCEND Class of 2028", sub:"CAS + CBSE linked per student by examinee ID", t:"2028", yr:2028};
-  const cm=classMap[e]||{}, grad=cm[p];
-  const ex = e==="step1"?"USMLE Step 1":e==="step2"?"USMLE Step 2 CK":"Clerkship shelf exams";
-  return {cls: grad?classLabel(grad):"Testing cohort", sub: ex+(p?(" · "+p):""), t:(grad&&grad>=2028)?"2028":"legacy", yr:grad||null};
-}
-function setCohortBanner(){
-  const b=document.getElementById("cohortbanner"); if(!b) return;
-  const c=cohortInfo();
-  b.className="cohortbanner "+(c.t==="2028"?"cb-2028":"cb-other");
-  b.innerHTML=`<span class="cb-dot"></span><span class="cb-cls">${c.cls}</span><span class="cb-sub">${c.sub}</span>`;
-  let bg="#f5f7fb";
-  if(c.yr){ bg = c.yr>=2028 ? "#fbf5f0" : "hsl("+(((c.yr-2023)*40)%360)+",24%,97.6%)"; }
-  document.body.style.backgroundColor=bg;
-}
-function renderHome(){
-  const cards=[
-    {id:"modules", accent:"#e8531a", tag:"Pre-clerkship course exams",
-      title:"Module CAS Exams",
-      what:"Performance on the end-of-module (CAS) exams Sinai faculty build for each pre-clerkship course, broken out by content category and by administration.",
-      read:"The only exams here tied directly to specific courses — use them for <b>course-attributable</b> strengths and soft spots, read as gap vs. the module/curriculum average rather than lowest raw score.",
-      cohort:"ASCEND Classes of 2028 & 2029"},
-    {id:"cbse", accent:"#1c3f94", tag:"Comprehensive Basic Science Exam",
-      title:"CBSE",
-      what:"A Step 1\u2013style practice exam scored in Step 1's own content framework, sat at the end of pre-clerkship, with each content area compared to national Step 1 first-takers (EPC).",
-      read:"An early, <b>cross-sectional</b> read on Step 1 readiness by content area. It's a class snapshot, not a longitudinal link to this cohort's eventual Step 1.",
-      cohort:"ASCEND Class of 2028"},
-    {id:"step1", accent:"#0d2a5c", tag:"USMLE licensing exam",
-      title:"Step 1",
-      what:"Program pass rate vs. national and the share of students below the national group in each content category, from the annual school report.",
-      read:"Licensing-outcome health plus relative content soft spots, scored against the program standard (pass rate \u2265 national + 1 pt; \u226425% below national per category).",
-      cohort:"By exam year \u2192 graduating class"},
-    {id:"shelf", accent:"#1c3f94", tag:"NBME subject exams",
-      title:"Clerkship Shelf Exams",
-      what:"School mean vs. national first-time-taker mean (EPC) for each clerkship's subject exam, with a 3-year trend.",
-      read:"How each clerkship's students perform against national, held to the \u00b12.5 EPC standard. Shelf content sub-categories are clerkship-review-only, not part of program evaluation.",
-      cohort:"By exam year \u2192 graduating class"},
-    {id:"step2", accent:"#0d2a5c", tag:"USMLE licensing exam",
-      title:"Step 2",
-      what:"Pass rate vs. national and content-category distribution from the Step 2 CK annual school report.",
-      read:"Clinical-knowledge licensing outcome and content soft spots, scored against the program standard (pass rate \u2265 national; \u226430% below national per category).",
-      cohort:"By exam year \u2192 graduating class"},
-    {id:"bridge", accent:"#e8531a", tag:"Cross-assessment link",
-      title:"CAS \u2192 CBSE Correlation",
-      what:"How strongly each module's CAS exam predicted that student's CBSE performance in the same domain (per-student Pearson r), for students linked by examinee ID.",
-      read:"Which course exams are the best <b>early signal</b> of comprehensive readiness. Predictive strength varies widely by module \u2014 strongest for Cardiology, Hematology, Neuroscience; weakest for Behavioral Science.",
-      cohort:"ASCEND Class of 2028"}
-  ];
-  const grid=cards.map(c=>`
-    <button class="vcard" style="--accent:${c.accent}" onclick="setExam('${c.id}')">
-      <div class="vc-tag">${c.tag}</div>
-      <div class="vc-title">${c.title}</div>
-      <div class="vc-row"><b>Shows:</b> ${c.what}</div>
-      <div class="vc-row"><b>Read it for:</b> ${c.read}</div>
-      <div class="vc-foot"><span class="vc-cohort">${c.cohort}</span><span class="vc-go">Open view \u2192</span></div>
-    </button>`).join("");
-  document.getElementById("homeview").innerHTML=`
-    <div class="hero">
-      <h2>Content-Area Performance Dashboard</h2>
-      <p>An institutional view of how Sinai students perform across the assessment continuum \u2014 from pre-clerkship course exams through the comprehensive CBSE, clerkship shelf exams, and the USMLE Step exams \u2014 broken down by content area and benchmarked against national groups where a benchmark exists.</p>
-      <p>Pick a view below to dive in. Each one tracks a specific assessment and the cohort that sat it; the colored cohort banner inside each view confirms which class you're looking at.</p>
-    </div>
-    <div class="section-label">The six views</div>
-    <div class="vgrid">${grid}</div>
-    <div class="homefoot">
-      <b>Reading the whole picture:</b> the pre-clerkship views (Module CAS, CBSE, and the CAS\u2192CBSE link) follow the ASCEND Class of 2028 as the same students; the Step and Shelf views are organized by exam year and mapped to a graduating class. Every figure that carries a national benchmark is a <b>relative</b> signal for curricular review \u2014 a soft spot worth a look, not a pass/fail verdict on individual students.
-    </div>`;
-}
-function render(){
-  if(state.exam==="home"){ renderHome(); return; }
-  state.sort = document.getElementById("sortsel").value;
-  setCohortBanner();
-  { const _x=document.getElementById("sortnote"); if(_x){_x.innerHTML="";_x.style.display="none";} }
-  if(state.exam==="shelf"){ renderShelf(); return; }
-  if(state.exam==="modules"){ renderModules(); return; }
-  if(state.exam==="cbse"){ renderCBSE(); return; }
-  if(state.exam==="bridge"){ renderBridge(); return; }
-  state.year = document.getElementById("yearsel").value || rep().current;
-  renderKPIs(); renderWatch(); renderTable();
-}
-function kpiHTML(c){ return `<div class="kpi"><div class="lab">${c.lab}</div><div class="val ${c.cls||''}">${c.val}</div><div class="sub ${c.up?'up':''}">${c.sub}</div></div>`; }
-function renderKPIs(){
-  const r=rep(), y=state.year, su=r.summary[y], lbl=labelFor(state.exam,y);
-  document.getElementById("cap-year").textContent = `${r.label} · ${lbl}`;
-  document.getElementById("out-year").textContent = `${r.label} · ${lbl}`;
-  const nets = rowsFor("all").map(row=>vals(row,y).net);
-  const total=nets.length, above=nets.filter(n=>n>=10).length, onpar=nets.filter(n=>n>=0&&n<10).length, below=nets.filter(n=>n<0).length;
-  const cap=[
-    {lab:"Content areas tracked", val:total, sub:"systems · disciplines · tasks"},
-    {lab:"Above national", val:above, sub:"net ≥ +10", cls:"v-good"},
-    {lab:"On par with national", val:onpar, sub:"net 0 to +9"},
-    {lab:"Below national", val:below, sub:"more students below than above", cls:"v-warn"}
-  ];
-  document.getElementById("cap-kpis").innerHTML = cap.map(kpiHTML).join("");
-  const out=[
-    {lab:"First-time examinees", val:su.n, sub:`tested · ${lbl}`},
-    {lab:"School pass rate", val:su.pass+"%", sub:`national ${su.natpass}%`, up:su.pass>=su.natpass},
-    {lab:"vs national pass", val:(su.pass-su.natpass>=0?"+":"")+(su.pass-su.natpass)+" pts", sub:"school − national", up:su.pass-su.natpass>=0}
-  ];
-  if(r.scored) out.push({lab:"School mean score", val:su.mean, sub:`SD ${su.sd} · national ${su.natmean}`, up:su.mean>=su.natmean});
-  document.getElementById("out-kpis").innerHTML = out.map(kpiHTML).join("");
-}
-function renderWatch(){
-  const r=rep(), y=state.year;
-  const rows = rowsFor("all").map(row=>{const v=vals(row,y);return {...row,...v,tr:trendFor(row)};});
-  const flagged = rows.filter(x=>x.net<=-8||x.l>=22||x.tr<=-8).sort((a,b)=>a.net-b.net).slice(0,6);
-  document.getElementById("watch-title").textContent =
-    `${r.label} — ${labelFor(state.exam,y)}: ${flagged.length} area${flagged.length===1?"":"s"} for curricular review`;
-  const list=document.getElementById("watch-list");
-  if(!flagged.length){ list.innerHTML=`<li><span class="nm">No relative soft spots flagged this period — performance tracks or exceeds national across categories.</span></li>`; return; }
-  list.innerHTML = flagged.map(x=>{
-    let reasons=[];
-    if(x.l>=22) reasons.push(`${x.l}% of the cohort below national`);
-    if(x.net<=-8) reasons.push(`net ${x.net} (more students below than above national)`);
-    if(x.tr<=-8) reasons.push(`net fell ${Math.abs(x.tr)} pts over the period`);
-    return `<li><span class="nm">${x.name}</span><span class="grp">${GRPLABEL[x.group]}</span>
-      <span class="pill l">${x.l}% lower</span><span class="pill net">net ${x.net>0?'+':''}${x.net}</span>
-      <span class="reason">${reasons.join(" · ")}</span></li>`;
-  }).join("");
-}
-function renderTable(){
-  document.getElementById("shelfdist").innerHTML="";
-  document.getElementById("thead-row").innerHTML='<th>Content area</th><th class="hide-sm">Type</th><th>Distribution (selected period)</th><th class="num">Lower</th><th class="num">Higher</th><th class="num">Net</th><th class="num">3-period trend</th>';
-  setLegend("usmle");
-  document.getElementById("cap-title").textContent="Content-area picture";
-  document.getElementById("out-title").textContent="Licensing outcome";
-  document.getElementById("outhint").textContent="Pass rates — and Step 2 mean scores — sit near the national ceiling and look uniformly strong, so on their own they don't show where students are relatively weak. The content-area picture above, and the areas to watch below, are where the actionable signal is.";
-  document.getElementById("watch-hint").innerHTML="Auto-flagged where a relatively large share of the cohort scored below the national group, or where that share grew over the period. Ranked by net performance (Higher % − Lower %). These are <b>relative</b> signals for curricular review, not pass/fail concerns — read with the cautions at the bottom.";
-  const y=state.year;
-  let rows = rowsFor(state.group).map(row=>{const v=vals(row,y);return {...row,...v,tr:trendFor(row)};});
-  const s=state.sort;
-  rows.sort((a,b)=> s==="net"?a.net-b.net : s==="lower"?b.l-a.l : s==="higher"?b.h-a.h : s==="trend"?a.tr-b.tr : a.name.localeCompare(b.name));
-  document.getElementById("tbody").innerHTML = rows.map((x,idx)=>{
-    const bar=`<div class="bar" title="Lower ${x.l}% · Same ${x.s}% · Higher ${x.h}%">
-        <i class="seg-l" style="width:${x.l}%">${x.l>=8?x.l:""}</i>
-        <i class="seg-s" style="width:${x.s}%">${x.s>=14?x.s:""}</i>
-        <i class="seg-h" style="width:${x.h}%">${x.h>=8?x.h:""}</i></div>`;
-    const tT = x.tr>=4?"improving":x.tr<=-4?"worsening":"stable";
-    return `<tr onclick="toggleDetail(${idx})" data-idx="${idx}">
-      <td><span class="catname">${x.name}<span class="range">(${x.range})</span></span></td>
-      <td class="hide-sm"><span class="grptag">${GRPLABEL[x.group]}</span></td>
-      <td>${bar}</td>
-      <td class="num">${x.l}%</td><td class="num">${x.h}%</td>
-      <td class="net"><span class="netcell ${netClass(x.net)}">${x.net>0?'+':''}${x.net}</span></td>
-      <td class="trend">${sparkline(x.series.map(t=>t[2]-t[0]))}<br><small>${tT}</small></td>
-    </tr>
-    <tr class="detail" id="detail-${idx}" style="display:none"><td colspan="7">${detailHTML(x)}</td></tr>`;
-  }).join("");
-  openDetail=null;
-}
-function detailHTML(x){
-  const r=rep();
-  const yrbars = r.years.map((yr,i)=>{
-    const [l,s,h]=x.series[i];
-    return `<div class="yrrow"><span class="yl">${labelFor(state.exam,yr)}</span>
-      <div class="bar" style="min-width:200px">
-        <i class="seg-l" style="width:${l}%">${l>=8?l:""}</i>
-        <i class="seg-s" style="width:${s}%">${s>=14?s:""}</i>
-        <i class="seg-h" style="width:${h}%">${h>=8?h:""}</i></div></div>`;
-  }).join("");
-  const v=vals(x,state.year);
-  let lvl = v.net<=-10 ? `a <span class="tag" style="color:var(--orange)">relative soft spot</span>` :
-            v.net<0 ? `<span class="tag" style="color:var(--amber)">slightly below</span> the national mix` :
-            v.net<10 ? `<span class="tag" style="color:var(--good)">on par with</span> the national group` :
-            `a <span class="tag" style="color:var(--navy)">relative strength</span>`;
-  let trendTxt = x.tr>=4 ? "Net has improved across the three periods." : x.tr<=-4 ? "Net has slipped across the three periods — worth watching." : "The mix has been broadly stable across periods.";
-  const small = /^[2-9]/.test(x.range) ? "" : `<br><span style="color:var(--muted)">Small content area (${x.range} of items); read shifts cautiously.</span>`;
-  return `<div class="inner">
-    <div><h4>Three-period breakdown</h4>${yrbars}</div>
-    <div><h4>Reading</h4><p class="note">In <b>${labelFor(state.exam,state.year)}</b>, <b>${v.l}%</b> of the cohort scored below national here and <b>${v.h}%</b> above — net <b>${v.net>0?'+':''}${v.net}</b>, ${lvl}. ${trendTxt}${small}</p></div>
-  </div>`;
-}
-let openDetail=null;
-function toggleDetail(idx){
-  const el=document.getElementById("detail-"+idx); if(!el)return;
-  const show = el.style.display==="none";
-  if(openDetail!==null && openDetail!==idx){ const p=document.getElementById("detail-"+openDetail); if(p)p.style.display="none"; }
-  el.style.display = show?"table-row":"none"; openDetail = show?idx:null;
-}
-function sigStar(s){ return s==="**"?"★★":(s==="*"?"★":""); }
-function shelfDistHTML(d,nat){
-  const max=Math.max(...d.counts,1), pos=v=>Math.max(0,Math.min(100,(v-45)/50*100));
-  const bars=d.counts.map((c,i)=>{const lo=d.edges[i];return `<div class="hbar" title="${lo}–${lo+4} EPC: ${c} student${c===1?'':'s'}"><div class="hfill" style="height:${Math.round(c/max*100)}%"></div><span class="hlab">${lo}</span></div>`;}).join("");
-  return `<div class="hist"><div class="histbars">${bars}<div class="hmark sch" style="left:${pos(d.mean)}%"><span>School ${d.mean}</span></div>${nat!=null?`<div class="hmark nat" style="left:${pos(nat)}%"><span>Nat ${nat}</span></div>`:""}</div><p class="outhint">Total EPC across ${d.n} examinees (de-identified). Each bar = students in a 5-point EPC band; lines mark the school mean (${d.mean})${nat!=null?` and national mean (${nat})`:""}. SD ${d.sd}, range ${d.min}–${d.max}.</p></div>`;
-}
-function shelfDiffClass(a){ if(a.diff<0 && a.sig) return "net-soft"; if(a.diff<0) return "net-mild"; if(a.diff>0) return "net-strong"; return "net-ok"; }
-function epcTrend(labels,school,nat){
-  const W=320,H=104,padL=8,padR=44,padT=12,padB=20;
-  const all=school.concat(nat); let mn=Math.min(...all),mx=Math.max(...all);
-  const pd=Math.max(1,(mx-mn)*0.35); mn-=pd; mx+=pd; const r=(mx-mn)||1;
-  const X=i=>padL+(labels.length<2?0:i/(labels.length-1))*(W-padL-padR);
-  const Y=v=>H-padB-(v-mn)/r*(H-padB-padT);
-  const poly=arr=>arr.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ");
-  const dots=(arr,col)=>arr.map((v,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="2.6" fill="${col}"/>`).join("");
-  const xlab=labels.map((l,i)=>`<text x="${X(i).toFixed(1)}" y="${H-6}" text-anchor="${i===0?'start':i===labels.length-1?'end':'middle'}" class="sctick">${l}</text>`).join("");
-  const last=school.length-1;
-  return `<svg viewBox="0 0 ${W} ${H}" class="scsvg" style="max-width:340px"><polyline points="${poly(nat)}" fill="none" stroke="#9aa7bd" stroke-width="1.6" stroke-dasharray="4 3"/><polyline points="${poly(school)}" fill="none" stroke="var(--navy)" stroke-width="2.2"/>${dots(nat,'#9aa7bd')}${dots(school,'var(--navy)')}<text x="${(X(last)+4).toFixed(1)}" y="${(Y(school[last])+3).toFixed(1)}" font-size="10" font-weight="700" fill="var(--navy)">${school[last]}</text><text x="${(X(last)+4).toFixed(1)}" y="${(Y(nat[last])+3).toFixed(1)}" font-size="9" fill="#9aa7bd">${nat[last]}</text>${xlab}</svg><div class="scsub" style="margin-top:2px"><b style="color:var(--navy)">\u2014 School</b> &nbsp; <b style="color:#9aa7bd">\u00b7\u00b7 National</b> &nbsp; overall mean EPC</div>`;
-}
-function renderShelf(){
-  const cl=state.clerkship, rec=SHELF[cl], yrs=Object.keys(rec).sort();
-  const ysv=document.getElementById("yearsel").value;
-  const y = rec[ysv] ? ysv : yrs[yrs.length-1];
-  state.year=y;
-  const lbl=labelFor("shelf",y), areas=rec[y].areas, t=rec[y].total;
-  document.getElementById("cap-title").textContent="Content-area picture";
-  document.getElementById("out-title").textContent="Exam outcome (EPC)";
-  document.getElementById("cap-year").textContent=`${cl} shelf · ${lbl}`;
-  document.getElementById("out-year").textContent=`${cl} shelf · ${lbl}`;
-  document.getElementById("outhint").textContent="EPC = equated percent correct (share of content mastered). Differences shown are School − National; NBME flags only statistically meaningful gaps with ★, so small unflagged differences are within normal cohort noise.";
-  const below=areas.filter(a=>a.diff<0).length, on=areas.filter(a=>a.diff===0).length, above=areas.filter(a=>a.diff>0).length, fl=areas.filter(a=>a.sig).length;
-  const cap=[
-    {lab:"Content areas tracked", val:areas.length, sub:"organ systems · tasks · sites"},
-    {lab:"Below national", val:below, sub:"School EPC < national", cls:"v-warn"},
-    {lab:"On par / above", val:on+above, sub:"School ≥ national"},
-    {lab:"Statistically flagged", val:fl, sub:"meaningful gap (★/★★)", cls: fl?"v-warn":""}
-  ];
-  document.getElementById("cap-kpis").innerHTML=cap.map(kpiHTML).join("");
-  const dT=(t.mean!=null&&t.cmean!=null)?(t.mean-t.cmean):null;
-  const out=[
-    {lab:"First-time examinees", val:(t.n!=null?t.n:"—"), sub:`tested · ${lbl}`},
-    {lab:"School mean EPC", val:(t.mean!=null?t.mean:"—"), sub:(t.sd!=null?`SD ${t.sd}`:"")},
-    {lab:"National mean EPC", val:(t.cmean!=null?t.cmean:"—"), sub:(t.csd!=null?`SD ${t.csd}`:"")},
-    {lab:"School − national", val:(dT!=null?((dT>=0?"+":"")+dT.toFixed(1)):"—"), sub:"total EPC", up:dT!=null&&dT>=0}
-  ];
-  document.getElementById("out-kpis").innerHTML=out.map(kpiHTML).join("");
-  const dd=SHELFDIST[cl]&&SHELFDIST[cl][y];
-  const sMean=yrs.map(yy=>SHELF[cl][yy].total.mean), nMean=yrs.map(yy=>SHELF[cl][yy].total.cmean);
-  const okTrend = yrs.length>=2 && sMean.every(v=>typeof v==="number") && nMean.every(v=>typeof v==="number");
-  const trBlk = okTrend ? `<div class="section-label">Overall EPC trend · ${cl} shelf</div>`+epcTrend(yrs.map(z=>z.slice(2)),sMean,nMean) : "";
-  document.getElementById("shelfdist").innerHTML = trBlk + (dd ? `<div class="section-label">Score distribution · ${lbl}</div>`+shelfDistHTML(dd,t.cmean) : "");
-  const flg=areas.filter(a=>a.sig&&a.diff<0).sort((a,b)=>a.diff-b.diff);
-  document.getElementById("watch-title").textContent=`${cl} shelf — ${lbl}: ${flg.length} statistically flagged gap${flg.length===1?"":"s"} below national`;
-  document.getElementById("watch-hint").innerHTML="Flagged only where the School−National EPC gap is <b>statistically meaningful</b> (★ smaller, ★★ larger). NBME cautions that small unflagged differences come from normal cohort variation and shouldn't be over-read.";
-  const list=document.getElementById("watch-list");
-  if(!flg.length){ list.innerHTML=`<li><span class="nm">No statistically meaningful gaps below national this year.</span></li>`; }
-  else { list.innerHTML=flg.map(a=>`<li><span class="nm">${a.area}</span><span class="grp">${a.section||""}</span>
-     <span class="pill l">${a.school} vs ${a.nat} EPC</span><span class="pill net">${a.diff>0?"+":""}${a.diff}${sigStar(a.sig)}</span>
-     <span class="reason">${a.pct} of items · ${a.sig==="**"?"larger":"smaller"} meaningful gap below national</span></li>`).join(""); }
-  // table
-  document.getElementById("thead-row").innerHTML='<th>Content area</th><th class="hide-sm">Section</th><th class="num">School EPC</th><th class="num">National EPC</th><th class="num">Difference</th><th class="num">% of items</th>';
-  setLegend("shelf");
-  const s=state.sort;
-  let rows=areas.slice();
-  rows.sort((a,b)=> s==="higher"?(b.diff-a.diff) : s==="name"?a.area.localeCompare(b.area) : ((a.diff-b.diff)||((b.sig?1:0)-(a.sig?1:0))) );
-  document.getElementById("tbody").innerHTML=rows.map((a,idx)=>`
-    <tr onclick="toggleDetail(${idx})">
-      <td><span class="catname">${a.area} ${a.sig?`<span title="statistically meaningful gap" style="color:var(--orange)">${sigStar(a.sig)}</span>`:""}</span></td>
-      <td class="hide-sm"><span class="grptag">${a.section||""}</span></td>
-      <td class="num">${a.school}</td><td class="num">${a.nat}</td>
-      <td class="net"><span class="netcell ${shelfDiffClass(a)}">${a.diff>0?"+":""}${a.diff}</span></td>
-      <td class="num">${a.pct}</td>
-    </tr>
-    <tr class="detail" id="detail-${idx}" style="display:none"><td colspan="6">${shelfDetail(cl,a.area)}</td></tr>`).join("");
-  openDetail=null;
-}
-function shelfDetail(cl,area){
-  const yrs=Object.keys(SHELF[cl]).sort();
-  const rows=yrs.map(y=>{
-    const a=SHELF[cl][y].areas.find(x=>x.area===area);
-    if(!a) return `<div class="yrrow"><span class="yl">${labelFor("shelf",y)}</span><div class="note" style="color:var(--muted)">not reported this year</div></div>`;
-    return `<div class="yrrow"><span class="yl">${labelFor("shelf",y)}</span><div class="note">School <b>${a.school}</b> vs national <b>${a.nat}</b> EPC · diff <b>${a.diff>0?"+":""}${a.diff}${sigStar(a.sig)}</b></div></div>`;
-  }).join("");
-  return `<div class="inner"><div><h4>Three-year trend</h4>${rows}</div><div><h4>Reading</h4><p class="note">★ marks gaps NBME considers statistically meaningful; smaller unflagged differences are mostly noise. Blueprint categories were revised in 2022-23, so some areas appear only in the later years.</p></div></div>`;
-}
-function modulePeriodLabel(mod,p){ const r=MODULES[mod][p]; return r.phase==="Mid" ? `Mid-Module ${r.year}` : `End-of-Module ${r.year}`; }
-function moduleDistHTML(d){
-  const max=Math.max(...d.hist,1), pos=v=>Math.max(0,Math.min(100,v));
-  const bars=d.hist.map((c,i)=>{const lo=d.edges[i];return `<div class="hbar" title="${lo}–${lo+9}% correct: ${c} student${c===1?'':'s'}"><div class="hfill" style="height:${Math.round(c/max*100)}%"></div><span class="hlab">${lo}</span></div>`;}).join("");
-  return `<div class="hist"><div class="histbars">${bars}<div class="hmark sch" style="left:${pos(d.mean)}%"><span>Mean ${d.mean}%</span></div></div><p class="outhint">Total percent-correct across ${d.n} examinees (de-identified). Each bar = students in a 10-point band; the line marks the cohort mean (${d.mean}%). SD ${d.sd}, range ${d.min}–${d.max}.</p></div>`;
-}
-function moduleDetail(mod,p){
-  const r=MODULES[mod][p];
-  const rows=r.cats.map(c=>{const d=Math.round(c.mean-r.mean);return `<div style="margin-bottom:7px;font-size:13px"><b>${c.name}</b>: ${c.mean}% (SD ${c.sd}) · ${d>=0?"+":""}${d} vs module average</div>`;}).join("");
-  return `<div class="inner"><div><h4>Categories this administration</h4>${rows}</div><div><h4>Reading</h4><p class="note">Faculty-defined score categories for this course exam. Because CAS exams are custom-built, comparisons are within the module (against its own average and across years), not against a national group.</p></div></div>`;
-}
-function renderModules(){
-  const mod=state.module, rec=MODULES[mod], pers=Object.keys(rec).sort();
-  const psv=document.getElementById("yearsel").value;
-  const p = rec[psv]?psv:pers[pers.length-1];
-  state.year=p;
-  const r=rec[p], plbl=modulePeriodLabel(mod,p);
-  document.getElementById("cap-title").textContent="Module performance (CAS)";
-  document.getElementById("out-title").textContent="Content categories";
-  document.getElementById("cap-year").textContent=`${mod} · ${plbl}`;
-  document.getElementById("out-year").textContent=`${mod} · ${plbl}`;
-  document.getElementById("outhint").textContent="CAS module exams are course-built, so there is no national comparison group. Signals are within-module: how each faculty category compares to the module average, the spread of scores, and change across years.";
-  const weak=r.cats.slice().sort((a,b)=>a.mean-b.mean)[0];
-  const multi=r.cats.length>1;
-  const belowN=r.hist.reduce((a,c,i)=> a + (r.edges[i]<70 ? c : 0), 0);
-  const cap=[
-    {lab:"First-time examinees", val:r.n, sub:plbl},
-    {lab:"Cohort mean % correct", val:r.mean+"%", sub:`SD ${r.sd}`},
-    {lab:"Score range", val:`${r.min}–${r.max}`, sub:"lowest – highest scorer"},
-    multi ? {lab:"Weakest category", val:weak.mean+"%", sub:weak.name, cls:"v-warn"}
-          : {lab:"Students below 70%", val:belowN, sub:"low-scoring tail", cls: belowN?"v-warn":""}
-  ];
-  document.getElementById("cap-kpis").innerHTML=cap.map(kpiHTML).join("");
-  if(multi){
-    const out=r.cats.map(c=>{const d=Math.round(c.mean-r.mean); return {lab:c.name, val:c.mean+"%", sub:`${d>=0?"+":""}${d} vs module avg`, cls: d<=-3?"v-warn":(d>=3?"v-good":"")};});
-    document.getElementById("out-kpis").innerHTML=out.map(kpiHTML).join("");
-    document.getElementById("out-title").textContent="Content categories";
-  } else {
-    document.getElementById("out-title").textContent="Content category";
-    document.getElementById("out-kpis").innerHTML=`<div class="kpi" style="grid-column:1/-1"><div class="lab">${r.cats[0].name}</div><div class="val">${r.cats[0].mean}%</div><div class="sub">This exam was built with a single faculty score category, so it mirrors the cohort mean. Finer content detail lives in the item-level Question Level Feedback export — each item carries an NBME task → system → topic classification.</div></div>`;
-  }
-  document.getElementById("shelfdist").innerHTML=`<div class="section-label">Score distribution · ${plbl}</div>`+moduleDistHTML(r);
-  const lag=r.cats.filter(c=>(c.mean-r.mean)<=-3).sort((a,b)=>a.mean-b.mean);
-  document.getElementById("watch-title").textContent=`${mod} · ${plbl}: within-module weak spots`;
-  document.getElementById("watch-hint").innerHTML="CAS module exams are course-built and have <b>no national norm</b>, so signals are relative to the module — categories trailing the module average, and the size of the low-scoring tail.";
-  const items=lag.map(c=>`<li><span class="nm">${c.name}</span><span class="grp">category</span><span class="pill l">${c.mean}%</span><span class="pill net">${Math.round(c.mean-r.mean)} vs avg</span><span class="reason">trails the module average</span></li>`);
-  items.push(`<li><span class="nm">Low-scoring tail</span><span class="grp">distribution</span><span class="pill l">${belowN} student${belowN===1?"":"s"}</span><span class="pill net">&lt; 70% correct</span><span class="reason">may warrant follow-up (CAS has no formal pass standard)</span></li>`);
-  document.getElementById("watch-list").innerHTML=items.join("");
-  document.getElementById("thead-row").innerHTML='<th>Administration</th><th class="num">Examinees</th><th class="num">Mean % correct</th><th class="num">SD</th><th class="num">Range</th><th>Weakest category</th>';
-  setLegend("modules");
-  const rowsP=pers.slice().sort().reverse();
-  document.getElementById("tbody").innerHTML=rowsP.map((pk,idx)=>{
-    const rr=MODULES[mod][pk], w=rr.cats.slice().sort((a,b)=>a.mean-b.mean)[0];
-    const selstyle = pk===p ? ' style="background:#eef4ff"' : '';
-    return `<tr onclick="toggleDetail(${idx})"${selstyle}>
-      <td><span class="catname">${modulePeriodLabel(mod,pk)}</span></td>
-      <td class="num">${rr.n}</td><td class="num">${rr.mean}%</td><td class="num">${rr.sd}</td>
-      <td class="num">${rr.min}–${rr.max}</td>
-      <td><span class="grptag">${w.name} (${w.mean}%)</span></td>
-    </tr>
-    <tr class="detail" id="detail-${idx}" style="display:none"><td colspan="6">${moduleDetail(mod,pk)}</td></tr>`;
-  }).join("");
-  openDetail=null;
-}
-function cbseDiffClass(a){ if(a.diff<=-12) return "net-soft"; if(a.diff<0) return "net-mild"; if(a.diff>0) return "net-strong"; return "net-ok"; }
-function populateCBSEYears(){
-  const ys=document.getElementById("yearsel"), cur=ys.value, keys=Object.keys(CBSE);
-  ys.innerHTML=keys.map(k=>`<option value="${k}">${CBSE[k].label}</option>`).join("");
-  ys.value = keys.includes(cur)?cur:keys[keys.length-1];
-}
-function renderCBSE(){
-  const pkey=document.getElementById("yearsel").value, keys=Object.keys(CBSE);
-  const p = CBSE[pkey]?pkey:keys[keys.length-1]; state.year=p;
-  const r=CBSE[p], areas=r.areas, lbl=r.label;
-  document.getElementById("cap-title").textContent="Content-area picture";
-  document.getElementById("out-title").textContent="Readiness check (CBSE)";
-  document.getElementById("cap-year").textContent=`CBSE · ${lbl}`;
-  document.getElementById("out-year").textContent=`CBSE · ${lbl}`;
-  document.getElementById("outhint").textContent="The CBSE is a Step 1\u2013style practice exam scored in Step 1's own content framework; the comparison group is national USMLE Step 1 first-takers on the CBSE, so each School \u2212 National gap is a Step 1\u2013readiness signal. Students sit it during preclerkship, so a gap to first-takers is expected — read it as trajectory, and don't over-read areas built on few items.";
-  const below=areas.filter(a=>a.diff<0).length, on=areas.filter(a=>a.diff>=0).length;
-  const widest=areas.slice().sort((a,b)=>a.diff-b.diff)[0];
-  const meanGap=(areas.reduce((s,a)=>s+a.diff,0)/areas.length).toFixed(1);
-  document.getElementById("cap-kpis").innerHTML=[
-    {lab:"Content areas tracked", val:areas.length, sub:"tasks · systems · disciplines"},
-    {lab:"Below national", val:below, sub:"School EPC < national", cls:"v-warn"},
-    {lab:"On par or above", val:on, sub:"School \u2265 national"},
-    {lab:"Widest gap", val:widest.diff, sub:widest.area, cls:"v-warn"}
-  ].map(kpiHTML).join("");
-  document.getElementById("out-kpis").innerHTML=[
-    {lab:"Examinees", val:r.n, sub:lbl},
-    {lab:"Scored items", val:r.items, sub:"on this form"},
-    {lab:"Mean gap vs national", val:meanGap, sub:"EPC, across areas"},
-    {lab:"Comparison group", val:"National", sub:"Step 1 first-takers on CBSE"}
-  ].map(kpiHTML).join("");
-  document.getElementById("shelfdist").innerHTML=`<div class="section-label">Score distribution · ${lbl}</div>`+cbseDistHTML(r.dist);
-  const watch=areas.slice().sort((a,b)=>a.diff-b.diff).slice(0,6);
-  document.getElementById("watch-title").textContent=`CBSE — ${lbl}: widest gaps below the national Step 1 benchmark`;
-  document.getElementById("watch-hint").innerHTML="Ranked by School \u2212 National EPC gap. NBME cautions some areas rest on few items, so treat the largest, broadest gaps as the signal — and read them as a readiness trajectory, since this is a preclerkship sitting.";
-  document.getElementById("watch-list").innerHTML=watch.map(a=>`<li><span class="nm">${a.area}</span><span class="grp">${a.section}</span><span class="pill l">${a.school} vs ${a.nat} EPC</span><span class="pill net">${a.diff}</span><span class="reason">${a.pct} of items · below national</span></li>`).join("");
-  document.getElementById("thead-row").innerHTML='<th>Content area</th><th class="hide-sm">Group</th><th class="num">School EPC</th><th class="num">National EPC</th><th class="num">Difference</th><th class="num">% of items</th>';
-  setLegend("cbse");
-  const s=state.sort; let rows=areas.slice();
-  rows.sort((a,b)=> s==="higher"?(b.diff-a.diff) : s==="name"?a.area.localeCompare(b.area) : (a.diff-b.diff));
-  document.getElementById("tbody").innerHTML=rows.map(a=>`
-    <tr>
-      <td><span class="catname">${a.area}</span></td>
-      <td class="hide-sm"><span class="grptag">${a.section}</span></td>
-      <td class="num">${a.school}</td><td class="num">${a.nat}</td>
-      <td class="net"><span class="netcell ${cbseDiffClass(a)}">${a.diff>0?"+":""}${a.diff}</span></td>
-      <td class="num">${a.pct}</td>
-    </tr>`).join("");
-  openDetail=null;
-}
-function setLegend(k){
-  const L={
-    usmle:'<span class="lgi"><i class="sw l"></i>Below national</span><span class="lgi"><i class="sw s"></i>About the same</span><span class="lgi"><i class="sw h"></i>Above national</span><span class="lgsep"></span><span class="lgi"><b>Net</b> = Higher − Lower · positive = relative strength</span>',
-    shelf:'<span class="lgi"><i class="sw h"></i>School ≥ national</span><span class="lgi"><i class="sw l"></i>Below national</span><span class="lgsep"></span><span class="lgi"><b>Difference</b> = School − National EPC · ★ = NBME-flagged gap</span>',
-    cbse:'<span class="lgi"><i class="sw l"></i>Below national</span><span class="lgi"><i class="sw h"></i>Above national</span><span class="lgsep"></span><span class="lgi"><b>Difference</b> = School − National EPC · vs national Step 1 first-takers on CBSE</span>',
-    modules:'<span class="lgi"><i class="sw h"></i>Above module avg</span><span class="lgi"><i class="sw l"></i>Below module avg</span><span class="lgsep"></span><span class="lgi">Course-built CAS exam — <b>no national norm</b>; comparison is within the module</span>',
-    bridge:'<span class="lgi"><i class="sw l"></i>CBSE below national</span><span class="lgi"><i class="sw h"></i>CBSE at / above</span><span class="lgsep"></span><span class="lgi"><b>r</b> = per-student correlation, module ↔ CBSE score in that domain · same 112 students</span>'
-  };
-  document.getElementById("tablelegend").innerHTML = L[k]||"";
-}
-function cbseDistHTML(d){
-  const max=Math.max(...d.hist,1), pos=v=>Math.max(0,Math.min(100,v));
-  const bars=d.hist.map((c,i)=>{const lo=d.edges[i];return `<div class="hbar" title="${lo}–${lo+9} EPC: ${c} student${c===1?'':'s'}"><div class="hfill" style="height:${Math.round(c/max*100)}%"></div><span class="hlab">${lo}</span></div>`;}).join("");
-  return `<div class="hist"><div class="histbars">${bars}<div class="hmark sch" style="left:${pos(d.mean)}%"><span>Mean ${d.mean}</span></div></div><p class="outhint">Total EPC across ${d.n} examinees (de-identified). Each bar = students in a 10-point EPC band; the line marks the school mean (${d.mean}). SD ${d.sd}, range ${d.min}–${d.max}. The CBSE report gives national comparisons by content area, not a single national total, so no national line is shown here.</p></div>`;
-}
-const CASCBSE=[{"mod":"Cardiology","casMean":77.3,"area":"Cardiovascular System","rDomain":0.66,"rTotal":0.72,"n":112,"cbseEPC":63,"cbseDiff":-10},{"mod":"Hematology","casMean":84.3,"area":"Blood & Lymphoreticular and Immune Systems","rDomain":0.61,"rTotal":0.59,"n":112,"cbseEPC":61,"cbseDiff":-14},{"mod":"Endocrinology","casMean":84.6,"area":"Reproductive & Endocrine Systems","rDomain":0.61,"rTotal":0.64,"n":112,"cbseEPC":67,"cbseDiff":-8},{"mod":"Neuroscience","casMean":81.0,"area":"Behavioral Health and Nervous Systems/Special Senses","rDomain":0.6,"rTotal":0.62,"n":111,"cbseEPC":63,"cbseDiff":-11},{"mod":"Pathology","casMean":79.4,"area":"Pathology","rDomain":0.53,"rTotal":0.54,"n":112,"cbseEPC":63,"cbseDiff":-12},{"mod":"Pulmonary Medicine","casMean":88.4,"area":"Respiratory and Renal/Urinary Systems","rDomain":0.51,"rTotal":0.56,"n":112,"cbseEPC":63,"cbseDiff":-9},{"mod":"Micro-Immuno","casMean":79.2,"area":"Microbiology & Immunology","rDomain":0.49,"rTotal":0.54,"n":112,"cbseEPC":60,"cbseDiff":-13},{"mod":"MCG","casMean":80.1,"area":"Biochemistry and Nutrition","rDomain":0.49,"rTotal":0.54,"n":112,"cbseEPC":63,"cbseDiff":-11},{"mod":"Gastroenterology","casMean":84.3,"area":"Gastrointestinal System","rDomain":0.49,"n":110,"cbseEPC":59,"cbseDiff":-15},{"mod":"Renal","casMean":86.2,"area":"Respiratory and Renal/Urinary Systems","rDomain":0.46,"rTotal":0.56,"n":111,"cbseEPC":63,"cbseDiff":-9},{"mod":"Anatomy","casMean":80.3,"area":"Gross Anatomy & Embryology","rDomain":0.39,"rTotal":0.5,"n":110,"cbseEPC":59,"cbseDiff":-11},{"mod":"MSK","casMean":84.6,"area":"Musculoskeletal, Skin, & Subcutaneous Tissue","rDomain":0.35,"rTotal":0.42,"n":112,"cbseEPC":68,"cbseDiff":-8},{"mod":"GU-SRH","casMean":85.8,"area":"Reproductive & Endocrine Systems","rDomain":0.34,"rTotal":0.39,"n":112,"cbseEPC":67,"cbseDiff":-8},{"mod":"Behavioral Science","casMean":89.0,"area":"Behavioral Sciences","rDomain":0.32,"rTotal":0.53,"n":112,"cbseEPC":80,"cbseDiff":-3}];
-
-const CASPTS={"Cardiology":[[67,38],[65,49],[63,38],[62,66],[78,60],[62,28],[77,78],[80,78],[73,54],[87,60],[73,78],[77,60],[75,60],[85,66],[85,72],[73,66],[87,72],[95,85],[80,60],[80,72],[83,78],[70,97],[73,14],[50,28],[72,72],[53,43],[95,92],[87,72],[77,72],[65,33],[92,85],[80,49],[80,38],[75,85],[60,23],[83,85],[85,72],[70,54],[68,54],[77,92],[75,66],[77,38],[72,54],[85,49],[78,72],[83,66],[70,43],[87,78],[92,66],[85,49],[80,60],[90,78],[82,66],[83,49],[68,43],[82,49],[92,97],[67,54],[68,60],[73,49],[92,78],[65,43],[78,78],[72,43],[83,72],[83,78],[72,72],[77,66],[78,72],[90,78],[77,54],[88,72],[50,23],[78,54],[80,49],[82,60],[87,72],[82,72],[85,72],[68,38],[72,60],[82,60],[35,33],[78,60],[77,72],[83,78],[82,54],[70,49],[90,85],[75,72],[80,72],[75,38],[85,72],[87,72],[70,33],[85,66],[92,72],[95,78],[80,85],[80,66],[95,92],[57,38],[87,85],[73,92],[70,54],[78,60],[67,43],[77,60],[67,60],[57,60],[92,85],[97,85]],"Hematology":[[94,66],[64,26],[74,36],[68,42],[96,48],[64,48],[86,54],[82,36],[86,54],[98,86],[92,86],[82,42],[82,79],[88,60],[92,73],[88,73],[92,86],[96,97],[88,73],[86,54],[88,86],[84,86],[90,5],[72,36],[94,79],[80,31],[94,86],[92,79],[98,79],[76,31],[90,79],[80,60],[58,48],[82,54],[72,15],[90,60],[82,60],[80,73],[68,36],[88,48],[82,48],[88,31],[80,36],[98,66],[66,66],[90,73],[80,36],[82,73],[92,86],[96,93],[94,73],[96,79],[84,54],[94,60],[76,42],[92,66],[94,93],[78,66],[68,42],[80,48],[94,79],[88,66],[84,54],[80,36],[76,86],[96,73],[80,66],[92,73],[78,66],[94,54],[92,60],[96,73],[64,15],[78,86],[88,42],[84,66],[94,79],[96,60],[92,54],[74,31],[92,54],[72,42],[54,26],[84,73],[78,79],[92,79],[86,66],[84,73],[96,93],[86,60],[96,73],[72,48],[86,73],[86,54],[64,36],[90,60],[88,79],[98,93],[82,66],[76,66],[94,86],[66,20],[84,73],[84,73],[66,66],[82,73],[88,66],[84,54],[76,60],[80,31],[100,93],[98,79]],"Endocrinology":[[83,71],[73,41],[80,56],[73,53],[100,67],[73,45],[87,74],[78,60],[92,60],[90,92],[78,71],[87,60],[73,67],[77,80],[85,56],[80,60],[88,86],[95,89],[90,74],[82,64],[88,86],[87,95],[87,32],[63,24],[83,83],[78,41],[97,86],[90,89],[88,74],[73,53],[93,80],[75,56],[88,77],[82,56],[73,32],[92,89],[93,80],[77,67],[77,67],[82,64],[75,60],[75,56],[85,60],[68,64],[88,80],[87,49],[82,60],[92,83],[87,80],[85,83],[90,64],[95,77],[93,80],[90,67],[73,64],[90,74],[93,89],[77,71],[83,53],[77,71],[95,80],[78,49],[83,74],[77,32],[92,74],[97,95],[77,56],[80,74],[83,64],[88,67],[98,71],[93,86],[67,56],[97,67],[82,45],[85,77],[87,64],[93,71],[92,71],[73,64],[83,60],[82,60],[58,37],[88,56],[87,77],[90,77],[78,71],[80,53],[92,83],[88,89],[92,83],[80,71],[85,77],[80,32],[95,60],[87,83],[85,64],[100,89],[82,80],[82,60],[98,77],[85,37],[83,80],[83,80],[83,67],[87,71],[87,56],[83,49],[77,60],[78,45],[97,74],[93,92]],"Neuroscience":[[92,60],[75,29],[63,51],[95,69],[83,60],[75,60],[71,65],[80,56],[95,87],[86,78],[88,51],[76,69],[80,65],[92,56],[78,60],[95,83],[95,78],[85,74],[85,91],[80,83],[88,87],[83,8],[54,33],[83,78],[63,56],[83,65],[92,78],[86,65],[83,29],[86,83],[83,60],[73,60],[78,74],[81,47],[83,83],[66,65],[76,65],[80,65],[78,60],[80,56],[68,51],[69,47],[88,69],[73,69],[88,78],[71,38],[92,74],[92,74],[88,65],[76,56],[95,74],[90,96],[88,65],[81,42],[80,47],[88,91],[66,65],[71,47],[88,74],[93,96],[59,42],[88,56],[76,38],[83,51],[95,96],[80,51],[92,69],[83,60],[88,83],[75,60],[88,78],[66,33],[85,65],[88,56],[81,60],[90,69],[90,83],[92,87],[81,42],[92,65],[68,56],[56,42],[69,42],[78,74],[90,69],[86,38],[63,42],[92,96],[71,65],[86,74],[68,51],[93,69],[78,47],[58,38],[80,74],[88,65],[92,96],[81,91],[75,74],[93,96],[66,47],[80,65],[92,65],[73,60],[80,65],[81,42],[75,47],[80,51],[68,29],[85,69],[92,87]],"Pathology":[[84,57],[66,37],[66,36],[72,48],[82,58],[66,48],[82,61],[74,59],[86,52],[88,79],[86,73],[68,55],[66,62],[78,56],[84,65],[70,59],[84,84],[92,88],[80,83],[82,78],[78,81],[88,87],[88,12],[70,37],[76,70],[74,46],[94,72],[84,82],[82,83],[80,36],[90,89],[90,59],[72,55],[80,63],[62,39],[86,84],[78,70],[54,65],[66,66],[72,67],[72,63],[78,37],[70,51],[90,57],[82,72],[84,65],[78,54],[88,69],[86,81],[86,61],[88,69],[86,84],[80,72],[92,56],[92,56],[74,64],[86,87],[66,57],[72,47],[78,61],[90,79],[78,45],[86,66],[80,35],[84,73],[94,88],[70,58],[88,61],[72,63],[94,68],[88,61],[92,74],[42,35],[86,78],[74,54],[80,64],[72,65],[86,77],[94,65],[78,46],[80,62],[78,47],[64,35],[76,69],[88,76],[88,81],[88,56],[74,54],[88,90],[80,73],[86,74],[68,47],[78,81],[82,52],[72,51],[76,69],[80,66],[94,86],[76,75],[76,65],[94,81],[60,33],[84,74],[74,69],[72,72],[70,64],[74,55],[76,50],[70,64],[80,37],[94,83],[98,85]],"Pulmonary Medicine":[[90,70],[79,29],[79,33],[81,47],[91,51],[90,47],[93,55],[91,66],[86,47],[97,66],[95,87],[83,47],[69,58],[83,36],[86,47],[84,66],[97,83],[95,87],[88,74],[91,78],[86,74],[90,83],[90,25],[72,47],[84,74],[91,43],[93,62],[93,83],[93,87],[81,36],[88,91],[88,66],[81,70],[91,66],[76,36],[88,83],[90,87],[88,78],[84,70],[88,66],[90,58],[81,40],[90,58],[90,51],[88,74],[91,66],[84,70],[91,58],[95,78],[90,70],[95,62],[97,83],[86,62],[93,47],[91,70],[90,70],[95,83],[76,43],[86,40],[83,70],[91,78],[72,43],[91,70],[81,29],[88,70],[98,91],[81,55],[97,55],[88,58],[90,74],[98,62],[100,78],[84,40],[91,66],[98,58],[88,58],[95,70],[97,74],[88,78],[83,40],[88,55],[93,43],[83,25],[86,74],[84,70],[97,83],[93,43],[78,40],[95,78],[88,66],[91,74],[91,47],[88,87],[93,51],[93,40],[81,70],[93,62],[100,87],[93,66],[78,66],[97,87],[72,36],[97,83],[90,58],[78,87],[83,62],[86,55],[86,55],[91,66],[76,36],[98,87],[93,87]],"Micro-Immuno":[[87,61],[71,30],[77,23],[62,33],[79,52],[67,47],[83,47],[75,52],[83,41],[90,82],[92,79],[69,58],[79,58],[77,58],[94,67],[71,69],[88,85],[88,85],[92,67],[79,64],[87,91],[92,72],[87,7],[48,33],[81,69],[67,36],[92,64],[88,72],[81,88],[60,30],[90,79],[81,61],[54,47],[88,58],[75,33],[85,79],[79,67],[56,75],[73,61],[83,52],[79,52],[73,15],[75,36],[92,47],[79,64],[90,67],[73,38],[92,75],[94,79],[92,69],[85,52],[90,67],[83,72],[90,55],[81,38],[83,55],[77,94],[40,52],[69,49],[83,55],[87,75],[79,52],[77,52],[75,25],[71,69],[88,82],[69,61],[87,52],[67,47],[96,67],[88,61],[94,69],[56,30],[83,88],[85,52],[88,58],[85,75],[87,72],[92,75],[58,44],[83,58],[71,49],[29,30],[77,82],[85,75],[88,82],[85,52],[83,55],[88,88],[71,69],[88,82],[71,52],[88,85],[79,36],[71,47],[67,67],[79,69],[100,91],[79,69],[46,64],[94,85],[69,17],[92,79],[87,64],[62,55],[81,67],[87,49],[77,44],[73,61],[77,30],[90,91],[88,85]],"MCG":[[85,62],[70,35],[78,35],[62,30],[77,30],[67,30],[82,62],[88,69],[87,43],[98,76],[78,79],[75,51],[85,66],[85,62],[85,73],[68,55],[80,89],[92,79],[92,69],[80,69],[82,86],[98,95],[92,30],[48,30],[83,73],[75,43],[92,83],[90,73],[87,83],[70,35],[88,89],[58,51],[78,59],[82,59],[83,30],[85,83],[68,73],[80,73],[67,59],[85,62],[75,62],[60,51],[72,59],[85,73],[78,69],[85,69],[58,51],[92,59],[92,83],[92,51],[95,66],[87,79],[83,76],[93,59],[80,47],[82,79],[82,92],[73,35],[68,55],[82,59],[92,86],[85,66],[92,69],[72,30],[70,73],[92,97],[80,30],[85,43],[67,83],[80,69],[92,62],[88,73],[55,47],[78,73],[72,55],[82,73],[85,83],[92,69],[92,62],[73,51],[78,59],[82,47],[65,43],[77,73],[83,66],[87,79],[83,69],[73,39],[82,92],[87,76],[85,76],[72,51],[82,83],[85,30],[78,43],[80,66],[88,69],[97,86],[78,86],[67,47],[90,86],[68,43],[87,83],[73,73],[70,76],[68,62],[90,59],[72,47],[80,59],[75,43],[88,79],[95,79]],"Gastroenterology":[[85,63],[55,8],[84,23],[76,43],[89,56],[76,43],[89,56],[93,30],[91,50],[85,88],[91,63],[85,50],[67,56],[75,56],[91,63],[82,69],[95,75],[89,69],[96,75],[84,75],[89,88],[84,94],[85,23],[64,43],[75,69],[89,50],[89,63],[91,82],[93,75],[60,30],[91,75],[80,36],[80,36],[87,56],[73,36],[84,82],[84,69],[89,56],[75,69],[78,56],[76,56],[64,23],[80,36],[87,30],[80,63],[89,63],[75,36],[93,75],[91,94],[89,63],[91,56],[95,69],[87,63],[82,50],[76,63],[78,50],[91,94],[71,43],[78,50],[87,50],[95,69],[82,69],[84,56],[65,15],[85,56],[96,94],[84,36],[95,69],[85,63],[84,63],[96,75],[89,69],[64,23],[87,75],[89,56],[80,69],[80,63],[93,69],[87,69],[87,43],[73,56],[89,50],[80,23],[78,36],[87,63],[82,82],[82,63],[82,56],[91,88],[87,69],[89,69],[91,50],[91,56],[82,56],[89,75],[75,75],[100,63],[93,56],[84,56],[87,88],[85,63],[91,69],[82,69],[71,69],[91,23],[89,23],[84,69],[87,43],[100,82],[85,88]],"Renal":[[89,70],[86,29],[89,33],[70,47],[93,51],[79,47],[95,55],[81,66],[84,47],[95,66],[86,87],[86,47],[88,58],[84,36],[88,47],[86,66],[89,83],[96,87],[96,74],[93,78],[88,74],[91,83],[86,25],[67,47],[81,74],[88,43],[89,62],[93,83],[82,87],[84,36],[95,91],[79,66],[88,70],[89,66],[77,36],[91,83],[84,87],[79,78],[96,70],[81,66],[84,58],[77,58],[79,51],[86,74],[84,66],[89,70],[89,58],[96,78],[82,70],[89,62],[91,83],[89,62],[96,47],[79,70],[86,70],[91,83],[79,43],[84,40],[82,70],[95,78],[77,43],[81,70],[84,29],[81,70],[95,91],[88,55],[88,55],[84,58],[88,74],[91,62],[91,78],[74,40],[81,66],[84,58],[89,58],[88,70],[95,74],[91,78],[88,40],[91,55],[84,43],[75,25],[81,74],[82,70],[91,83],[82,43],[75,40],[89,78],[89,66],[88,74],[86,47],[89,87],[86,51],[81,40],[95,70],[89,62],[96,87],[89,66],[79,66],[93,87],[79,36],[79,83],[81,58],[82,87],[86,62],[81,55],[84,55],[91,66],[81,36],[98,87],[96,87]],"Anatomy":[[81,72],[59,32],[75,47],[72,61],[88,72],[66,51],[84,58],[66,58],[91,54],[81,75],[78,65],[78,51],[84,54],[72,43],[81,47],[75,54],[100,65],[94,65],[66,65],[88,61],[84,68],[97,86],[81,36],[59,36],[84,68],[81,54],[91,68],[91,86],[88,65],[88,51],[84,75],[78,58],[72,72],[75,58],[84,25],[91,72],[69,82],[88,72],[81,68],[63,54],[78,54],[81,32],[84,47],[88,54],[81,54],[78,47],[94,68],[97,61],[81,54],[84,65],[91,61],[84,65],[75,54],[78,47],[69,61],[91,89],[69,51],[78,47],[78,65],[94,72],[81,47],[75,58],[91,25],[69,65],[100,82],[63,32],[69,75],[78,47],[78,75],[100,65],[91,79],[69,43],[88,61],[78,51],[88,58],[75,79],[94,65],[91,58],[81,43],[78,47],[66,51],[72,40],[78,51],[78,72],[69,51],[81,29],[94,72],[75,79],[88,65],[72,36],[81,72],[75,47],[88,43],[72,75],[81,68],[97,68],[81,65],[81,51],[94,89],[56,47],[69,72],[75,51],[78,65],[91,82],[91,47],[72,51],[84,65],[66,40],[88,61],[94,79]],"MSK":[[85,64],[77,60],[83,39],[83,74],[90,64],[77,55],[85,78],[87,87],[79,74],[90,74],[83,74],[90,69],[73,60],[87,64],[94,78],[73,64],[88,69],[98,78],[88,78],[87,87],[73,74],[98,74],[96,8],[73,55],[83,55],[79,74],[87,69],[83,87],[92,96],[85,55],[87,87],[83,60],[71,64],[94,60],[77,60],[92,83],[83,78],[96,83],[85,74],[71,64],[88,78],[75,27],[83,60],[88,64],[85,74],[88,69],[81,60],[96,87],[92,78],[81,44],[87,78],[87,78],[90,69],[96,78],[62,39],[85,69],[90,91],[71,64],[75,55],[77,83],[92,78],[75,44],[83,69],[83,55],[75,74],[92,87],[83,55],[79,55],[75,69],[87,78],[87,78],[92,78],[85,44],[83,83],[73,78],[87,78],[81,78],[94,74],[87,69],[87,69],[87,74],[79,44],[85,55],[79,87],[88,44],[88,78],[75,78],[87,49],[96,83],[87,87],[87,74],[77,64],[92,78],[85,60],[87,55],[90,69],[83,69],[98,83],[88,78],[81,64],[87,87],[71,60],[85,69],[69,60],[88,69],[79,69],[92,69],[88,55],[85,64],[75,44],[96,69],[88,87]],"GU-SRH":[[84,71],[71,41],[78,56],[76,53],[95,67],[71,45],[85,74],[95,60],[93,60],[93,92],[82,71],[96,60],[75,67],[82,80],[89,56],[76,60],[89,86],[96,89],[96,74],[80,64],[75,86],[89,95],[85,32],[76,24],[82,83],[91,41],[93,86],[89,89],[82,74],[76,53],[91,80],[82,56],[87,77],[93,56],[73,32],[87,89],[85,80],[76,67],[84,67],[80,64],[91,60],[76,56],[89,60],[89,64],[89,80],[93,49],[67,60],[93,83],[89,80],[84,83],[82,64],[98,77],[84,80],[93,67],[84,64],[93,74],[91,89],[80,71],[85,53],[75,71],[91,80],[82,49],[80,74],[82,32],[82,74],[95,95],[76,56],[93,74],[78,64],[91,67],[95,71],[91,86],[85,56],[89,67],[95,45],[80,77],[85,64],[95,71],[89,71],[93,64],[85,60],[87,60],[84,37],[71,56],[82,77],[89,77],[91,71],[87,53],[82,83],[80,89],[95,83],[82,71],[82,77],[93,32],[91,60],[82,83],[85,64],[100,89],[87,80],[82,60],[98,77],[67,37],[84,80],[87,80],[69,67],[87,71],[91,56],[87,49],[80,60],[85,45],[98,74],[95,92]],"Behavioral Science":[[96,77],[74,68],[80,55],[92,64],[92,81],[84,64],[86,68],[86,77],[88,77],[94,96],[90,85],[86,96],[96,81],[88,77],[88,77],[84,85],[96,89],[96,93],[76,85],[90,77],[92,93],[98,89],[86,27],[90,77],[88,81],[90,73],[96,85],[98,93],[92,81],[86,68],[92,85],[88,68],[92,85],[84,89],[80,77],[88,89],[94,77],[88,89],[82,96],[98,77],[90,64],[90,81],[92,73],[96,81],[92,93],[96,81],[88,68],[86,89],[100,85],[98,85],[92,89],[94,89],[86,89],[96,93],[90,73],[88,89],[90,89],[86,73],[80,77],[80,81],[96,73],[82,64],[90,60],[86,64],[82,77],[94,81],[92,77],[86,85],[90,77],[96,81],[94,93],[96,73],[86,73],[90,85],[92,81],[90,77],[86,89],[98,85],[94,89],[78,85],[76,85],[92,73],[80,77],[90,93],[92,85],[94,89],[90,68],[82,73],[92,93],[96,89],[96,93],[84,68],[92,85],[92,89],[74,77],[92,77],[94,73],[94,93],[96,93],[86,81],[98,89],[66,60],[92,85],[86,85],[74,81],[80,89],[90,77],[88,73],[90,64],[84,64],[100,89],[96,77]]};
-function sparkline(vals){
-  const w=58,h=22; if(!vals||vals.length<2) return "";
-  const mn=Math.min(...vals),mx=Math.max(...vals),r=(mx-mn)||1;
-  const P=vals.map((v,i)=>[3+i/(vals.length-1)*(w-6), h-4-(v-mn)/r*(h-8)]);
-  const d=P.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-  const up=vals[vals.length-1]-vals[0];
-  const col=up>=4?"#15803d":up<=-4?"#c2410c":"#64748b";
-  const lp=P[P.length-1];
-  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><path d="${d}" fill="none" stroke="${col}" stroke-width="1.6"/><circle cx="${lp[0].toFixed(1)}" cy="${lp[1].toFixed(1)}" r="2.1" fill="${col}"/></svg>`;
-}
-function scatterSVG(pts){
-  const W=230,H=150,padL=30,padB=22,padT=8,padR=8;
-  const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
-  const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys),ymax=Math.max(...ys);
-  const xr=(xmax-xmin)||1, yr=(ymax-ymin)||1;
-  const X=v=>padL+(v-xmin)/xr*(W-padL-padR);
-  const Y=v=>H-padB-(v-ymin)/yr*(H-padB-padT);
-  const n=pts.length, mx=xs.reduce((a,b)=>a+b,0)/n, my=ys.reduce((a,b)=>a+b,0)/n;
-  let sxy=0,sxx=0; pts.forEach(p=>{sxy+=(p[0]-mx)*(p[1]-my);sxx+=(p[0]-mx)**2;});
-  const m=sxx?sxy/sxx:0, b=my-m*mx;
-  const dots=pts.map(p=>`<circle cx="${X(p[0]).toFixed(1)}" cy="${Y(p[1]).toFixed(1)}" r="2.3" fill="#1d4ed8" fill-opacity="0.4"/>`).join("");
-  const ln=`<line x1="${X(xmin).toFixed(1)}" y1="${Y(m*xmin+b).toFixed(1)}" x2="${X(xmax).toFixed(1)}" y2="${Y(m*xmax+b).toFixed(1)}" stroke="#d6336c" stroke-width="1.8"/>`;
-  return `<svg viewBox="0 0 ${W} ${H}" class="scsvg"><line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#cbd5e1"/><line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#cbd5e1"/><text x="${padL-4}" y="${(Y(ymax)+3).toFixed(1)}" text-anchor="end" class="sctick">${Math.round(ymax)}</text><text x="${padL-4}" y="${H-padB}" text-anchor="end" class="sctick">${Math.round(ymin)}</text><text x="${padL}" y="${H-7}" class="sctick">${Math.round(xmin)}</text><text x="${W-padR}" y="${H-7}" text-anchor="end" class="sctick">${Math.round(xmax)}</text>${dots}${ln}</svg>`;
-}
-function rBarChart(){
-  const rows=CASCBSE.slice().sort((a,b)=>b.rDomain-a.rDomain);
-  const bars=rows.map(c=>{const col=c.rDomain>=0.6?"var(--good)":c.rDomain>=0.4?"var(--navy-soft)":"#9aa7bd";
-    return `<div class="rbar"><span class="rbl">${c.mod}</span><span class="rtrack"><i style="width:${Math.round(c.rDomain*100)}%;background:${col}"></i></span><span class="rbv">${c.rDomain.toFixed(2)}</span></div>`;}).join("");
-  return `<div class="section-label">Predictive strength · module → CBSE domain</div><div class="scsub" style="margin:0 0 6px">How well each module exam predicted that student’s CBSE score in the same domain (Pearson r, 0–1). Longer bars = stronger predictor for the Class of 2028.</div><div class="rbars">${bars}</div>`;
-}
-function bridgeScatters(){
-  const map={}; CASCBSE.forEach(c=>map[c.mod]=c);
-  const order=CASCBSE.slice().sort((a,b)=>b.rDomain-a.rDomain).map(c=>c.mod);
-  const cards=order.filter(m=>CASPTS[m]&&CASPTS[m].length>2).map(m=>{const c=map[m];
-    return `<div class="scard"><div class="sctitle"><span>${m}</span><span class="netcell ${rClass(c.rDomain)}" style="font-size:11px">r ${c.rDomain.toFixed(2)}</span></div><div class="scsub">module % (x) vs CBSE ${c.area} EPC (y) · n=${CASPTS[m].length}</div>${scatterSVG(CASPTS[m])}</div>`;
-  }).join("");
-  return rBarChart() + `<div class="section-label">Per-student correlations · ASCEND Class of 2028</div><div class="scsub" style="margin:0 0 6px">Each dot is one student — their module % (x-axis) against their CBSE domain EPC (y-axis). The magenta line is the best fit; a tighter cloud around it means a stronger relationship.</div><div class="scatters">${cards}</div>`;
-}
-function populateBridgeYears(){ const ys=document.getElementById("yearsel"); ys.innerHTML='<option value="cascbse">CAS modules 2024–25 → CBSE Dec 2025</option>'; ys.value="cascbse"; }
-function rClass(r){ return r>=0.6?"net-strong":r>=0.4?"net-ok":"net-mild"; }
-function rLabel(r){ return r>=0.6?"strong":r>=0.4?"moderate":"weak"; }
-function renderBridge(){
-  let rows=CASCBSE.slice();
-  const s=state.sort;
-  if(s==="cbsegap") rows.sort((a,b)=>a.cbseDiff-b.cbseDiff);
-  else if(s==="casmean") rows.sort((a,b)=>a.casMean-b.casMean);
-  else if(s==="name") rows.sort((a,b)=>a.mod.localeCompare(b.mod));
-  else rows.sort((a,b)=>b.rDomain-a.rDomain);
-  const SN={r:["Sorted by predictive strength","Top rows are the modules whose exam scores most closely tracked each student’s CBSE score in the same domain — the course exams that are the best early read on comprehensive readiness. Lower-r modules tested skills that lined up less tightly with the CBSE."],cbsegap:["Sorted by CBSE gap vs national","Top rows are the content areas where the Class of 2028 sat furthest below the national first-taker group on the CBSE — the largest comprehensive-exam gaps, regardless of how the course exam went."],casmean:["Sorted by module-exam average, lowest first","Top rows are where the class scored lowest on the course exam itself. CAS exams have no national benchmark, so this is an internal raw-score ranking, not a vs-national signal."],name:["Listed A–Z by module","Alphabetical order for quick lookup; no ranking implied."]};
-  const _snd=SN[s]||SN.r, _sn=document.getElementById("sortnote");
-  if(_sn){ _sn.style.display=""; _sn.innerHTML=`<span class="k">What you’re looking at</span><b>${_snd[0]}.</b> ${_snd[1]}`; }
-  document.getElementById("cap-title").textContent="CAS → CBSE · ASCEND Class of 2028";
-  document.getElementById("out-title").textContent="How to read this";
-  document.getElementById("cap-year").textContent="ASCEND Class of 2028 · modules 2024–25 → CBSE Dec 2025";
-  document.getElementById("out-year").textContent="within-cohort";
-  document.getElementById("outhint").textContent="";
-  const rs=rows.map(r=>r.rDomain).slice().sort((a,b)=>a-b); const med=rs[Math.floor(rs.length/2)];
-  const top=rows[0];
-  document.getElementById("cap-kpis").innerHTML=[
-    {lab:"ASCEND Class of", val:"2028", sub:"n = 114 · linked by examinee ID"},
-    {lab:"Modules linked", val:rows.length, sub:"→ CBSE content areas"},
-    {lab:"Median predictive r", val:med.toFixed(2), sub:"module → CBSE domain"},
-    {lab:"Strongest predictor", val:top.rDomain.toFixed(2), sub:top.mod+" → "+top.area.split(" ")[0], cls:"v-good"}
-  ].map(kpiHTML).join("");
-  document.getElementById("out-kpis").innerHTML=`<div class="kpi" style="grid-column:1/-1"><div class="lab">Reading</div><div class="sub" style="font-size:12.5px;line-height:1.5">Module scores and CBSE scores are matched per student by examinee ID. <b>r</b> is the correlation between each student's module score and their CBSE score in that domain (0 = unrelated, 1 = perfect). CAS exams have <b>no national norm</b>, so r measures whether course mastery tracks with comprehensive readiness; the CBSE column carries the vs-national signal.</div></div>`;
-  document.getElementById("shelfdist").innerHTML=bridgeScatters();
-  const soft=rows.slice().sort((a,b)=>a.cbseDiff-b.cbseDiff).slice(0,6);
-  document.getElementById("watch-title").textContent="CBSE weak spots and the course behind them";
-  document.getElementById("watch-hint").innerHTML="CBSE content areas furthest below national, paired with the CAS module that teaches them and how strongly that module predicted CBSE (r) for the Class of 2028.";
-  document.getElementById("watch-list").innerHTML=soft.map(r=>`<li><span class="nm">${r.area}</span><span class="grp">${r.mod} module</span><span class="pill l">CBSE ${r.cbseEPC} (${r.cbseDiff})</span><span class="pill net">r ${r.rDomain.toFixed(2)}</span><span class="reason">module mean ${r.casMean}% · ${rLabel(r.rDomain)} predictor</span></li>`).join("");
-  document.getElementById("thead-row").innerHTML='<th>CAS module</th><th class="num">Module mean %</th><th class="hide-sm">CBSE content area</th><th class="num">CBSE EPC (vs natl)</th><th class="num">Predicts CBSE (r)</th>';
-  document.getElementById("tbody").innerHTML=rows.map(r=>`
-    <tr>
-      <td><span class="catname">${r.mod}</span></td>
-      <td class="num">${r.casMean}%</td>
-      <td class="hide-sm"><span class="grptag">${r.area}</span></td>
-      <td class="net"><span class="netcell ${cbseDiffClass({diff:r.cbseDiff,sig:''})}">${r.cbseEPC} (${r.cbseDiff})</span></td>
-      <td class="net"><span class="netcell ${rClass(r.rDomain)}">${r.rDomain.toFixed(2)} ${rLabel(r.rDomain)}</span></td>
-    </tr>`).join("");
-  openDetail=null;
-  setLegend("bridge");
-}
-setExam("home");
-(function initBanner(){
-  const mb=document.getElementById("mapbanner");
-  if(state.labelMode==="class"){
-    mb.style.display="block";
-    mb.innerHTML="Periods shown by <b>Legacy Class</b> (OCA-confirmed mapping). Use “Edit Legacy Class mapping” to adjust for FlexMed or off-cycle cohorts.";
-  }
-})();
-</script>
 </body>
 </html>
