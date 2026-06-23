@@ -9,109 +9,84 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#0B2A4A;
-    --navy-deep:#081d34;
-    --ink:#13202f;
-    --slate:#51606f;
-    --line:#e3e8ee;
-    --line-soft:#eef1f5;
-    --paper:#f6f8fb;
-    --white:#ffffff;
-    --magenta:#c4117a;     /* ASCEND accent — used once */
-    --cyan:#0c93a3;
-    --ok:#1b7f4b;
-    --warn:#b07a06;
-    --low:#b42318;
+    --navy:#0B2A4A;--ink:#13202f;--slate:#51606f;--line:#e3e8ee;--line-soft:#eef1f5;
+    --paper:#f6f8fb;--white:#fff;--magenta:#c4117a;--cyan:#0c93a3;
+    --ok:#1b7f4b;--warn:#b07a06;--low:#b42318;
     --shadow:0 1px 2px rgba(11,42,74,.05), 0 8px 24px rgba(11,42,74,.06);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0;background:var(--paper);color:var(--ink);
-    font-family:"Inter",system-ui,sans-serif;line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:1060px;margin:0 auto;padding:0 28px}
-  a{color:inherit}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 28px}
 
-  /* ---------- masthead ---------- */
+  /* masthead */
   .masthead{background:var(--navy);color:#eaf1f8;border-bottom:3px solid var(--magenta)}
   .mast-top{display:flex;justify-content:space-between;align-items:center;
-    padding:14px 28px;max-width:1060px;margin:0 auto;font-size:12px;letter-spacing:.06em;
+    padding:13px 28px;max-width:1000px;margin:0 auto;font-size:11.5px;letter-spacing:.06em;
     text-transform:uppercase;color:#9fb6cd}
   .mast-top .conf{font-family:"IBM Plex Mono",monospace;font-weight:600}
-  .mast-body{max-width:1060px;margin:0 auto;padding:30px 28px 40px}
-  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--cyan);margin:0 0 14px}
-  h1{font-family:"Archivo",sans-serif;font-weight:800;font-size:clamp(30px,5vw,46px);
-    line-height:1.04;letter-spacing:-.02em;margin:0 0 16px;color:#fff}
-  .lede{font-size:17px;max-width:62ch;color:#cdddec;margin:0}
-  .meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:24px;font-size:13.5px;color:#9fb6cd}
+  .mast-body{max-width:1000px;margin:0 auto;padding:26px 28px 30px}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--cyan);margin:0 0 11px}
+  h1{font-family:"Archivo",sans-serif;font-weight:800;font-size:clamp(28px,4.5vw,40px);
+    line-height:1.05;letter-spacing:-.02em;margin:0 0 12px;color:#fff}
+  .lede{font-size:16px;max-width:60ch;color:#cdddec;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:18px;font-size:13px;color:#9fb6cd}
   .meta b{color:#dceaf6;font-weight:600}
   .cohort{display:inline-flex;align-items:center;gap:8px}
   .cohort .dot{width:7px;height:7px;border-radius:50%;background:var(--magenta)}
 
-  /* ---------- sections ---------- */
-  section{padding:56px 0}
-  .sec-label{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--slate);margin:0 0 8px}
-  h2{font-family:"Archivo",sans-serif;font-weight:700;font-size:24px;letter-spacing:-.01em;
-    margin:0 0 6px;color:var(--ink)}
-  .sec-intro{color:var(--slate);max-width:64ch;margin:0 0 30px;font-size:15.5px}
+  /* sections */
+  section{padding:38px 0}
+  .sec-label{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--slate);margin:0 0 7px}
+  h2{font-family:"Archivo",sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em;
+    margin:0 0 20px;color:var(--ink)}
 
-  /* ---------- view cards ---------- */
-  .views{display:grid;gap:18px}
-  .view{background:var(--white);border:1px solid var(--line);border-radius:14px;
-    box-shadow:var(--shadow);padding:26px 26px 24px;display:grid;
-    grid-template-columns:160px 1fr;gap:28px}
-  .view .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--cyan)}
-  .view h3{font-family:"Archivo",sans-serif;font-weight:700;font-size:20px;
-    margin:6px 0 0;color:var(--navy);letter-spacing:-.01em}
-  .view .side{border-right:1px solid var(--line-soft);padding-right:24px}
-  @media(max-width:680px){
-    .view{grid-template-columns:1fr;gap:14px}
-    .view .side{border-right:0;border-bottom:1px solid var(--line-soft);padding:0 0 14px}
+  /* entry cards */
+  .views{display:grid;gap:12px}
+  .view{display:grid;grid-template-columns:1fr auto;align-items:center;gap:20px;
+    background:var(--white);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);padding:20px 22px;text-decoration:none;color:inherit;
+    transition:border-color .15s,transform .15s,box-shadow .15s}
+  .view:hover,.view:focus-visible{border-color:var(--cyan);transform:translateY(-2px);
+    box-shadow:0 2px 4px rgba(11,42,74,.06),0 14px 30px rgba(11,42,74,.10);outline:none}
+  .view .tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:5px}
+  .view h3{font-family:"Archivo",sans-serif;font-weight:700;font-size:18px;
+    margin:0 0 5px;color:var(--navy);letter-spacing:-.01em}
+  .view p{margin:0;font-size:14px;color:var(--slate);max-width:70ch}
+  .view .go{font-family:"Archivo",sans-serif;font-size:22px;color:var(--cyan);
+    transition:transform .15s;flex:none}
+  .view:hover .go,.view:focus-visible .go{transform:translateX(4px)}
+  @media(max-width:560px){
+    .view{grid-template-columns:1fr;gap:10px}
+    .view .go{justify-self:end}
   }
-  .view p{margin:0 0 12px;font-size:15px;color:var(--ink)}
-  .view .q{margin:0;font-size:14px;color:var(--slate)}
-  .view .q b{color:var(--navy);font-weight:600;font-style:normal}
-  .pills{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;padding:0;list-style:none}
-  .pill{font-size:12px;color:var(--slate);border:1px solid var(--line);
-    border-radius:999px;padding:3px 10px;background:#fbfcfe}
 
-  /* ---------- data structure ---------- */
+  /* data structure */
   .struct{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:48px}
-  @media(max-width:780px){.grid2{grid-template-columns:1fr;gap:34px}}
-  .elem{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
-  .elem:last-child{border-bottom:0}
-  .code{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;color:var(--white);
-    background:var(--navy);border-radius:6px;padding:3px 9px;min-width:42px;text-align:center}
-  .elem .name{font-weight:600;font-size:15px;color:var(--ink);display:block;margin-bottom:2px}
-  .elem .items{font-size:13.5px;color:var(--slate)}
-  .clerk-list{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin:0;padding:0;list-style:none}
-  .clerk-list li{font-size:14px;color:var(--ink);padding:7px 0;border-bottom:1px solid var(--line-soft);
-    display:flex;align-items:center;gap:9px}
-  .clerk-list li::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--cyan);flex:none}
+  .elems{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+  @media(max-width:640px){.elems{grid-template-columns:1fr}}
+  .elem{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
+  .code{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:13px;color:var(--white);
+    background:var(--navy);border-radius:6px;padding:3px 8px;min-width:40px;text-align:center;flex:none}
+  .elem .name{font-weight:600;font-size:14.5px;color:var(--ink);display:block;margin-bottom:1px}
+  .elem .items{font-size:13px;color:var(--slate)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:20px 0 0;
+    padding-top:18px;border-top:1px solid var(--line-soft)}
+  .legend .item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--slate)}
+  .swatch{width:12px;height:12px;border-radius:4px;flex:none}
+  .note{margin:14px 0 0;font-size:12.5px;color:var(--slate)}
+  .note b{color:var(--navy);font-weight:600}
 
-  /* ---------- legend / notes ---------- */
-  .legend{display:flex;flex-wrap:wrap;gap:18px;margin:22px 0 0}
-  .legend .item{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--slate)}
-  .swatch{width:13px;height:13px;border-radius:4px;flex:none}
-  .notes{margin:26px 0 0;padding:18px 20px;background:var(--paper);border:1px solid var(--line);
-    border-radius:12px;font-size:13.5px;color:var(--slate)}
-  .notes p{margin:0 0 9px}.notes p:last-child{margin:0}
-  .notes b{color:var(--navy);font-weight:600}
+  footer{padding:24px 0 48px;font-size:12px;color:#8593a2}
+  footer .rule{height:1px;background:var(--line);margin-bottom:18px}
 
-  footer{padding:30px 0 60px;font-size:12.5px;color:#8593a2}
-  footer .rule{height:1px;background:var(--line);margin-bottom:22px}
-
-  /* enter */
   @media(prefers-reduced-motion:no-preference){
-    .view,.elem,.clerk-list li{animation:rise .5s both}
-    .view:nth-child(2){animation-delay:.05s}
-    .view:nth-child(3){animation-delay:.1s}
+    .view{animation:rise .45s both}
+    .view:nth-child(2){animation-delay:.06s}.view:nth-child(3){animation-delay:.12s}
     @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   }
   :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
@@ -127,86 +102,51 @@
   <div class="mast-body">
     <p class="eyebrow">Icahn School of Medicine at Mount Sinai</p>
     <h1>Clerkship LCME Monitoring Dashboard</h1>
-    <p class="lede">A single place to track clinical clerkship quality against the LCME standards
-      it serves — read the cohort at a glance, examine any clerkship in depth, and see how our
-      students compare nationally.</p>
+    <p class="lede">Track clinical clerkship quality against the LCME standards it serves. Choose
+      where to begin.</p>
     <div class="meta">
       <span class="cohort"><span class="dot"></span><b>Legacy Class of 2027</b></span>
       <span>AY 2025–26 · year-to-date</span>
-      <span>8 clerkships</span>
-      <span>4 LCME elements</span>
+      <span>8 clerkships · 4 LCME elements</span>
     </div>
   </div>
 </header>
 
 <section>
   <div class="wrap">
-    <p class="sec-label">The Views</p>
-    <h2>Three ways into the same data</h2>
-    <p class="sec-intro">Each view answers a different question. Start wide with the cohort,
-      narrow to a single clerkship, or step outside to the national picture — the survey items
-      and benchmark coding stay consistent across all three.</p>
-
+    <p class="sec-label">Enter the dashboard</p>
+    <h2>Three ways in</h2>
     <div class="views">
 
-      <article class="view">
-        <div class="side">
+      <a class="view" href="#all-clerkships">
+        <div>
           <span class="tag">Cohort overview</span>
           <h3>All Clerkships</h3>
+          <p>Every clerkship on one screen — eight rows, ten survey items grouped by LCME element,
+            color-coded against the benchmark. Click any row to drill in.</p>
         </div>
-        <div>
-          <p>Every clerkship on one screen: the eight clerkships as rows, all ten survey items as
-            columns, grouped under their four LCME elements. Each cell shows the year-to-date rate
-            and its change from last year, color-coded against the benchmark.</p>
-          <p class="q"><b>Answers:</b> Across every clerkship, where are the strengths and the soft
-            spots right now? Any row opens that clerkship's module detail.</p>
-          <ul class="pills">
-            <li class="pill">8 clerkships × 10 items</li>
-            <li class="pill">YTD rate + year-over-year</li>
-            <li class="pill">Click a row to drill in</li>
-          </ul>
-        </div>
-      </article>
+        <span class="go" aria-hidden="true">→</span>
+      </a>
 
-      <article class="view">
-        <div class="side">
+      <a class="view" href="#monitoring-matrix">
+        <div>
           <span class="tag">Single clerkship</span>
           <h3>Monitoring Matrix</h3>
+          <p>One clerkship in depth — by LCME element, by teaching site, and by module across the
+            year, against an adjustable benchmark.</p>
         </div>
-        <div>
-          <p>Pick one clerkship and examine it three ways — rolled up <b>by LCME element</b>,
-            broken out <b>by teaching site</b>, and tracked <b>by module</b> across the four modules
-            of the year. Every rate is color-coded against an adjustable benchmark you set.</p>
-          <p class="q"><b>Answers:</b> How is this clerkship performing, and where is the variation —
-            between sites, or across the year?</p>
-          <ul class="pills">
-            <li class="pill">By element</li>
-            <li class="pill">By site</li>
-            <li class="pill">By module (1–4)</li>
-            <li class="pill">Adjustable benchmark</li>
-          </ul>
-        </div>
-      </article>
+        <span class="go" aria-hidden="true">→</span>
+      </a>
 
-      <article class="view">
-        <div class="side">
+      <a class="view" href="#national-benchmark">
+        <div>
           <span class="tag">National comparison</span>
           <h3>National Benchmark</h3>
+          <p>Cohort AAMC Graduation Questionnaire results beside national figures, across four
+            measures with year-filterable graphs.</p>
         </div>
-        <div>
-          <p>The cohort's AAMC Graduation Questionnaire results set beside national figures, across
-            four measures: overall quality of the educational experience, being observed taking a
-            history, being observed performing an exam, and mid-clerkship feedback. Each has a
-            year-filterable bar graph.</p>
-          <p class="q"><b>Answers:</b> How do our students' experiences compare with their peers
-            nationally, and how is that trending?</p>
-          <ul class="pills">
-            <li class="pill">AAMC GQ data</li>
-            <li class="pill">4 measures</li>
-            <li class="pill">Filter by year</li>
-          </ul>
-        </div>
-      </article>
+        <span class="go" aria-hidden="true">→</span>
+      </a>
 
     </div>
   </div>
@@ -215,60 +155,28 @@
 <section class="struct">
   <div class="wrap">
     <p class="sec-label">How the data is organized</p>
-    <h2>Four elements, eight clerkships</h2>
-    <p class="sec-intro">Every survey item maps to one of four LCME elements. The same ten items
-      run through all of the views, so a number means the same thing wherever you see it.</p>
-
-    <div class="grid2">
-      <div>
-        <div class="elem">
-          <span class="code">9.7</span>
-          <span><span class="name">Formative Assessment &amp; Feedback</span>
-            <span class="items">Received feedback · Feedback helpful · CPE form completed</span></span>
-        </div>
-        <div class="elem">
-          <span class="code">9.4</span>
-          <span><span class="name">Direct Observation</span>
-            <span class="items">Observed taking a history · Observed performing an exam</span></span>
-        </div>
-        <div class="elem">
-          <span class="code">9.3</span>
-          <span><span class="name">Clinical Supervision</span>
-            <span class="items">Adequately supervised · Supervisor available</span></span>
-        </div>
-        <div class="elem">
-          <span class="code">3.5</span>
-          <span><span class="name">Learning Environment</span>
-            <span class="items">Felt listened to · Treated with respect · Expectations explained</span></span>
-        </div>
-      </div>
-
-      <div>
-        <ul class="clerk-list">
-          <li>Inpatient Medicine</li>
-          <li>Surgery–Anesthesiology</li>
-          <li>Pediatrics</li>
-          <li>OB/GYN</li>
-          <li>Neurology</li>
-          <li>Psychiatry</li>
-          <li>Emergency Medicine</li>
-          <li>ACC–Geriatrics</li>
-        </ul>
-        <div class="legend" aria-label="Benchmark color key">
-          <span class="item"><span class="swatch" style="background:var(--ok)"></span>Meets or exceeds benchmark</span>
-          <span class="item"><span class="swatch" style="background:var(--warn)"></span>Approaching benchmark</span>
-          <span class="item"><span class="swatch" style="background:var(--low)"></span>Below benchmark</span>
-        </div>
-      </div>
+    <h2>Four LCME elements</h2>
+    <div class="elems">
+      <div class="elem"><span class="code">9.7</span>
+        <span><span class="name">Formative Assessment &amp; Feedback</span>
+          <span class="items">Received feedback · Feedback helpful · CPE form completed</span></span></div>
+      <div class="elem"><span class="code">9.3</span>
+        <span><span class="name">Clinical Supervision</span>
+          <span class="items">Adequately supervised · Supervisor available</span></span></div>
+      <div class="elem"><span class="code">9.4</span>
+        <span><span class="name">Direct Observation</span>
+          <span class="items">Observed taking a history · Observed performing an exam</span></span></div>
+      <div class="elem"><span class="code">3.5</span>
+        <span><span class="name">Learning Environment</span>
+          <span class="items">Felt listened to · Treated with respect · Expectations explained</span></span></div>
     </div>
-
-    <div class="notes">
-      <p><b>About the data.</b> The 2025–26 year-to-date figure is the full-year average across all
-        four modules; 2024–25 is the referent for year-over-year comparison.</p>
-      <p>The two site-monitored elements (9.3 and 3.5) are pooled across teaching sites weighted by
-        respondent count, using the same function the rest of the dashboard uses — nothing is
-        invented at the clerkship level.</p>
+    <div class="legend" aria-label="Benchmark color key">
+      <span class="item"><span class="swatch" style="background:var(--ok)"></span>Meets or exceeds benchmark</span>
+      <span class="item"><span class="swatch" style="background:var(--warn)"></span>Approaching benchmark</span>
+      <span class="item"><span class="swatch" style="background:var(--low)"></span>Below benchmark</span>
     </div>
+    <p class="note"><b>About the data.</b> The 2025–26 year-to-date figure is the full-year average
+      across all four modules; 2024–25 is the referent for year-over-year comparison.</p>
   </div>
 </section>
 
@@ -277,7 +185,6 @@
     <div class="rule"></div>
     Clerkship LCME Monitoring Dashboard · Office of Curricular Affairs, ASCEND ·
     Icahn School of Medicine at Mount Sinai. Prepared for accreditation monitoring.
-    The cohort label shown above is plain text and will update to ASCEND Class of 2028.
   </div>
 </footer>
 
